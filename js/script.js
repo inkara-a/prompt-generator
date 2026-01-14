@@ -36,8 +36,18 @@ let examples = [];
 let activeExampleTab = "all";
 
 function getTabLabels() {
-  // templates.json に存在するカテゴリだけをタブ化（余計なタブで迷わせない）
-  const tabs = [{ key: "all", label: "全部" }];
+  // ユーザー向けの大カテゴリ（初心者が迷わない順）
+  return [
+    { key: "all", label: "全部" },
+    { key: "dev", label: "アプリ・システムを作りたい" },
+    { key: "work", label: "仕事を効率化したい" },
+    { key: "learn", label: "学習・理解を深めたい" },
+    { key: "write", label: "文章・コンテンツを作りたい" },
+    { key: "idea", label: "アイデア・企画を整理したい" },
+    { key: "trouble", label: "トラブル・問題を解決したい" }
+  ];
+}
+];
   if (!data) return tabs;
 
   const map = {

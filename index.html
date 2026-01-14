@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>用途別プロンプトジェネレーター（v5）</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>用途別プロンプトジェネレーター</h1>
+      <p class="sub">ボタンを押すだけで「そのまま使える指示文（プロンプト）」が作れます。</p>
+
+      <section class="examples">
+        <div class="badge">人気テンプレ</div>
+        <h2 class="exTitle">まずはここから（クリックで自動入力）</h2>
+        <p class="exSub">初心者でも「何ができるか」がすぐ分かります。</p>
+        <div class="exTabs" id="exampleTabs"></div>
+        <div class="exGrid" id="exampleGrid"></div>
+      </section>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <div class="step"><span class="stepNo">STEP 1</span><span class="stepText">テンプレを選ぶ</span></div>
+
+        <label>カテゴリ</label>
+        <select id="category"></select>
+
+        <label>用途</label>
+        <select id="purpose"></select>
+
+        <label>テンプレの型（選ぶだけ） <span class="muted">（迷ったらそのままでOK）</span></label>
+        <select id="preset">
+          <option value="none">そのまま（自由に書く）</option>
+          <option value="sns">SNS投稿（短め）</option>
+          <option value="email">メール（丁寧）</option>
+          <option value="doc">説明文・マニュアル</option>
+          <option value="code">コード（実装）</option>
+          <option value="plan">企画・要件整理</option>
+        </select>
+
+        <div class="smartRow">
+          <label class="opt bigOpt">
+            <input type="checkbox" id="smart" checked />
+            かしこく回答させる <span class="muted">（おすすめ）</span>
+          </label>
+          <p class="hint">ONにすると：見やすく整理 / 手順で考える / 足りない情報は質問 を自動で付けます。</p>
+        </div>
+
+        <details class="details">
+          <summary>こだわり設定 <span class="muted">（上級者向け）</span></summary>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" id="md" checked /> 見やすく整理して出す</label>
+            <label class="opt"><input type="checkbox" id="step" checked /> 手順で考えてから答えて</label>
+            <label class="opt"><input type="checkbox" id="ask" checked /> 足りない情報があれば先に質問して</label>
+          </div>
+          <p class="hint">※ ふだんは「かしこく回答させる」だけでOKです。</p>
+        </details>
+      </section>
+
+      <section class="card">
+        <div class="step"><span class="stepNo">STEP 2</span><span class="stepText">お願いしたい内容を書く</span></div>
+
+        <label>AIの立場 <span class="muted">（例：やさしい先生 / プロの編集者）</span></label>
+        <input id="role" type="text" placeholder="例：やさしい先生 / プロの編集者 / 実務経験豊富なフロントエンドエンジニア" />
+
+        <label>やりたいこと <span class="muted">（ゴール）</span></label>
+        <input id="goal" type="text" placeholder="例：読書感想文の構成案を作る / 家計簿アプリの画面を作る" />
+
+        <label>状況・素材 <span class="muted">（背景や材料）</span></label>
+        <textarea id="context" placeholder="例：対象は初心者 / PCブラウザ前提 / 参考情報や文章を貼る など"></textarea>
+
+        <label>守ってほしいルール</label>
+        <textarea id="constraints" placeholder="例：300文字以内 / 箇条書き / 専門用語は避ける / コピペで動くコード"></textarea>
+
+        <label>ほしい出力の形 <span class="muted">（出てくる見た目）</span></label>
+        <textarea id="format" placeholder="例：1.結論 2.理由 3.具体例 / 1.HTML 2.CSS 3.カスタマイズ"></textarea>
+
+        <label>追加のお願い（自由）</label>
+        <textarea id="request" placeholder="例：家計簿アプリ。収入/支出入力、カテゴリ、月次集計がある画面にしたい。"></textarea>
+
+        <div class="buttons">
+          <button id="generate">STEP 3：プロンプトを作る</button>
+          <button id="copyBig" class="copyBig">コピーしてChatGPTに貼り付ける</button>
+          <button id="openChatGPT" class="secondary">ChatGPTを開く</button>
+          <button id="clearAll" class="secondary">一括クリア</button>
+        </div>
+        <p class="hint">※ ふだんは「コピーして貼り付ける」だけでOKです。</p>
+      </section>
+
+      <section class="card">
+        <details class="details">
+          <summary>穴埋めパーツ（テンプレ化） <span class="muted">（必要なときだけ）</span></summary>
+          <p class="desc">
+            繰り返し使いたい部分を <span class="mono">{{タイトル}}</span> のように入れられます。<br />
+            例：<span class="mono">{{文章を貼る}}</span>（ここに要約したい文章を貼り付けてください）
+          </p>
+
+          <div class="varRow">
+            <div>
+              <label>穴埋め名</label>
+              <input id="varName" type="text" placeholder="例：タイトル / 相手 / 文章を貼る" />
+            </div>
+            <div>
+              <label>何を入れる？（ヒント）</label>
+              <input id="varHint" type="text" placeholder="例：ここに要約したい文章を貼ってください / 例：取引先の田中さん" />
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button id="addVar" class="secondary">追加</button>
+            <button id="insertVar">挿入</button>
+            <button id="clearVars" class="secondary">一覧クリア</button>
+          </div>
+
+          <div class="varList" id="varList"></div>
+          <p class="hint">ヒント：チップをクリックすると、その穴埋めを挿入できます。</p>
+        </details>
+      </section>
+
+      <section class="card wide">
+        <div class="step"><span class="stepNo">STEP 3</span><span class="stepText">これをコピーして使う</span></div>
+        <div class="copyBar">
+          <button id="copy" class="copyMain">コピーしてChatGPTに貼り付ける</button>
+          <span id="copyState" class="copyState">← ここを押すだけ</span>
+        </div>
+        <textarea id="result" readonly placeholder="ここに生成されたプロンプトが表示されます"></textarea>
+        <p class="hint">✅ コピーしたら、ChatGPT（またはClaudeなど）にそのまま貼り付けてください。</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>テンプレートは <code>data/templates.json</code> を編集すると増やせます。</small>
+    </footer>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

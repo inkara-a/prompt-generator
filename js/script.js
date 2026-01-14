@@ -1,0 +1,546 @@
+
+let data = null;
+const el = (id) => document.getElementById(id);
+
+const category = el("category");
+const purpose = el("purpose");
+const preset = el("preset");
+
+const role = el("role");
+const goal = el("goal");
+const context = el("context");
+const constraints = el("constraints");
+const format = el("format");
+const request = el("request");
+
+const result = el("result");
+
+const smart = el("smart");
+const mdOpt = el("md");
+const stepOpt = el("step");
+const askOpt = el("ask");
+
+const varName = el("varName");
+const varHint = el("varHint");
+const addVarBtn = el("addVar");
+const insertVarBtn = el("insertVar");
+const clearVarsBtn = el("clearVars");
+const varListEl = el("varList");
+
+let lastFocusedField = null;
+const VARS_KEY = "pg_vars_v1";
+
+const examples = [{"title": "読書感想文の構成案を作る", "desc": "本の内容を整理して、書きやすい構成に", "category": "learn", "purpose": "初心者向け解説", "preset": "doc", "fill": {"aiPosition": "やさしい国語の先生", "goal": "読書感想文の構成案を作る", "context": "本のタイトル：{{本のタイトル}}
+対象学年：{{学年}}
+感想で伝えたいこと：{{伝えたいこと}}", "rules": "中学生でも分かる言葉
+段落ごとに何を書くか明確に
+800〜1200字を想定", "output": "1.構成（導入/あらすじ/印象/学び/まとめ）
+2.各段落に書く内容
+3.書き出し例（2案）"}, "vars": [{"name": "本のタイトル", "hint": "例：ハリーポッター"}, {"name": "学年", "hint": "例：中学2年"}, {"name": "伝えたいこと", "hint": "例：友情の大切さ"}]}, {"title": "今晩の献立を考えてもらう", "desc": "冷蔵庫の食材から提案", "category": "idea", "purpose": "アイデア壁打ち", "preset": "none", "fill": {"aiPosition": "やさしい料理の相談相手", "goal": "今晩の献立を決める", "context": "人数：{{人数}}
+好み：{{好み}}
+使いたい食材：{{食材}}
+調理時間：{{時間}}", "rules": "初心者でも作れる
+手順は番号付き
+買い足しが必要なら最小限", "output": "1.献立案を3つ
+2.材料リスト
+3.作り方（番号付き）
+4.時短のコツ"}, "vars": [{"name": "人数", "hint": "例：2人"}, {"name": "好み", "hint": "例：和食、辛くない"}, {"name": "食材", "hint": "例：鶏むね肉、キャベツ、卵"}, {"name": "時間", "hint": "例：30分"}]}, {"title": "難しい文章を中学生向けに要約する", "desc": "やさしい言葉で短く", "category": "learn", "purpose": "用語の噛み砕き説明", "preset": "none", "fill": {"aiPosition": "やさしい先生（中学生に説明）", "goal": "難しい文章を中学生向けに要約する", "context": "要約したい文章：
+{{文章を貼る}}", "rules": "300〜500文字
+むずかしい言葉は言い換える
+重要ポイントを3つに絞る", "output": "1.要約（本文）
+2.大事なポイント3つ
+3.むずかしい言葉→言い換え"}, "vars": [{"name": "文章を貼る", "hint": "ここに要約したい文章を貼り付けてください"}]}, {"title": "家計簿アプリの画面UIを作る", "desc": "コピペで動くHTML/CSSつき", "category": "dev", "purpose": "画面UI作成", "preset": "code", "fill": {"aiPosition": "実務経験豊富なフロントエンドエンジニア", "goal": "家計簿アプリの入力・一覧・集計ができる画面UIを作る", "context": "対象：初心者
+環境：PCブラウザ
+欲しい機能：収入/支出入力、カテゴリ、月次集計", "rules": "HTML/CSSは省略しない
+コピペで動く
+分かりやすく説明", "output": "1.画面の役割
+2.UI構成説明
+3.HTML全文
+4.CSS全文
+5.カスタマイズポイント"}, "vars": []}, {"title": "丁寧な依頼メールを作る", "desc": "そのまま送れる敬語", "category": "work", "purpose": "メール・報告文作成", "preset": "email", "fill": {"aiPosition": "ビジネス文章のプロ（丁寧で簡潔）", "goal": "依頼メールを作る", "context": "相手：{{相手}}
+依頼内容：{{依頼内容}}
+期限：{{期限}}
+背景：{{背景}}", "rules": "結論から
+丁寧だが長くしない
+相手の次の行動を明確に", "output": "件名案 + 本文（そのまま送れる敬語） + 要点（箇条書き）"}, "vars": [{"name": "相手", "hint": "例：取引先の田中さん"}, {"name": "依頼内容", "hint": "例：見積もりの送付"}, {"name": "期限", "hint": "例：1/20まで"}, {"name": "背景", "hint": "例：社内稟議のため"}]}, {"title": "旅行プランを作る", "desc": "日程・予算・観光をまとめる", "category": "idea", "purpose": "構成案作成", "preset": "plan", "fill": {"aiPosition": "旅行プランナー", "goal": "旅行プランを作る", "context": "行き先：{{行き先}}
+日程：{{日程}}
+予算：{{予算}}
+やりたいこと：{{やりたいこと}}", "rules": "移動がきつすぎない
+食事/休憩も入れる
+時間帯ごとに提案", "output": "1.プランA/B
+2.時間割
+3.予算目安
+4.持ち物"}, "vars": [{"name": "行き先", "hint": "例：大阪"}, {"name": "日程", "hint": "例：1泊2日"}, {"name": "予算", "hint": "例：3万円"}, {"name": "やりたいこと", "hint": "例：食べ歩き"}]}, {"title": "議事録を要点だけにまとめる", "desc": "長文を短く整理", "category": "work", "purpose": "メール・報告文作成", "preset": "doc", "fill": {"aiPosition": "要点整理が得意な秘書", "goal": "議事録を要点だけにまとめる", "context": "議事録：
+{{議事録を貼る}}", "rules": "結論→決定事項→TODO
+重要な数字や期限は残す", "output": "1.要点
+2.決定事項
+3.TODO（担当/期限）
+4.懸念点"}, "vars": [{"name": "議事録を貼る", "hint": "ここに文章を貼り付けてください"}]}, {"title": "ブログ記事の構成案を作る", "desc": "見出しと流れを決める", "category": "write", "purpose": "サービス説明文", "preset": "doc", "fill": {"aiPosition": "プロの編集者", "goal": "ブログ記事の構成案を作る", "context": "テーマ：{{テーマ}}
+ターゲット：{{ターゲット}}
+伝えたい結論：{{結論}}", "rules": "初心者でも分かる
+見出しは7〜9個
+結論から入る", "output": "1.タイトル案3つ
+2.H2/H3構成
+3.各見出しで書く内容"}, "vars": [{"name": "テーマ", "hint": "例：副業の始め方"}, {"name": "ターゲット", "hint": "例：会社員"}, {"name": "結論", "hint": "例：小さく始める"}]}, {"title": "エラー原因を切り分ける", "desc": "原因候補→確認手順", "category": "trouble", "purpose": "エラー原因の整理", "preset": "plan", "fill": {"aiPosition": "原因切り分けが得意なサポート担当", "goal": "エラー原因を切り分ける", "context": "起きている問題：{{問題}}
+環境：{{環境}}
+エラーメッセージ：{{エラー}}", "rules": "まず確認質問
+可能性を優先順位で
+手順は番号", "output": "1.状況整理
+2.確認質問
+3.原因候補
+4.確認手順
+5.修正案"}, "vars": [{"name": "問題", "hint": "例：ログインできない"}, {"name": "環境", "hint": "例：Windows/Chrome"}, {"name": "エラー", "hint": "例：Invalid token"}]}, {"title": "API仕様のたたき台を作る", "desc": "エンドポイント一覧", "category": "dev", "purpose": "API設計", "preset": "plan", "fill": {"aiPosition": "API設計が得意なエンジニア", "goal": "家計簿アプリのAPI仕様を作る", "context": "機能：収入/支出、カテゴリ、月次集計
+認証：{{認証}}", "rules": "RESTで
+リクエスト/レスポンス例
+エラーも書く", "output": "1.前提
+2.エンドポイント一覧
+3.リクエスト/レスポンス例
+4.エラー設計"}, "vars": [{"name": "認証", "hint": "例：JWT"}]}];
+
+
+let activeExampleTab = "all";
+
+function getTabLabels() {
+  // templates.json に存在するカテゴリだけをタブ化（余計なタブで迷わせない）
+  const tabs = [{ key: "all", label: "全部" }];
+  if (!data) return tabs;
+
+  const map = {
+    work: "仕事",
+    learn: "学習",
+    write: "文章",
+    idea: "アイデア",
+    trouble: "トラブル",
+    dev: "開発",
+    daily: "日常"
+  };
+
+  Object.keys(data).forEach((k) => {
+    const label = (data[k] && data[k].label) || map[k] || k;
+    tabs.push({ key: k, label });
+  });
+
+  return tabs;
+}
+
+function renderExampleTabs() {
+  const tabsEl = el("exampleTabs");
+  if (!tabsEl) return;
+  tabsEl.innerHTML = "";
+  const tabs = getTabLabels();
+  tabs.forEach(t => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "exTab" + (activeExampleTab === t.key ? " active" : "");
+    b.textContent = t.label;
+    b.addEventListener("click", () => {
+      activeExampleTab = t.key;
+      renderExampleTabs();
+      renderExampleTabs();
+  renderExampleButtons();
+    });
+    tabsEl.appendChild(b);
+  });
+}
+
+function filteredExamples() {
+  if (activeExampleTab === "all") return examples;
+  const filtered = examples.filter(ex => ex.category === activeExampleTab);
+  return filtered.length ? filtered : examples;
+}
+
+const presets = {
+  none: { role: "", goal: "", context: "", constraints: "", format: "" },
+  sns: {
+    role: "SNS運用担当・コピーライター",
+    goal: "SNS投稿文を作成する",
+    context: "媒体：X/Instagram など（必要なら指定）\nターゲット：\n商品の特徴：",
+    constraints: "短く読みやすく\n絵文字は使いすぎない\n炎上しそうな表現は避ける",
+    format: "投稿案を3パターン\n各案：本文 / ハッシュタグ / 狙い（1行）"
+  },
+  email: {
+    role: "ビジネス文章のプロ（丁寧で簡潔）",
+    goal: "相手に誤解なく伝わるメール文を作る",
+    context: "相手：上司/取引先/同僚\n状況：\n期限：",
+    constraints: "結論から書く\n丁寧だが長くしない\n依頼事項を明確に",
+    format: "件名案 + 本文（そのまま送れる敬語） + 要点（箇条書き）"
+  },
+  doc: {
+    role: "初心者向けマニュアル作成のプロ",
+    goal: "迷わない手順書を作る",
+    context: "対象者：\n前提環境：\nゴール：",
+    constraints: "手順は番号付き\n1ステップ1行動\nつまずきポイントも書く",
+    format: "1.対象者 2.前提 3.手順 4.注意点 5.チェックリスト"
+  },
+  code: {
+    role: "実務経験豊富なソフトウェアエンジニア",
+    goal: "コードを生成/修正して動く形にする",
+    context: "言語/環境：\n現状：\n期待する動作：",
+    constraints: "省略しない\n初心者向けに説明も付ける\n実行手順も書く",
+    format: "1.方針 2.コード全文 3.使い方 4.注意点"
+  },
+  plan: {
+    role: "要件整理・企画の壁打ち相手",
+    goal: "目的と要件を整理してMVPを出す",
+    context: "誰のどんな課題：\n現状：\n理想：",
+    constraints: "質問を優先\n決めるべき点を明確に\nMVPから始める",
+    format: "1.要約 2.確認質問 3.要件（Must/Should/Could） 4.MVP 5.次の作業"
+  }
+};
+
+function loadVars() {
+  try {
+    const raw = localStorage.getItem(VARS_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
+}
+function saveVars(vars) { localStorage.setItem(VARS_KEY, JSON.stringify(vars)); }
+
+function normalizeVarName(name) {
+  return (name || "").trim().replace(/^\{\{\s*|\s*\}\}$/g, "").replace(/\s+/g, "");
+}
+function tokenOf(name) { return `{{${normalizeVarName(name)}}}`; }
+
+function renderVars() {
+  const vars = loadVars();
+  if (!varListEl) return;
+  varListEl.innerHTML = "";
+  vars.forEach((v, idx) => {
+    const chip = document.createElement("div");
+    chip.className = "chip";
+    chip.title = "クリックで挿入";
+    const t = tokenOf(v.name);
+    const h = (v.hint||"").trim();
+    chip.innerHTML = `<span class="mono">${t}</span> <small>${h}</small> <span class="x" title="削除">×</span>`;
+    chip.addEventListener("click", (e) => {
+      const isX = e.target && e.target.classList && e.target.classList.contains("x");
+      if (isX) {
+        const next = loadVars().filter((_, i) => i !== idx);
+        saveVars(next);
+        renderVars();
+        autoPreview();
+        return;
+      }
+      insertTextAtCursor(t);
+      autoPreview();
+    });
+    varListEl.appendChild(chip);
+  });
+}
+
+function insertTextAtCursor(text) {
+  const target = lastFocusedField || document.activeElement;
+  if (!target) return;
+  const tag = (target.tagName || "").toLowerCase();
+  if (tag !== "textarea" && tag !== "input") {
+    alert("挿入先の入力欄をクリックしてから、もう一度押してください。");
+    return;
+  }
+  const start = target.selectionStart ?? target.value.length;
+  const end = target.selectionEnd ?? target.value.length;
+  target.value = target.value.slice(0, start) + text + target.value.slice(end);
+  const pos = start + text.length;
+  target.focus();
+  if (typeof target.setSelectionRange === "function") target.setSelectionRange(pos, pos);
+}
+
+function attachFocusTracker(node) {
+  if (!node) return;
+  node.addEventListener("focus", () => { lastFocusedField = node; });
+  node.addEventListener("click", () => { lastFocusedField = node; });
+}
+
+async function loadTemplates() {
+  try {
+    let res = await fetch("./data/templates.json", { cache: "no-store" });
+    if (!res.ok) {
+      res = await fetch("./generator/data/templates.json", { cache: "no-store" });
+    }
+    data = await res.json();
+  } catch (e) {
+    alert("テンプレートJSONの読み込みに失敗しました。\nNetlifyなどのサーバー上で開いてください。");
+    console.error(e);
+    return;
+  }
+  initCategories();
+  renderExampleTabs();
+  renderExampleButtons();
+  autoPreview();
+}
+
+function initCategories() {
+  category.innerHTML = "";
+  for (const key in data) {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = data[key].label;
+    category.appendChild(opt);
+  }
+  initPurposes();
+}
+
+function initPurposes() {
+  purpose.innerHTML = "";
+  const selected = category.value;
+  const purposes = data[selected].purposes;
+  for (const p in purposes) {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.textContent = p;
+    purpose.appendChild(opt);
+  }
+  goal.placeholder = `例：${purpose.value} をやりたい（具体的に）`;
+  format.placeholder = `例：用途「${purpose.value}」に合う出力構成（番号付き）`;
+  autoPreview();
+}
+
+function setAdvancedFromSmart() {
+  if (!mdOpt || !stepOpt || !askOpt) return;
+  if (smart && smart.checked) {
+    mdOpt.checked = true;
+    stepOpt.checked = true;
+    askOpt.checked = true;
+  }
+}
+function syncSmartFromAdvanced() {
+  if (!smart || !mdOpt || !stepOpt || !askOpt) return;
+  smart.checked = (mdOpt.checked && stepOpt.checked && askOpt.checked);
+}
+
+function applyPreset(clearRequest=false) {
+  const key = preset.value;
+  const p = presets[key] || presets.none;
+
+  // 自由（none）なら、入力ガイドを空欄にする（要望どおり）
+  if (key === "none") {
+    role.value = "";
+    goal.value = "";
+    context.value = "";
+    constraints.value = "";
+    format.value = "";
+    if (clearRequest) request.value = "";
+    autoPreview();
+    return;
+  }
+
+  // それ以外は、未入力なら入れる（上書きしすぎない）
+  if (p.role && !role.value.trim()) role.value = p.role;
+  if (p.goal && !goal.value.trim()) goal.value = p.goal;
+  if (p.context && !context.value.trim()) context.value = p.context;
+  if (p.constraints && !constraints.value.trim()) constraints.value = p.constraints;
+  if (p.format && !format.value.trim()) format.value = p.format;
+  autoPreview();
+}
+
+category.addEventListener("change", initPurposes);
+purpose.addEventListener("change", initPurposes);
+preset.addEventListener("change", () => applyPreset(false));
+
+if (smart) smart.addEventListener("change", () => { setAdvancedFromSmart(); autoPreview(); });
+[mdOpt, stepOpt, askOpt].forEach(ch => ch && ch.addEventListener("change", () => { syncSmartFromAdvanced(); autoPreview(); }));
+
+function section(title, body, useMd) {
+  const b = (body || "").trim();
+  if (!b) return "";
+  return useMd ? `# ${title}\n${b}\n\n` : `${title}\n${b}\n\n`;
+}
+
+function buildVarsSection(useMd) {
+  const vars = loadVars();
+  if (!vars.length) return "";
+  const lines = vars.map(v => {
+    const t = tokenOf(v.name);
+    const h = (v.hint || "").trim();
+    return h ? `- ${t}: ${h}` : `- ${t}: （ここに何を入れるか書いてください）`;
+  }).join("\n");
+
+  let out = "";
+  out += useMd ? `# 穴埋め（あとで入れる項目）\n${lines}\n\n` : `穴埋め（あとで入れる項目）\n${lines}\n\n`;
+  out += useMd
+    ? `# 穴埋めの使い方\n本文中の {{...}} は、あなたが文脈に合わせて埋めてください。\n分からない場合は、先に質問してください。\n\n`
+    : `穴埋めの使い方\n本文中の {{...}} は、あなたが文脈に合わせて埋めてください。分からない場合は、先に質問してください。\n\n`;
+  return out;
+}
+
+function buildPrompt() {
+  const base = data?.[category.value]?.purposes?.[purpose.value] || "";
+  const useMd = mdOpt?.checked ?? true;
+
+  let out = "";
+  out += section("AIの立場", role.value || "（必要なら書く）", useMd);
+  out += section("やりたいこと", goal.value || "（何をしたいか書く）", useMd);
+  out += section("状況・素材", context.value, useMd);
+  out += section("守ってほしいルール", constraints.value, useMd);
+  out += section("ほしい出力の形", format.value, useMd);
+
+  out += buildVarsSection(useMd);
+  out += useMd ? `# 用途テンプレ\n${base}\n\n` : `用途テンプレ\n${base}\n\n`;
+
+  out += section("追加のお願い", request.value.trim() || "（ここにお願いを書いてください）", useMd);
+
+  if (stepOpt?.checked ?? true) {
+    out += useMd ? `# 指示\nStep-by-stepで考えてください。\n\n` : `指示\nStep-by-stepで考えてください。\n\n`;
+  }
+  if (askOpt?.checked ?? true) {
+    out += useMd
+      ? `# 追加で質問してOK\n情報が足りない場合は、回答を作る前に私に質問してください。\n`
+      : `追加で質問してOK\n情報が足りない場合は、回答を作る前に私に質問してください。\n`;
+  }
+  return out.trim();
+}
+
+function autoPreview() {
+  if (!result) return;
+  result.value = buildPrompt();
+}
+
+[role, goal, context, constraints, format, request].forEach(x => x && x.addEventListener("input", autoPreview));
+
+function flash(btn) {
+  btn.classList.remove("flash");
+  void btn.offsetWidth;
+  btn.classList.add("flash");
+}
+
+async function doCopy() {
+  const text = buildPrompt();
+  result.value = text;
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    result.focus();
+    result.select();
+    document.execCommand("copy");
+  }
+  const st = el("copyState");
+  if (st) st.textContent = "コピーしました！→ ChatGPTに貼り付けてOK";
+  return text;
+}
+
+el("generate") && el("generate").addEventListener("click", () => autoPreview());
+el("copy") && el("copy").addEventListener("click", async (e) => { await doCopy(); flash(e.currentTarget); });
+el("copyBig") && el("copyBig").addEventListener("click", async (e) => { await doCopy(); flash(e.currentTarget); });
+
+el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
+  await doCopy();
+  window.open("https://chat.openai.com/", "_blank");
+});
+
+// 一括クリア（人気テンプレ確認後にすぐ自分用を書ける）
+el("clearAll") && el("clearAll").addEventListener("click", () => {
+  // テキスト入力を全部空に
+  role.value = "";
+  goal.value = "";
+  context.value = "";
+  constraints.value = "";
+  format.value = "";
+  request.value = "";
+
+  // 型は「そのまま（自由に書く）」へ
+  if (preset) preset.value = "none";
+
+  // 出力欄もクリア
+  if (result) result.value = "";
+  const st = el("copyState");
+  if (st) st.textContent = "← ここを押すだけ";
+  // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
+  renderVars();
+
+  // プレビュー更新
+  autoPreview();
+
+  // 先頭の入力にフォーカス
+  role.focus();
+});
+
+addVarBtn && addVarBtn.addEventListener("click", () => {
+  const name = normalizeVarName(varName.value);
+  if (!name) return alert("穴埋め名を入力してください（例：タイトル）");
+  const vars = loadVars();
+  if (vars.some(v => normalizeVarName(v.name) === name)) return alert("同じ穴埋め名が既にあります。");
+  vars.push({ name, hint: (varHint.value||"").trim() });
+  saveVars(vars);
+  varName.value = "";
+  varHint.value = "";
+  renderVars();
+  autoPreview();
+});
+
+insertVarBtn && insertVarBtn.addEventListener("click", () => {
+  const name = normalizeVarName(varName.value);
+  if (!name) return alert("挿入したい穴埋め名を入力するか、一覧のチップをクリックしてください。");
+  insertTextAtCursor(tokenOf(name));
+  autoPreview();
+});
+
+clearVarsBtn && clearVarsBtn.addEventListener("click", () => {
+  if (!confirm("穴埋め一覧をクリアしますか？")) return;
+  saveVars([]);
+  renderVars();
+  autoPreview();
+});
+
+[role, goal, context, constraints, format, request, varName, varHint].forEach(attachFocusTracker);
+
+function setSelection(cat, pur) {
+  if (!data || !data[cat]) return;
+  category.value = cat;
+  initPurposes();
+  const purposes = data[cat].purposes;
+  if (purposes && purposes[pur]) purpose.value = pur;
+  autoPreview();
+}
+
+function setVarsFromExample(vars) {
+  if (!Array.isArray(vars)) return;
+  const current = loadVars();
+  const set = new Set(current.map(v => normalizeVarName(v.name)));
+  vars.forEach(v => {
+    const n = normalizeVarName(v.name);
+    if (!n || set.has(n)) return;
+    current.push({ name: n, hint: (v.hint||"").trim() });
+    set.add(n);
+  });
+  saveVars(current);
+  renderVars();
+}
+
+function renderExampleButtons() {
+  const grid = el("exampleGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  filteredExamples().forEach(ex => {
+    const card = document.createElement("div");
+    card.className = "exCard";
+    card.innerHTML = `<h3>${ex.title}</h3><p>${ex.desc}</p>`;
+    card.addEventListener("click", () => {
+      setSelection(ex.category, ex.purpose);
+      preset.value = ex.preset || "none";
+      applyPreset(true);
+
+      if (ex.fill) {
+        role.value = ex.fill.aiPosition || "";
+        goal.value = ex.fill.goal || "";
+        context.value = ex.fill.context || "";
+        constraints.value = ex.fill.rules || "";
+        format.value = ex.fill.output || "";
+      }
+      // 穴埋め（上級者向け）は自動追加しない
+
+      if (smart) smart.checked = true;
+      setAdvancedFromSmart();
+      autoPreview();
+
+      role.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    grid.appendChild(card);
+  });
+}
+
+renderVars();
+setAdvancedFromSmart();
+loadTemplates();

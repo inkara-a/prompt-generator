@@ -1,0 +1,129 @@
+body{
+  background:#f4f6f8;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color:#111827;
+}
+.container{
+  max-width:1100px;
+  margin:24px auto;
+  padding:0 16px;
+}
+.header{
+  background:#fff;
+  padding:18px 20px;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.header h1{margin:0;}
+.sub{margin:6px 0 0; color:#6b7280; font-size:13px}
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:16px;
+  margin-top:16px;
+}
+.card{
+  background:#fff;
+  padding:18px 18px 16px;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.card.wide{grid-column:1 / -1;}
+h2{margin:0 0 12px; font-size:18px}
+h3{margin:16px 0 8px; font-size:14px; color:#374151}
+label{display:block;margin-top:12px;font-weight:600;font-size:13px;color:#111827}
+select, textarea, input, button{
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  box-sizing:border-box;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+}
+textarea{min-height:92px; resize:vertical;}
+#result{min-height:320px;}
+.buttons{display:flex; gap:10px; margin-top:12px;}
+.buttons button{flex:1; border:none; cursor:pointer; font-weight:800;}
+#generate{background:#2563eb;color:#fff;}
+.secondary{background:#e5e7eb;color:#111827;}
+.opts{display:flex; flex-direction:column; gap:8px; margin-top:8px;}
+.opt{font-weight:600; color:#374151; display:flex; gap:8px; align-items:center;}
+.opt input{width:auto; margin:0;}
+.hint{color:#6b7280;font-size:13px;margin-top:10px}
+.footer{margin:18px 0 8px; color:#6b7280; text-align:center}
+@media (max-width: 900px){
+  .grid{grid-template-columns: 1fr;}
+}
+
+
+.desc{color:#6b7280;font-size:13px;margin:6px 0 12px; line-height:1.5}
+.mono{font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:#f3f4f6; padding:2px 6px; border-radius:6px; color:#111827}
+.varRow{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+.varList{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+.chip{
+  display:inline-flex; align-items:center; gap:8px;
+  background:#f3f4f6; border:1px solid #e5e7eb;
+  padding:6px 10px; border-radius:999px; cursor:pointer;
+  font-weight:700; font-size:13px;
+}
+.chip small{font-weight:600; color:#6b7280}
+.chip .x{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:18px; height:18px; border-radius:999px;
+  background:#e5e7eb; color:#111827; font-weight:900;
+}
+#insertVar{background:#111827;color:#fff;}
+@media (max-width: 900px){
+  .varRow{grid-template-columns: 1fr;}
+}
+
+
+/* v5 additions */
+.examples{margin-top:14px}
+.badge{display:inline-block;background:#eef2ff;color:#3730a3;font-weight:900;padding:6px 10px;border-radius:999px;font-size:12px}
+.exTitle{margin:10px 0 4px;font-size:18px}
+.exSub{margin:0;color:#6b7280;font-size:13px}
+.exGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.exCard{
+  background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px 12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06); cursor:pointer;
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+.exCard:hover{transform:translateY(-1px); box-shadow:0 10px 28px rgba(0,0,0,.08)}
+.exCard h3{margin:0 0 6px;font-size:14px}
+.exCard p{margin:0;color:#6b7280;font-size:12px;line-height:1.4}
+.step{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.stepNo{background:#111827;color:#fff;font-weight:900;border-radius:999px;padding:6px 10px;font-size:12px}
+.stepText{font-weight:900}
+.smartRow{margin-top:14px;padding:12px;border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
+.bigOpt{font-size:15px}
+.copyBar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.copyMain{background:#111827;color:#fff;border:none;padding:12px 12px;border-radius:12px;font-weight:900;cursor:pointer}
+.copyState{color:#6b7280;font-weight:800}
+.copyBig{background:#16a34a;color:#fff;border:none;border-radius:12px;font-weight:900;cursor:pointer}
+.flash{animation: flash .6s ease;}
+@keyframes flash{0%{transform:scale(1);}35%{transform:scale(1.02);}100%{transform:scale(1);}}
+@media (max-width: 900px){.exGrid{grid-template-columns:1fr}}
+
+
+/* v6 additions */
+.buttons{flex-wrap:wrap}
+
+
+/* v7 - example tabs */
+.exTabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.exTab{
+  border:1px solid #e5e7eb;
+  background:#fff;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:900;
+  font-size:12px;
+  cursor:pointer;
+}
+.exTab.active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+}

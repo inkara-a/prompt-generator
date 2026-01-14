@@ -30,72 +30,7 @@ const varListEl = el("varList");
 let lastFocusedField = null;
 const VARS_KEY = "pg_vars_v1";
 
-const examples = [{"title": "読書感想文の構成案を作る", "desc": "本の内容を整理して、書きやすい構成に", "category": "learn", "purpose": "初心者向け解説", "preset": "doc", "fill": {"aiPosition": "やさしい国語の先生", "goal": "読書感想文の構成案を作る", "context": "本のタイトル：{{本のタイトル}}
-対象学年：{{学年}}
-感想で伝えたいこと：{{伝えたいこと}}", "rules": "中学生でも分かる言葉
-段落ごとに何を書くか明確に
-800〜1200字を想定", "output": "1.構成（導入/あらすじ/印象/学び/まとめ）
-2.各段落に書く内容
-3.書き出し例（2案）"}, "vars": [{"name": "本のタイトル", "hint": "例：ハリーポッター"}, {"name": "学年", "hint": "例：中学2年"}, {"name": "伝えたいこと", "hint": "例：友情の大切さ"}]}, {"title": "今晩の献立を考えてもらう", "desc": "冷蔵庫の食材から提案", "category": "idea", "purpose": "アイデア壁打ち", "preset": "none", "fill": {"aiPosition": "やさしい料理の相談相手", "goal": "今晩の献立を決める", "context": "人数：{{人数}}
-好み：{{好み}}
-使いたい食材：{{食材}}
-調理時間：{{時間}}", "rules": "初心者でも作れる
-手順は番号付き
-買い足しが必要なら最小限", "output": "1.献立案を3つ
-2.材料リスト
-3.作り方（番号付き）
-4.時短のコツ"}, "vars": [{"name": "人数", "hint": "例：2人"}, {"name": "好み", "hint": "例：和食、辛くない"}, {"name": "食材", "hint": "例：鶏むね肉、キャベツ、卵"}, {"name": "時間", "hint": "例：30分"}]}, {"title": "難しい文章を中学生向けに要約する", "desc": "やさしい言葉で短く", "category": "learn", "purpose": "用語の噛み砕き説明", "preset": "none", "fill": {"aiPosition": "やさしい先生（中学生に説明）", "goal": "難しい文章を中学生向けに要約する", "context": "要約したい文章：
-{{文章を貼る}}", "rules": "300〜500文字
-むずかしい言葉は言い換える
-重要ポイントを3つに絞る", "output": "1.要約（本文）
-2.大事なポイント3つ
-3.むずかしい言葉→言い換え"}, "vars": [{"name": "文章を貼る", "hint": "ここに要約したい文章を貼り付けてください"}]}, {"title": "家計簿アプリの画面UIを作る", "desc": "コピペで動くHTML/CSSつき", "category": "dev", "purpose": "画面UI作成", "preset": "code", "fill": {"aiPosition": "実務経験豊富なフロントエンドエンジニア", "goal": "家計簿アプリの入力・一覧・集計ができる画面UIを作る", "context": "対象：初心者
-環境：PCブラウザ
-欲しい機能：収入/支出入力、カテゴリ、月次集計", "rules": "HTML/CSSは省略しない
-コピペで動く
-分かりやすく説明", "output": "1.画面の役割
-2.UI構成説明
-3.HTML全文
-4.CSS全文
-5.カスタマイズポイント"}, "vars": []}, {"title": "丁寧な依頼メールを作る", "desc": "そのまま送れる敬語", "category": "work", "purpose": "メール・報告文作成", "preset": "email", "fill": {"aiPosition": "ビジネス文章のプロ（丁寧で簡潔）", "goal": "依頼メールを作る", "context": "相手：{{相手}}
-依頼内容：{{依頼内容}}
-期限：{{期限}}
-背景：{{背景}}", "rules": "結論から
-丁寧だが長くしない
-相手の次の行動を明確に", "output": "件名案 + 本文（そのまま送れる敬語） + 要点（箇条書き）"}, "vars": [{"name": "相手", "hint": "例：取引先の田中さん"}, {"name": "依頼内容", "hint": "例：見積もりの送付"}, {"name": "期限", "hint": "例：1/20まで"}, {"name": "背景", "hint": "例：社内稟議のため"}]}, {"title": "旅行プランを作る", "desc": "日程・予算・観光をまとめる", "category": "idea", "purpose": "構成案作成", "preset": "plan", "fill": {"aiPosition": "旅行プランナー", "goal": "旅行プランを作る", "context": "行き先：{{行き先}}
-日程：{{日程}}
-予算：{{予算}}
-やりたいこと：{{やりたいこと}}", "rules": "移動がきつすぎない
-食事/休憩も入れる
-時間帯ごとに提案", "output": "1.プランA/B
-2.時間割
-3.予算目安
-4.持ち物"}, "vars": [{"name": "行き先", "hint": "例：大阪"}, {"name": "日程", "hint": "例：1泊2日"}, {"name": "予算", "hint": "例：3万円"}, {"name": "やりたいこと", "hint": "例：食べ歩き"}]}, {"title": "議事録を要点だけにまとめる", "desc": "長文を短く整理", "category": "work", "purpose": "メール・報告文作成", "preset": "doc", "fill": {"aiPosition": "要点整理が得意な秘書", "goal": "議事録を要点だけにまとめる", "context": "議事録：
-{{議事録を貼る}}", "rules": "結論→決定事項→TODO
-重要な数字や期限は残す", "output": "1.要点
-2.決定事項
-3.TODO（担当/期限）
-4.懸念点"}, "vars": [{"name": "議事録を貼る", "hint": "ここに文章を貼り付けてください"}]}, {"title": "ブログ記事の構成案を作る", "desc": "見出しと流れを決める", "category": "write", "purpose": "サービス説明文", "preset": "doc", "fill": {"aiPosition": "プロの編集者", "goal": "ブログ記事の構成案を作る", "context": "テーマ：{{テーマ}}
-ターゲット：{{ターゲット}}
-伝えたい結論：{{結論}}", "rules": "初心者でも分かる
-見出しは7〜9個
-結論から入る", "output": "1.タイトル案3つ
-2.H2/H3構成
-3.各見出しで書く内容"}, "vars": [{"name": "テーマ", "hint": "例：副業の始め方"}, {"name": "ターゲット", "hint": "例：会社員"}, {"name": "結論", "hint": "例：小さく始める"}]}, {"title": "エラー原因を切り分ける", "desc": "原因候補→確認手順", "category": "trouble", "purpose": "エラー原因の整理", "preset": "plan", "fill": {"aiPosition": "原因切り分けが得意なサポート担当", "goal": "エラー原因を切り分ける", "context": "起きている問題：{{問題}}
-環境：{{環境}}
-エラーメッセージ：{{エラー}}", "rules": "まず確認質問
-可能性を優先順位で
-手順は番号", "output": "1.状況整理
-2.確認質問
-3.原因候補
-4.確認手順
-5.修正案"}, "vars": [{"name": "問題", "hint": "例：ログインできない"}, {"name": "環境", "hint": "例：Windows/Chrome"}, {"name": "エラー", "hint": "例：Invalid token"}]}, {"title": "API仕様のたたき台を作る", "desc": "エンドポイント一覧", "category": "dev", "purpose": "API設計", "preset": "plan", "fill": {"aiPosition": "API設計が得意なエンジニア", "goal": "家計簿アプリのAPI仕様を作る", "context": "機能：収入/支出、カテゴリ、月次集計
-認証：{{認証}}", "rules": "RESTで
-リクエスト/レスポンス例
-エラーも書く", "output": "1.前提
-2.エンドポイント一覧
-3.リクエスト/レスポンス例
-4.エラー設計"}, "vars": [{"name": "認証", "hint": "例：JWT"}]}];
+let examples = [];
 
 
 let activeExampleTab = "all";
@@ -261,6 +196,18 @@ async function loadTemplates() {
       res = await fetch("./generator/data/templates.json", { cache: "no-store" });
     }
     data = await res.json();
+
+    // 人気テンプレ（examples.json）
+    try {
+      let exRes = await fetch("./data/examples.json", { cache: "no-store" });
+      if (!exRes.ok) {
+        exRes = await fetch("./generator/data/examples.json", { cache: "no-store" });
+      }
+      examples = await exRes.json();
+    } catch (e) {
+      console.warn("examples.json の読み込みに失敗しました", e);
+      examples = [];
+    }
   } catch (e) {
     alert("テンプレートJSONの読み込みに失敗しました。\nNetlifyなどのサーバー上で開いてください。");
     console.error(e);

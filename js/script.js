@@ -33,12 +33,11 @@ const VARS_KEY = "pg_vars_v1";
 let examples = [];
 
 
-let activeExampleTab = "all";
+let activeExampleTab = "dev";
 
 function getTabLabels() {
   // ユーザー向けの大カテゴリ（初心者が迷わない順）
   return [
-    { key: "all", label: "全部" },
     { key: "dev", label: "アプリ・システムを作りたい" },
     { key: "work", label: "仕事を効率化したい" },
     { key: "learn", label: "学習・理解を深めたい" },
@@ -70,8 +69,7 @@ function renderExampleTabs() {
 }
 
 function filteredExamples() {
-  if (activeExampleTab === "all") return examples;
-  const filtered = examples.filter(ex => ex.category === activeExampleTab);
+    const filtered = examples.filter(ex => ex.category === activeExampleTab);
   return filtered.length ? filtered : examples;
 }
 
@@ -359,7 +357,6 @@ async function doCopy() {
   return text;
 }
 
-el("generate") && el("generate").addEventListener("click", () => autoPreview());
 el("copy") && el("copy").addEventListener("click", async (e) => { await doCopy(); flash(e.currentTarget); });
 el("copyBig") && el("copyBig").addEventListener("click", async (e) => { await doCopy(); flash(e.currentTarget); });
 

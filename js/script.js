@@ -47,26 +47,7 @@ function getTabLabels() {
     { key: "trouble", label: "トラブル・問題を解決したい" }
   ];
 }
-];
-  if (!data) return tabs;
 
-  const map = {
-    work: "仕事",
-    learn: "学習",
-    write: "文章",
-    idea: "アイデア",
-    trouble: "トラブル",
-    dev: "開発",
-    daily: "日常"
-  };
-
-  Object.keys(data).forEach((k) => {
-    const label = (data[k] && data[k].label) || map[k] || k;
-    tabs.push({ key: k, label });
-  });
-
-  return tabs;
-}
 
 function renderExampleTabs() {
   const tabsEl = el("exampleTabs");

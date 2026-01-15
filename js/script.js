@@ -599,7 +599,8 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     // Step2: AIの立場 or やりたいこと が入っていれば
     const role = document.getElementById("role");
     const goal = document.getElementById("goal");
-    const step2ok = isFilled(role && role.value) || isFilled(goal && goal.value);
+    const request = document.getElementById("request");
+    const step2ok = isFilled(role && role.value) || isFilled(goal && goal.value) || isFilled(request && request.value);
 
     // Step3: 出力の書き方 or 出してほしい内容 のどちらかが入っていれば
     const format = document.getElementById("format");
@@ -616,6 +617,8 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
       b.classList.toggle("on", !!map[n]);
     });
   }
+  // expose for other auto-fill actions
+  window.__updateStepChecks = updateStepChecks;
 
   function bind(){
     ["category","purpose","role","goal","context","constraints","format","outputContent","request"].forEach(id=>{
@@ -692,4 +695,19 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
   } else {
     bind();
   }
+})();
+
+
+/* v8.3.2 テンプレ適用後にStepチェックも更新（自動入力で緑にならない問題対策） */
+(function stepChecksAfterTemplatePick(){
+  function trigger(){
+    try{window.__updateStepChecks && window.__updateStepChecks();}catch(e){}
+  }
+  document.addEventListener("click", (e) => {
+    const btn = e.target && e.target.closest ? e.target.closest(".exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
+    if (!btn) return;
+    setTimeout(trigger, 0);
+    setTimeout(trigger, 120);
+    setTimeout(trigger, 400);
+  });
 })();

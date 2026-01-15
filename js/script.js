@@ -467,7 +467,18 @@ function renderExampleButtons() {
         context.value = ex.fill.context || "";
         constraints.value = ex.fill.rules || "";
         if (outputContent) outputContent.value = (ex.fill.output || "");
+      
+    // 人気テンプレを最初に選んだときは「出力の書き方」をデフォルトで箇条書きにする（不自然さ防止）
+    try {
+      const wrap = document.getElementById("formatButtons");
+      const formatEl = document.getElementById("format");
+      const hasSelected = wrap && (wrap.dataset.selected || "");
+      if (wrap && formatEl && !hasSelected && !formatEl.value.trim()) {
+        const btn = wrap.querySelector('.formatBtn[data-key="bullets"]');
+        if (btn) btn.click();
       }
+    } catch(e) {}
+}
       // 穴埋め（上級者向け）は自動追加しない
 
       if (smart) smart.checked = true;
@@ -539,6 +550,7 @@ function initFormatButtons() {
       wrap.querySelectorAll(".formatBtn").forEach(btn => {
         btn.classList.toggle("active", (btn.getAttribute("data-key")||"") === (key||""));
       });
+      wrap.dataset.selected = key || "";
     }
 
     wrap.addEventListener("click", (e) => {
@@ -553,7 +565,13 @@ function initFormatButtons() {
     });
 
     // 手入力したら選択状態を解除
-    formatEl.addEventListener("input", () => setActive(""));
+    formatEl.addEventListener("input", () => {
+      const sel = wrap.dataset.selected || "";
+      // ユーザーが書き換えたら選択解除（ただしプリセット文のままなら維持）
+      if (!sel) return;
+      if ((presets[sel] || "") === (formatEl.value || "")) return;
+      setActive("");
+    });
   }
 
   if (document.readyState === "loading") {

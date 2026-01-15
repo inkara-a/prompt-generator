@@ -173,20 +173,22 @@ textarea{min-height:92px; resize:vertical;}
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:18px;
-  height:18px;
+  width:24px;
+  height:24px;
   border-radius:999px;
-  border:1px solid #e5e7eb;
+  border:2px solid #d1d5db;
   background:#fff;
-  color:#10b981;
+  color:#9ca3af;
   font-weight:900;
-  font-size:12px;
+  font-size:14px;
   vertical-align:middle;
-  opacity:0;
-  transform:scale(0.9);
-  transition:opacity .15s ease, transform .15s ease;
-}
-.stepCheck.on{
   opacity:1;
   transform:scale(1);
+  margin-left:10px;
+}
+.stepCheck.on{
+  border-color:#10b981;
+  background:#10b981;
+  color:#ffffff;
+  box-shadow:0 6px 18px rgba(16,185,129,.25);
 }

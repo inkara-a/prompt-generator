@@ -328,3 +328,25 @@ textarea{min-height:92px; resize:vertical;}
   font-size: 13px !important;
   line-height: 1 !important;
 }
+
+/* =========================
+   v5.1 さらに強制：タブが縦並びになる/横に詰まらない問題を潰す
+   （ボタンが width:100% や flex:1 を持っていても負けないように）
+   ========================= */
+#exampleTabs, .exTabs{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:8px !important;
+}
+
+#exampleTabs .exTab{
+  width:auto !important;
+  max-width:none !important;
+  flex:0 0 auto !important;   /* ← ここが肝：均等伸長を無効化 */
+}
+
+#exampleTabs .exTab .tabLabel{
+  display:inline-block !important;
+}

@@ -76,7 +76,15 @@
         <textarea id="constraints" placeholder="例：300文字以内 / 箇条書き / 専門用語は避ける / コピペで動くコード"></textarea>
 
         <label>ほしい出力の形 <span class="muted">（出てくる見た目）</span></label>
-        <textarea id="format" placeholder="例：1.結論 2.理由 3.具体例 / 1.HTML 2.CSS 3.カスタマイズ"></textarea>
+        
+        <div class="formatButtons" id="formatButtons" role="group" aria-label="出力形式を選ぶ">
+          <button type="button" class="formatBtn" data-key="bullets">📋 箇条書き</button>
+          <button type="button" class="formatBtn" data-key="mail">📝 メール形式</button>
+          <button type="button" class="formatBtn" data-key="table">📊 表形式</button>
+          <button type="button" class="formatBtn" data-key="steps">🧠 ステップ</button>
+        </div>
+        <div class="smallHint">※クリックすると「出力の希望」に自動入力されます（あとで自由に編集OK）</div>
+<textarea id="format" placeholder="例：1.結論 2.理由 3.具体例 / 1.HTML 2.CSS 3.カスタマイズ"></textarea>
 
         <label>追加のお願い（自由）</label>
         <textarea id="request" placeholder="例：家計簿アプリ。収入/支出入力、カテゴリ、月次集計がある画面にしたい。"></textarea>
@@ -94,6 +102,7 @@
             <a class="aiLink" href="https://claude.ai/" target="_blank" rel="noopener">🧩 Claude</a>
           </div>
         </div>
+
         <p class="hint">※ ふだんは「コピーして貼り付ける」だけでOKです。</p>
       </section>
 

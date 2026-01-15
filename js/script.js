@@ -1,15 +1,4 @@
 
-function syncFormatButtons() {
-  const wrap = el("formatButtons");
-  if (!wrap) return;
-  const current = (format && format.value) ? format.value : "";
-  wrap.querySelectorAll(".formatBtn").forEach(btn => {
-    const v = btn.getAttribute("data-format") || "";
-    btn.classList.toggle("active", v === current);
-  });
-}
-
-
 let data = null;
 const el = (id) => document.getElementById(id);
 
@@ -74,7 +63,8 @@ function renderExampleTabs() {
       renderExampleTabs();
       renderExampleTabs();
   renderExampleButtons();
-    });
+      initFormatButtons();
+});
     tabsEl.appendChild(b);
   });
 }
@@ -492,22 +482,35 @@ setAdvancedFromSmart();
 loadTemplates();
 
 
-// 出力形式：アイコンボタンで選べる（初心者向け）
-const fb = el("formatButtons");
-if (fb && format) {
-  fb.querySelectorAll(".formatBtn").forEach(btn => {
+// v7.7.1 出力形式：アイコンボタンで「出力の希望」を自動入力（初心者向け）
+function initFormatButtons() {
+  const wrap = el("formatButtons");
+  if (!wrap) return;
+
+  const presets = {
+    bullets: "出力は箇条書きで、見出し→箇条書きで読みやすくしてください。",
+    mail: "出力はメール形式で、件名→本文の順に、そのまま送れる丁寧な敬語で作ってください。",
+    table: "出力は表形式（Markdownの表）で、比較・整理しやすくしてください。",
+    steps: "出力はステップ形式で、1→2→3…の番号付き手順にしてください。"
+  };
+
+  const setActive = (key) => {
+    wrap.querySelectorAll(".formatBtn").forEach(b => b.classList.toggle("active", (b.dataset.key || "") === (key || "")));
+    wrap.dataset.selected = key || "";
+  };
+
+  wrap.querySelectorAll(".formatBtn").forEach(btn => {
     btn.addEventListener("click", () => {
-      const v = btn.getAttribute("data-format") || "";
-      format.value = v;
-      autoPreview();
-      syncFormatButtons();
+      const key = btn.dataset.key || "";
+      if (format) {
+        format.value = presets[key] || "";
+        autoPreview();
+      }
+      setActive(key);
     });
   });
-  // select側を操作した場合も同期
-  format.addEventListener("change", () => {
-    autoPreview();
-    syncFormatButtons();
-  });
-  // 初期同期
-  syncFormatButtons();
+
+  if (format) {
+    format.addEventListener("input", () => setActive(""));
+  }
 }

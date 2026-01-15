@@ -634,3 +634,62 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     bind(); updateStepChecks();
   }
 })();
+
+
+/* v8.3.1 人気テンプレ選択時：出力形式を必ず「箇条書き」選択にする（未選択の不自然さ防止） */
+(function defaultBulletsOnExamplePick(){
+  // format欄をユーザーが手で編集したかどうか（上書き防止用）
+  let formatTouched = false;
+
+  function markTouched(){
+    formatTouched = true;
+  }
+
+  function setBulletsSelected({forceText=false} = {}){
+    const wrap = document.getElementById("formatButtons");
+    const formatEl = document.getElementById("format");
+    if (!wrap || !formatEl) return;
+
+    // activeだけは必ず付ける（見た目の未選択を解消）
+    wrap.querySelectorAll(".formatBtn").forEach(btn => {
+      btn.classList.toggle("active", (btn.getAttribute("data-key")||"") === "bullets");
+    });
+    wrap.dataset.selected = "bullets";
+
+    // テキストは「空のときだけ」入れる（ユーザー入力は壊さない）
+    if (!formatTouched && (forceText || !formatEl.value.trim())){
+      const bulletsText = "出力は箇条書きで、見出し→箇条書きで読みやすくしてください。";
+      formatEl.value = bulletsText;
+      formatEl.dispatchEvent(new Event("input", { bubbles: true }));
+      formatEl.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  }
+
+  function bind(){
+    const formatEl = document.getElementById("format");
+    if (formatEl){
+      formatEl.addEventListener("input", markTouched);
+      formatEl.addEventListener("focus", markTouched);
+    }
+
+    // 例ボタンは構造が変わりやすいので、document全体でクリック委譲
+    document.addEventListener("click", (e) => {
+      const t = e.target;
+      const exampleBtn = t && t.closest ? t.closest(".exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
+      if (!exampleBtn) return;
+
+      // 既存処理（テンプレ適用）が先に走ることがあるので少し遅らせて反映
+      setTimeout(() => setBulletsSelected({forceText:false}), 0);
+      setTimeout(() => setBulletsSelected({forceText:false}), 80);
+    });
+
+    // 初回ロード直後にも「未選択」感を消す（任意）
+    setTimeout(() => setBulletsSelected({forceText:false}), 400);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind);
+  } else {
+    bind();
+  }
+})();

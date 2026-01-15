@@ -11,6 +11,7 @@ const goal = el("goal");
 const context = el("context");
 const constraints = el("constraints");
 const format = el("format");
+const outputContent = el("outputContent");
 const request = el("request");
 
 const result = el("result");
@@ -259,6 +260,7 @@ function applyPreset(clearRequest=false) {
     context.value = "";
     constraints.value = "";
     format.value = "";
+  if (outputContent) outputContent.value = "";
     if (clearRequest) request.value = "";
     autoPreview();
     return;
@@ -374,6 +376,7 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   context.value = "";
   constraints.value = "";
   format.value = "";
+  if (outputContent) outputContent.value = "";
   request.value = "";
 
   // 型は「そのまま（自由に書く）」へ
@@ -560,3 +563,5 @@ function initFormatButtons() {
   }
 })();
 
+
+if (outputContent) outputContent.addEventListener("input", () => { try{autoPreview();}catch(e){} });

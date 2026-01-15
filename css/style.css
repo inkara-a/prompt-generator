@@ -157,3 +157,6 @@ textarea{min-height:92px; resize:vertical;}
   padding:8px 12px;font-weight:900;font-size:13px;text-decoration:none;color:#111827;
 }
 .aiLink:hover{transform:translateY(-1px)}
+
+/* v8 - split output fields */
+#outputContent{min-height:120px}

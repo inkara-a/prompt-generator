@@ -192,3 +192,10 @@ textarea{min-height:92px; resize:vertical;}
   color:#ffffff;
   box-shadow:0 6px 18px rgba(16,185,129,.25);
 }
+
+/* v9 - buttons moved under result */
+.buttonsUnderResult{display:flex;gap:10px;margin:12px 0 0}
+.buttonsUnderResult .secondary{flex:1}
+@media (max-width: 900px){
+  .buttonsUnderResult{flex-direction:column}
+}

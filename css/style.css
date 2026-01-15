@@ -210,3 +210,51 @@ textarea{min-height:92px; resize:vertical;}
 .exTab .tabIcon{display:inline-flex;align-items:center;justify-content:center}
 .exTab .tabIcon svg{width:16px;height:16px}
 .exTab .tabLabel{white-space:nowrap}
+
+
+
+/* === UI polish: tabs compact + headings color to brand teal === */
+:root{
+  --brand:#00a2a1;
+  --brand-weak: rgba(0,162,161,.12);
+  --brand-line: rgba(0,162,161,.25);
+}
+
+/* Badge (人気テンプレなど) を見出し.pngの雰囲気に */
+.badge{
+  background: var(--brand-weak) !important;
+  color: var(--brand) !important;
+  border: 1px solid var(--brand-line) !important;
+  font-weight: 900 !important;
+}
+
+/* STEP見出し（黒→ブランド色） */
+.stepNo{
+  background: var(--brand-weak) !important;
+  color: var(--brand) !important;
+  border: 1px solid var(--brand-line) !important;
+  font-weight: 900 !important;
+}
+
+/* 人気テンプレのタブをモックtabu.pngみたいにコンパクトに */
+.exTabs{
+  gap: 10px !important;
+  margin-top: 12px !important;
+}
+.exTab{
+  padding: 6px 10px !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  border-radius: 999px !important;
+  line-height: 1 !important;
+}
+.exTab .tabIcon svg{
+  width: 16px !important;
+  height: 16px !important;
+}
+.exTab .tabLabel{
+  letter-spacing: .02em;
+}
+
+/* タブが長く見えないように余白を抑える */
+.exTab{gap:8px !important;}

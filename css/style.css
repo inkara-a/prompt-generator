@@ -350,3 +350,32 @@ textarea{min-height:92px; resize:vertical;}
 #exampleTabs .exTab .tabLabel{
   display:inline-block !important;
 }
+
+/* =========================
+   v5.2 選択中の見えづらさ改善（黄色ハイライト）
+   - 人気テンプレタブ(active)
+   - 出力の書き方ボタン(isActive/active)
+   ========================= */
+#exampleTabs .exTab.active{
+  border-color:#f5d126 !important;
+  background:#fdf3c7 !important;
+  color:#111 !important;
+  box-shadow:none !important;
+}
+
+#exampleTabs .exTab.active .tabIcon svg{
+  color:#111 !important;
+}
+
+#formatButtons .formatBtn.isActive,
+#formatButtons .formatBtn.active{
+  border-color:#f5d126 !important;
+  background:#fdf3c7 !important;
+  color:#111 !important;
+  box-shadow:none !important;
+}
+
+#formatButtons .formatBtn.isActive svg,
+#formatButtons .formatBtn.active svg{
+  color:#111 !important;
+}

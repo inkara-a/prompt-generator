@@ -711,3 +711,72 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     setTimeout(trigger, 400);
   });
 })();
+
+
+/* v8.3.3 Step2の✓が緑にならない問題を確実に解消（テンプレ自動入力を考慮）
+   - Step2は「AIの立場/やりたいこと/状況・素材/守ってほしいルール/追加のお願い」のどれかが埋まればOK
+   - 人気テンプレクリック後に入力イベント＋再判定を強制
+*/
+(function stepCheckHardFix_v833(){
+  function $(id){ return document.getElementById(id); }
+  function filled(v){ return (v || "").toString().trim().length > 0; }
+
+  function compute(){
+    const cat = $("category"), purpose = $("purpose");
+    const role = $("role"), goal = $("goal"), context = $("context"), constraints = $("constraints"), request = $("request");
+    const format = $("format"), outputContent = $("outputContent");
+    const result = $("result");
+
+    const step1ok = !!(cat && cat.value && cat.value !== "none") && !!(purpose && purpose.value && purpose.value !== "none");
+    const step2ok = filled(role && role.value) || filled(goal && goal.value) || filled(context && context.value) || filled(constraints && constraints.value) || filled(request && request.value);
+    const step3ok = filled(format && format.value) || filled(outputContent && outputContent.value);
+    const step4ok = filled(result && result.value);
+
+    return {1:step1ok,2:step2ok,3:step3ok,4:step4ok};
+  }
+
+  function apply(){
+    const map = compute();
+    document.querySelectorAll(".stepCheck").forEach(el => {
+      const n = Number(el.getAttribute("data-step")||"0");
+      el.classList.toggle("on", !!map[n]);
+    });
+  }
+
+  function fireInput(el){
+    if (!el) return;
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function afterTemplatePick(){
+    // 自動入力はイベントが出ないことがあるので、主要フィールドに入力イベントを強制
+    ["role","goal","context","constraints","request","format","outputContent"].forEach(id => fireInput($(id)));
+    // 判定も複数回（反映タイミング差を吸収）
+    setTimeout(apply, 0);
+    setTimeout(apply, 120);
+    setTimeout(apply, 400);
+  }
+
+  function bind(){
+    ["category","purpose","role","goal","context","constraints","request","format","outputContent","result"].forEach(id => {
+      const el = $(id);
+      if (!el) return;
+      el.addEventListener("input", apply);
+      el.addEventListener("change", apply);
+    });
+
+    // 人気テンプレ/例ボタン類のクリックを拾う
+    document.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest(".exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
+      if (!btn) return;
+      afterTemplatePick();
+    });
+
+    // 初回
+    setTimeout(apply, 200);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind);
+  else bind();
+})();

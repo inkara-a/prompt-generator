@@ -273,3 +273,47 @@ textarea{min-height:92px; resize:vertical;}
 @media (max-width: 640px){
   .exGrid{grid-template-columns:1fr}
 }
+
+/* =========================
+   人気テンプレ：タブをモックみたいに短く（強制上書き）
+   ========================= */
+#exampleTabs{
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  margin-top: 10px !important;
+}
+
+#exampleTabs .exTab{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+
+  font-size: 13px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+
+  min-height: 32px !important;
+  border: 1px solid #e5e7eb !important;
+  background: #fff !important;
+}
+
+#exampleTabs .exTab .tabIcon{
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#exampleTabs .exTab .tabIcon svg{
+  width: 14px !important;
+  height: 14px !important;
+}
+
+#exampleTabs .exTab.active{
+  border-color: rgba(0,162,161,.55) !important;
+  box-shadow: 0 0 0 4px rgba(0,162,161,.12) !important;
+}

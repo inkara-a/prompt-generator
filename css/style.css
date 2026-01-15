@@ -203,3 +203,10 @@ textarea{min-height:92px; resize:vertical;}
 
 /* v9 UI tweaks */
 .topBadge{display:inline-flex;align-items:center;gap:.5rem;padding:6px 12px;border-radius:999px;background:rgba(0,162,161,.12);color:#00a2a1;font-weight:700;font-size:12px;border:1px solid rgba(0,162,161,.18);margin-bottom:10px}
+
+
+/* --- Popular template tabs: icon + short label --- */
+.exTab{display:inline-flex;align-items:center;gap:8px}
+.exTab .tabIcon{display:inline-flex;align-items:center;justify-content:center}
+.exTab .tabIcon svg{width:16px;height:16px}
+.exTab .tabLabel{white-space:nowrap}

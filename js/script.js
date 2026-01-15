@@ -37,16 +37,33 @@ let examples = [];
 let activeExampleTab = "dev";
 
 function getTabLabels() {
-  // ユーザー向けの大カテゴリ（初心者が迷わない順）
+  // 人気テンプレのタブ（短い単語＋アイコン）
+  // ※内部キー（dev/work/learn/write/idea/trouble）はそのまま
   return [
-    { key: "dev", label: "アプリ・システムを作りたい" },
-    { key: "work", label: "仕事を効率化したい" },
-    { key: "learn", label: "学習・理解を深めたい" },
-    { key: "write", label: "文章・コンテンツを作りたい" },
-    { key: "idea", label: "アイデア・企画を整理したい" },
-    { key: "trouble", label: "トラブル・問題を解決したい" }
+    { key: "dev", label: "開発", long: "アプリ・システムを作りたい" },
+    { key: "work", label: "仕事", long: "仕事を効率化したい" },
+    { key: "learn", label: "学習", long: "学習・理解を深めたい" },
+    { key: "write", label: "文章", long: "文章・コンテンツを作りたい" },
+    { key: "idea", label: "企画", long: "アイデア・企画を整理したい" },
+    { key: "trouble", label: "解決", long: "トラブル・問題を解決したい" }
   ];
 }
+
+function tabIconSvg(key) {
+  // Lucide風のシンプルSVG（外部ライブラリ不要）
+  const common = 'viewBox="0 0 24 24" aria-hidden="true" focusable="false"';
+  const stroke = 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+  const icons = {
+    dev: `<svg ${common}><path ${stroke} d="M10 13a5 5 0 0 1 0-6l2-2a5 5 0 0 1 7 7l-1 1"/><path ${stroke} d="M14 11a5 5 0 0 1 0 6l-2 2a5 5 0 0 1-7-7l1-1"/></svg>`,
+    work: `<svg ${common}><path ${stroke} d="M10 6V5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v1"/><rect ${stroke} x="3" y="6" width="18" height="14" rx="2"/><path ${stroke} d="M3 12h18"/></svg>`,
+    learn: `<svg ${common}><path ${stroke} d="M4 19a2 2 0 0 1 2-2h14"/><path ${stroke} d="M6 17V5a2 2 0 0 1 2-2h12v16H6z"/></svg>`,
+    write: `<svg ${common}><path ${stroke} d="M12 20h9"/><path ${stroke} d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>`,
+    idea: `<svg ${common}><path ${stroke} d="M9 18h6"/><path ${stroke} d="M10 22h4"/><path ${stroke} d="M12 2a7 7 0 0 0-4 12c.6.5 1 1.2 1 2v1h6v-1c0-.8.4-1.5 1-2a7 7 0 0 0-4-12z"/></svg>`,
+    trouble: `<svg ${common}><path ${stroke} d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5z"/><path ${stroke} d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 0 1-1.4 3.4h-1a1.7 1.7 0 0 0-1.6 1.1l-.1.2a2 2 0 0 1-3.6 0l-.1-.2A1.7 1.7 0 0 0 9.4 20.4h-1A2 2 0 0 1 7 17l.1-.1a1.7 1.7 0 0 0 .3-1.9l-.1-.2a2 2 0 0 1 1.8-2.9h.2a1.7 1.7 0 0 0 1.6-1.1l.1-.2a2 2 0 0 1 3.6 0l.1.2a1.7 1.7 0 0 0 1.6 1.1h.2a2 2 0 0 1 1.8 2.9z"/></svg>`,
+  };
+  return icons[key] || "";
+}
+
 
 
 function renderExampleTabs() {
@@ -58,14 +75,17 @@ function renderExampleTabs() {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "exTab" + (activeExampleTab === t.key ? " active" : "");
-    b.textContent = t.label;
+    b.title = t.long || t.label;
+    b.setAttribute("aria-label", (t.long || t.label) + " を表示");
+    b.innerHTML = `<span class="tabIcon">${tabIconSvg(t.key)}</span><span class="tabLabel">${t.label}</span>`;
     b.addEventListener("click", () => {
       activeExampleTab = t.key;
       renderExampleTabs();
-      renderExampleTabs();
-  renderExampleButtons();
+      renderExampleButtons();
+      // テンプレ選択で出力形式などが変わるので再初期化
       initFormatButtons();
-});
+      updateStepChecks && updateStepChecks();
+    });
     tabsEl.appendChild(b);
   });
 }

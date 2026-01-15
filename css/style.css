@@ -317,3 +317,14 @@ textarea{min-height:92px; resize:vertical;}
   border-color: rgba(0,162,161,.55) !important;
   box-shadow: 0 0 0 4px rgba(0,162,161,.12) !important;
 }
+
+/* =========================
+   人気テンプレ：タブをモックみたいに短く（さらに強制）
+   ========================= */
+#exampleTabs button,
+#exampleTabs .exTab{
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+}

@@ -1,3 +1,5 @@
+const BUILD_ID = 'v20260116a-tabs-compact';
+
 
 let data = null;
 const el = (id) => document.getElementById(id);

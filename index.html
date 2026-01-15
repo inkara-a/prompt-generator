@@ -23,7 +23,7 @@
 
     <main class="grid">
       <section class="card">
-        <div class="step"><span class="stepNo">STEP 1</span><span class="stepText">テンプレを選ぶ</span></div>
+        <div class="step"><span class="stepNo">STEP 1</span><span class="stepText">テンプレを選ぶ</span> <span class="stepCheck" data-step="1" aria-hidden="true">✓</span></div>
 
         <label>カテゴリ</label>
         <select id="category"></select>
@@ -61,7 +61,7 @@
       </section>
 
       <section class="card">
-        <div class="step"><span class="stepNo">STEP 2</span><span class="stepText">お願いしたい内容を書く</span></div>
+        <div class="step"><span class="stepNo">STEP 2</span><span class="stepText">お願いしたい内容を書く</span><span class="stepCheck" data-step="2" aria-hidden="true">✓</span> </div>
 
         <label>AIの立場 <span class="muted">（例：やさしい先生 / プロの編集者）</span></label>
         <input id="role" type="text" placeholder="例：やさしい先生 / プロの編集者 / 実務経験豊富なフロントエンドエンジニア" />
@@ -146,7 +146,7 @@
       </section>
 
       <section class="card wide">
-        <div class="step"><span class="stepNo">STEP 3</span><span class="stepText">これをコピーして使う</span></div>
+        <div class="step"><span class="stepNo">STEP 3</span><span class="stepText">これをコピーして使う</span><span class="stepCheck" data-step="3" aria-hidden="true">✓</span> </div>
         <div class="copyBar">
           <button id="copy" class="copyMain">コピーしてChatGPTに貼り付ける</button>
           <span id="copyState" class="copyState">← ここを押すだけ</span>

@@ -127,3 +127,33 @@ textarea{min-height:92px; resize:vertical;}
   color:#fff;
   border-color:#111827;
 }
+
+
+/* v7.7 - visual output format buttons */
+.formatButtons{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px}
+.formatBtn{
+  border:1px solid #e5e7eb;
+  background:#fff;
+  border-radius:12px;
+  padding:10px 12px;
+  font-weight:900;
+  font-size:13px;
+  cursor:pointer;
+}
+.formatBtn.active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+}
+.smallHint{font-size:12px;color:#6b7280;margin-bottom:8px}
+
+/* v7.7 - paste guide */
+.pasteGuide{margin-top:10px;padding:10px 12px;border:1px dashed #e5e7eb;border-radius:14px;background:#fafafa}
+.pasteGuideText{font-weight:900;margin-bottom:8px}
+.aiLinks{display:flex;flex-wrap:wrap;gap:8px}
+.aiLink{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid #e5e7eb;background:#fff;border-radius:999px;
+  padding:8px 12px;font-weight:900;font-size:13px;text-decoration:none;color:#111827;
+}
+.aiLink:hover{transform:translateY(-1px)}

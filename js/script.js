@@ -1,4 +1,15 @@
 
+function syncFormatButtons() {
+  const wrap = el("formatButtons");
+  if (!wrap) return;
+  const current = (format && format.value) ? format.value : "";
+  wrap.querySelectorAll(".formatBtn").forEach(btn => {
+    const v = btn.getAttribute("data-format") || "";
+    btn.classList.toggle("active", v === current);
+  });
+}
+
+
 let data = null;
 const el = (id) => document.getElementById(id);
 
@@ -479,3 +490,24 @@ function renderExampleButtons() {
 renderVars();
 setAdvancedFromSmart();
 loadTemplates();
+
+
+// 出力形式：アイコンボタンで選べる（初心者向け）
+const fb = el("formatButtons");
+if (fb && format) {
+  fb.querySelectorAll(".formatBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const v = btn.getAttribute("data-format") || "";
+      format.value = v;
+      autoPreview();
+      syncFormatButtons();
+    });
+  });
+  // select側を操作した場合も同期
+  format.addEventListener("change", () => {
+    autoPreview();
+    syncFormatButtons();
+  });
+  // 初期同期
+  syncFormatButtons();
+}

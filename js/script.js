@@ -466,7 +466,7 @@ function renderExampleButtons() {
         goal.value = ex.fill.goal || "";
         context.value = ex.fill.context || "";
         constraints.value = ex.fill.rules || "";
-        format.value = ex.fill.output || "";
+        if (outputContent) outputContent.value = (ex.fill.output || "");
       }
       // 穴埋め（上級者向け）は自動追加しない
 
@@ -493,8 +493,8 @@ function initFormatButtons() {
   const presets = {
     bullets: "出力は箇条書きで、見出し→箇条書きで読みやすくしてください。",
     mail: "出力はメール形式で、件名→本文の順に、そのまま送れる丁寧な敬語で作ってください。",
-    table: "出力は表形式（Markdownの表）で、比較・整理しやすくしてください。",
-    steps: "出力はステップ形式で、1→2→3…の番号付き手順にしてください。"
+    table: "出力は「比較表」で、項目ごとに見やすく整理してください。",
+    steps: "出力は手順（ステップ）形式で、1→2→3…の番号付きで書いてください。"
   };
 
   const setActive = (key) => {
@@ -531,8 +531,8 @@ function initFormatButtons() {
     const presets = {
       bullets: "出力は箇条書きで、見出し→箇条書きで読みやすくしてください。",
       mail: "出力はメール形式で、件名→本文の順に、そのまま送れる丁寧な敬語で作ってください。",
-      table: "出力は表形式（Markdownの表）で、比較・整理しやすくしてください。",
-      steps: "出力はステップ形式で、1→2→3…の番号付き手順にしてください。"
+      table: "出力は「比較表」で、項目ごとに見やすく整理してください。",
+      steps: "出力は手順（ステップ）形式で、1→2→3…の番号付きで書いてください。"
     };
 
     function setActive(key){

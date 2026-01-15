@@ -495,30 +495,68 @@ function initFormatButtons() {
   };
 
   const setActive = (key) => {
-    wrap.querySelectorAll(".formatBtn").forEach(b => {
-      b.classList.toggle("active", (b.dataset.key || "") === (key || ""));
-    });
+    wrap.querySelectorAll(".formatBtn").forEach(b => b.classList.toggle("active", (b.dataset.key || "") === (key || "")));
     wrap.dataset.selected = key || "";
   };
 
-  // クリックは委譲で拾う（ボタンが再描画されても壊れない）
-  wrap.addEventListener("click", (e) => {
-    const btn = e.target && e.target.closest ? e.target.closest(".formatBtn") : null;
-    if (!btn) return;
-    e.preventDefault();
-
-    const key = btn.dataset.key || "";
-    if (format) {
-      format.value = presets[key] || "";
-      // 既存のinput監視があれば発火させる
-      try { format.dispatchEvent(new Event("input", { bubbles: true })); } catch (_) {}
-      autoPreview();
-    }
-    setActive(key);
+  wrap.querySelectorAll(".formatBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key || "";
+      if (format) {
+        format.value = presets[key] || "";
+        autoPreview();
+      }
+      setActive(key);
+    });
   });
 
-  // 手入力したら選択状態は解除（初心者の「自由に書き換え」優先）
   if (format) {
     format.addEventListener("input", () => setActive(""));
   }
 }
+
+
+
+// v7.7.3 出力形式ボタン：確実に動くようにクリック委譲で実装（スコープ依存なし）
+(function attachFormatButtonsDelegation(){
+  function run(){
+    const wrap = document.getElementById("formatButtons");
+    if (!wrap) return;
+    const formatEl = document.getElementById("format");
+    if (!formatEl) return;
+
+    const presets = {
+      bullets: "出力は箇条書きで、見出し→箇条書きで読みやすくしてください。",
+      mail: "出力はメール形式で、件名→本文の順に、そのまま送れる丁寧な敬語で作ってください。",
+      table: "出力は表形式（Markdownの表）で、比較・整理しやすくしてください。",
+      steps: "出力はステップ形式で、1→2→3…の番号付き手順にしてください。"
+    };
+
+    function setActive(key){
+      wrap.querySelectorAll(".formatBtn").forEach(btn => {
+        btn.classList.toggle("active", (btn.getAttribute("data-key")||"") === (key||""));
+      });
+    }
+
+    wrap.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest(".formatBtn") : null;
+      if (!btn || !wrap.contains(btn)) return;
+      const key = btn.getAttribute("data-key") || "";
+      formatEl.value = presets[key] || "";
+      // 既存のリアルタイム生成に確実に反映させる
+      formatEl.dispatchEvent(new Event("input", { bubbles: true }));
+      formatEl.dispatchEvent(new Event("change", { bubbles: true }));
+      setActive(key);
+    });
+
+    // 手入力したら選択状態を解除
+    formatEl.addEventListener("input", () => setActive(""));
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
+  }
+})();
+

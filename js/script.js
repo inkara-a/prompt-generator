@@ -149,6 +149,8 @@ function renderVars() {
         saveVars(next);
         renderVars();
         autoPreview();
+      try{window.__applyStepChecks && window.__applyStepChecks();}catch(e){}
+
         return;
       }
       insertTextAtCursor(t);
@@ -678,7 +680,7 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     // 例ボタンは構造が変わりやすいので、document全体でクリック委譲
     document.addEventListener("click", (e) => {
       const t = e.target;
-      const exampleBtn = t && t.closest ? t.closest(".exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
+      const exampleBtn = t && t.closest ? t.closest(".exCard, .exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
       if (!exampleBtn) return;
 
       // 既存処理（テンプレ適用）が先に走ることがあるので少し遅らせて反映
@@ -704,7 +706,7 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     try{window.__updateStepChecks && window.__updateStepChecks();}catch(e){}
   }
   document.addEventListener("click", (e) => {
-    const btn = e.target && e.target.closest ? e.target.closest(".exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
+    const btn = e.target && e.target.closest ? e.target.closest(".exCard, .exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
     if (!btn) return;
     setTimeout(trigger, 0);
     setTimeout(trigger, 120);
@@ -768,13 +770,15 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
 
     // 人気テンプレ/例ボタン類のクリックを拾う
     document.addEventListener("click", (e) => {
-      const btn = e.target && e.target.closest ? e.target.closest(".exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
+      const btn = e.target && e.target.closest ? e.target.closest(".exCard, .exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
       if (!btn) return;
       afterTemplatePick();
     });
 
     // 初回
     setTimeout(apply, 200);
+    // expose
+    window.__applyStepChecks = apply;
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind);

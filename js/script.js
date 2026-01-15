@@ -565,3 +565,54 @@ function initFormatButtons() {
 
 
 if (outputContent) outputContent.addEventListener("input", () => { try{autoPreview();}catch(e){} });
+
+
+/* v8.2 - Stepチェック演出（入力が入ったら小さな✓） */
+(function attachStepChecks(){
+  function on(el, ev, fn){ if(el) el.addEventListener(ev, fn); }
+  function isFilled(v){ return (v || "").toString().trim().length > 0; }
+
+  function updateStepChecks(){
+    // Step1: カテゴリ & 用途が選ばれていれば
+    const cat = document.getElementById("category");
+    const purpose = document.getElementById("purpose");
+    const step1ok = (cat && cat.value && cat.value !== "none") && (purpose && purpose.value && purpose.value !== "none");
+
+    // Step2: AIの立場 or やりたいこと が入っていれば
+    const role = document.getElementById("role");
+    const goal = document.getElementById("goal");
+    const step2ok = isFilled(role && role.value) || isFilled(goal && goal.value);
+
+    // Step3: 出力の書き方 or 出してほしい内容 のどちらかが入っていれば
+    const format = document.getElementById("format");
+    const outputContent = document.getElementById("outputContent");
+    const step3ok = isFilled(format && format.value) || isFilled(outputContent && outputContent.value);
+
+    // Step4: 結果が1文字でも出ていれば
+    const result = document.getElementById("result");
+    const step4ok = isFilled(result && result.value);
+
+    const map = {1:step1ok,2:step2ok,3:step3ok,4:step4ok};
+    document.querySelectorAll(".stepCheck").forEach(b => {
+      const n = Number(b.getAttribute("data-step")||"0");
+      b.classList.toggle("on", !!map[n]);
+    });
+  }
+
+  function bind(){
+    ["category","purpose","role","goal","context","constraints","format","outputContent","request"].forEach(id=>{
+      const el = document.getElementById(id);
+      on(el,"input",updateStepChecks);
+      on(el,"change",updateStepChecks);
+    });
+    // 例テンプレクリック等でも更新されるので少し遅延して再判定
+    setTimeout(updateStepChecks, 200);
+    setTimeout(updateStepChecks, 800);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => { bind(); updateStepChecks(); });
+  } else {
+    bind(); updateStepChecks();
+  }
+})();

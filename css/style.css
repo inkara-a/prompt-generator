@@ -160,3 +160,33 @@ textarea{min-height:92px; resize:vertical;}
 
 /* v8 - split output fields */
 #outputContent{min-height:120px}
+
+
+/* v8.2 - SVG icons (cross-platform) */
+.formatBtn{display:inline-flex;align-items:center;gap:8px}
+.formatBtn .fi{width:18px;height:18px;display:inline-block}
+.formatBtn .fi path{stroke:currentColor}
+.formatBtn .fitxt{display:inline-block}
+
+/* v8.2 - step checkmarks */
+.stepCheck{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  border:1px solid #e5e7eb;
+  background:#fff;
+  color:#10b981;
+  font-weight:900;
+  font-size:12px;
+  vertical-align:middle;
+  opacity:0;
+  transform:scale(0.9);
+  transition:opacity .15s ease, transform .15s ease;
+}
+.stepCheck.on{
+  opacity:1;
+  transform:scale(1);
+}

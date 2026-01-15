@@ -1,56 +1,190 @@
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="ja">
+<!doctype html>
 <html lang="ja">
 <head>
-<head>
-  <meta charset="UTF-8" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>用途別プロンプトジェネレーター</title>
-  <title>用途別プロンプトジェネレーター</title>
-  <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-</head>
-<body>
 <body>
   <div class="container">
-  <div class="container">
-    <header class="header">
     <header class="header">
       <div class="topBadge">AI初心者向けツール</div>
-      <div class="topBadge">AI初心者向けツール</div>
       <h1>用途別プロンプトジェネレーター</h1>
-      <h1>用途別プロンプトジェネレーター</h1>
-      <p class="sub">
-      <p class="sub">
-        ボタンを押すだけで「そのまま使える指示文（プロンプト）」が作れます。<br>
-        ボタンを押すだけで「そのまま使える指示文（プロンプト）」が作れます。<br>
-        作ったプロンプトを ChatGPT や Gemini に貼り付けて使いましょう。
-        作ったプロンプトを ChatGPT や Gemini に貼り付けて使いましょう。
-      </p>
-      </p>
+      <p class="sub">ボタンを押すだけで「そのまま使える指示文（プロンプト）」が作れます。<br>作ったプロンプトを ChatGPT や Gemini に貼り付けて使いましょう。</p>
 
-
-      <section class="examples card">
-      <section class="examples card">
+      <section class="examples">
         <div class="badge">人気テンプレ</div>
-        <div class="badge">人気テンプレ</div>
-        <h2 class="exTitle">まずはここから <span class="muted">（クリックで自動入力）</span></h2>
-        <h2 class="exTitle">まずはここから <span class="muted">（クリックで自動入力）</span></h2>
-        <p class="exSub">初心者でも「何ができるか」がすぐ分かります。</p>
+        <h2 class="exTitle">まずはここから（クリックで自動入力）</h2>
         <p class="exSub">初心者でも「何ができるか」がすぐ分かります。</p>
         <div class="exTabs" id="exampleTabs"></div>
-        <div class="exTabs" id="exampleTabs"></div>
-        <div class="exGrid" id="exampleGrid"></div>
         <div class="exGrid" id="exampleGrid"></div>
       </section>
+    </header>
+
+    <main class="grid">
+      <!-- STEP 1 -->
+      <section class="card">
+        <div class="step">
+          <span class="stepNo">STEP 1</span><span class="stepText">テンプレを選ぶ</span>
+          <span class="stepCheck" data-step="1" aria-hidden="true">✓</span>
+        </div>
+
+        <label>カテゴリ</label>
+        <select id="category"></select>
+
+        <label>用途</label>
+        <select id="purpose"></select>
+
+        <label>テンプレの型（選ぶだけ） <span class="muted">（迷ったらそのままでOK）</span></label>
+        <select id="preset">
+          <option value="none">そのまま（自由に書く）</option>
+          <option value="sns">SNS投稿（短め）</option>
+          <option value="email">メール（丁寧）</option>
+          <option value="doc">説明文・マニュアル</option>
+          <option value="code">コード（実装）</option>
+          <option value="plan">企画・要件整理</option>
+        </select>
+
+        <div class="smartRow">
+          <label class="opt bigOpt">
+            <input type="checkbox" id="smart" checked />
+            かしこく回答させる <span class="muted">（おすすめ）</span>
+          </label>
+          <p class="hint">ONにすると：見やすく整理 / 手順で考える / 足りない情報は質問 を自動で付けます。</p>
+        </div>
+
+        <details class="details">
+          <summary>こだわり設定 <span class="muted">（上級者向け）</span></summary>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" id="md" checked /> 見やすく整理して出す</label>
+            <label class="opt"><input type="checkbox" id="step" checked /> 手順で考えてから答えて</label>
+            <label class="opt"><input type="checkbox" id="ask" checked /> 足りない情報があれば先に質問して</label>
+          </div>
+          <p class="hint">※ ふだんは「かしこく回答させる」だけでOKです。</p>
+        </details>
       </section>
-    </header>
-    </header>
 
+      <!-- STEP 2 -->
+      <section class="card">
+        <div class="step">
+          <span class="stepNo">STEP 2</span><span class="stepText">お願いしたい内容を書く</span>
+          <span class="stepCheck" data-step="2" aria-hidden="true">✓</span>
+        </div>
 
-    <main class="grid">
-    <main class="grid">
+        <label>AIの立場 <span class="muted">（例：やさしい先生 / プロの編集者）</span></label>
+        <input id="role" type="text" placeholder="例：やさしい先生 / プロの編集者 / 実務経験豊富なフロントエンドエンジニア" />
+
+        <label>やりたいこと <span class="muted">（ゴール）</span></label>
+        <input id="goal" type="text" placeholder="例：読書感想文の構成案を作る / 家計簿アプリの画面を作る" />
+
+        <label>状況・素材 <span class="muted">（背景や材料）</span></label>
+        <textarea id="context" placeholder="例：対象は初心者 / PCブラウザ前提 / 参考情報や文章を貼る など"></textarea>
+
+        <label>守ってほしいルール</label>
+        <textarea id="constraints" placeholder="例：300文字以内 / 箇条書き / 専門用語は避ける / コピペで動くコード"></textarea>
+
+        <label>出力の書き方 <span class="muted">（見た目）</span></label>
+
+        <div class="formatButtons" id="formatButtons" role="group" aria-label="出力形式を選ぶ">
+          <button type="button" class="formatBtn" data-key="bullets">📋 箇条書き</button>
+          <button type="button" class="formatBtn" data-key="mail">📝 メール形式</button>
+          <button type="button" class="formatBtn" data-key="table">📊 比較表</button>
+          <button type="button" class="formatBtn" data-key="steps">
+            <svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12M6 10h8M6 16h12M6 22h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="fitxt">ステップ</span>
+          </button>
+        </div>
+        <div class="smallHint">※クリックすると「ほしい出力の形」に自動入力されます（あとで自由に編集OK）</div>
+
+        <textarea id="format" placeholder="例：1.結論 2.理由 3.具体例 / 1.HTML 2.CSS 3.カスタマイズ"></textarea>
+
+        <label for="outputContent">出してほしい内容（テンプレの中身）</label>
+        <textarea id="outputContent" placeholder="例：
+1. 構成
+2. HTML全文
+3. CSS全文
+4. JS（バリデーション）
+5. 改善案"></textarea>
+        <div class="smallHint">※「人気テンプレ」を選ぶと、ここが自動で埋まります。自由に編集OK。</div>
+
+        <label>追加のお願い（自由）</label>
+        <textarea id="request" placeholder="例：家計簿アプリ。収入/支出入力、カテゴリ、月次集計がある画面にしたい。"></textarea>
+
+        <p class="hint">※ ふだんは「テンプレ選択 → コピー」だけでOKです。</p>
+      </section>
+
+      <!-- Optional: variables -->
+      <section class="card">
+        <details class="details">
+          <summary>穴埋めパーツ（テンプレ化） <span class="muted">（必要なときだけ）</span></summary>
+          <p class="desc">
+            繰り返し使いたい部分を <span class="mono">{{タイトル}}</span> のように入れられます。<br />
+            例：<span class="mono">{{文章を貼る}}</span>（ここに要約したい文章を貼り付けてください）
+          </p>
+
+          <div class="varRow">
+            <div>
+              <label>穴埋め名</label>
+              <input id="varName" type="text" placeholder="例：タイトル / 相手 / 文章を貼る" />
+            </div>
+            <div>
+              <label>何を入れる？（ヒント）</label>
+              <input id="varHint" type="text" placeholder="例：ここに要約したい文章を貼ってください / 例：取引先の田中さん" />
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button id="addVar" class="secondary">追加</button>
+            <button id="insertVar">挿入</button>
+            <button id="clearVars" class="secondary">一覧クリア</button>
+          </div>
+
+          <div class="varList" id="varList"></div>
+          <p class="hint">ヒント：チップをクリックすると、その穴埋めを挿入できます。</p>
+        </details>
+      </section>
+
+      <!-- STEP 3 / Result -->
+      <section class="card wide">
+        <div class="step">
+          <span class="stepNo">STEP 3</span><span class="stepText">これをコピーして使う</span>
+          <span class="stepCheck" data-step="3" aria-hidden="true">✓</span>
+        </div>
+
+        <div class="copyBar">
+          <button id="copy" class="copyMain">コピーしてChatGPTに貼り付ける</button>
+          <span id="copyState" class="copyState">← ここを押すだけ</span>
+        </div>
+
+        <textarea id="result" readonly placeholder="ここに生成されたプロンプトが表示されます"></textarea>
+
+        <div class="buttons">
+          <button id="openChatGPT" class="secondary">ChatGPTを開く</button>
+          <button id="clearAll" class="secondary">一括クリア</button>
+        </div>
+
+        <div class="pasteGuide" id="pasteGuide">
+          <div class="pasteGuideText">コピーしたら、下のAIに貼り付けて送信してね👇</div>
+          <div class="aiLinks">
+            <a class="aiLink" href="https://chatgpt.com/" target="_blank" rel="noopener">🤖 ChatGPT</a>
+            <a class="aiLink" href="https://gemini.google.com/" target="_blank" rel="noopener">✨ Gemini</a>
+            <a class="aiLink" href="https://claude.ai/" target="_blank" rel="noopener">🧩 Claude</a>
+          </div>
+        </div>
+
+        <p class="hint">✅ コピーしたら、ChatGPT（またはGeminiなど）にそのまま貼り付けてください。</p>
+
+        <!-- Keep hidden for backward compatibility if script references it -->
+        <button id="copyBig" style="display:none" aria-hidden="true"></button>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>テンプレートは <code>data/templates.json</code> を編集すると増やせます。</small>
+    </footer>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

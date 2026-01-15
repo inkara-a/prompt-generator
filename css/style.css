@@ -199,3 +199,7 @@ textarea{min-height:92px; resize:vertical;}
 @media (max-width: 900px){
   .buttonsUnderResult{flex-direction:column}
 }
+
+
+/* v9 UI tweaks */
+.topBadge{display:inline-flex;align-items:center;gap:.5rem;padding:6px 12px;border-radius:999px;background:rgba(0,162,161,.12);color:#00a2a1;font-weight:700;font-size:12px;border:1px solid rgba(0,162,161,.18);margin-bottom:10px}

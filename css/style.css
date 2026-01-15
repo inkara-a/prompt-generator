@@ -81,7 +81,7 @@ textarea{min-height:92px; resize:vertical;}
 
 /* v5 additions */
 .examples{margin-top:14px}
-.badge{display:inline-block;background:#eef2ff;color:#3730a3;font-weight:900;padding:6px 10px;border-radius:999px;font-size:12px}
+.badge{display:inline-block;background: var(--brand);color: #fff;font-weight:900;padding:6px 10px;border-radius:999px;font-size:12px}
 .exTitle{margin:10px 0 4px;font-size:18px}
 .exSub{margin:0;color:#6b7280;font-size:13px}
 .exGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
@@ -94,7 +94,7 @@ textarea{min-height:92px; resize:vertical;}
 .exCard h3{margin:0 0 6px;font-size:14px}
 .exCard p{margin:0;color:#6b7280;font-size:12px;line-height:1.4}
 .step{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.stepNo{background:#111827;color:#fff;font-weight:900;border-radius:999px;padding:6px 10px;font-size:12px}
+.stepNo{background: var(--brand);color: #fff;font-weight:900;border-radius:999px;padding:6px 10px;font-size:12px}
 .stepText{font-weight:900}
 .smartRow{margin-top:14px;padding:12px;border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
 .bigOpt{font-size:15px}
@@ -222,16 +222,16 @@ textarea{min-height:92px; resize:vertical;}
 
 /* Badge (人気テンプレなど) を見出し.pngの雰囲気に */
 .badge{
-  background: var(--brand-weak) !important;
-  color: var(--brand) !important;
+  background: var(--brand);
+  color: #fff;
   border: 1px solid var(--brand-line) !important;
   font-weight: 900 !important;
 }
 
 /* STEP見出し（黒→ブランド色） */
 .stepNo{
-  background: var(--brand-weak) !important;
-  color: var(--brand) !important;
+  background: var(--brand);
+  color: #fff;
   border: 1px solid var(--brand-line) !important;
   font-weight: 900 !important;
 }
@@ -258,3 +258,18 @@ textarea{min-height:92px; resize:vertical;}
 
 /* タブが長く見えないように余白を抑える */
 .exTab{gap:8px !important;}
+
+
+/* Compact exTabs pills */
+.exTabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.exTab{
+  padding:6px 10px !important;
+  border-radius:999px !important;
+  font-size:13px !important;
+  line-height:1 !important;
+}
+.exTab .tabIcon svg{width:14px;height:14px}
+.exGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width: 640px){
+  .exGrid{grid-template-columns:1fr}
+}

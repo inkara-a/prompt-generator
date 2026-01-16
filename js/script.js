@@ -1,4 +1,4 @@
-const BUILD_ID="v20260116z-preswap-result";
+const BUILD_ID="v20260116aa-buildprompt-empty";
 
 
 
@@ -332,6 +332,12 @@ function buildVarsSection(useMd) {
 }
 
 function buildPrompt() {
+  // v5.7.18: 入力が何もない初期状態・クリア直後は空欄にする（見た目のデフォルト選択は維持）
+  const _t = (v) => (v || "").toString().trim();
+  const hasText = !!(_t(role?.value) || _t(goal?.value) || _t(context?.value) || _t(constraints?.value) || _t(request?.value));
+  const hasTemplate = !!(_t(category?.value) && _t(purpose?.value));
+  if(!hasText && !hasTemplate) return "";
+
   const base = data?.[category.value]?.purposes?.[purpose.value] || "";
   const useMd = mdOpt?.checked ?? true;
 

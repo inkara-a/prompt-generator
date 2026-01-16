@@ -1,4 +1,4 @@
-const BUILD_ID = 'v20260116ah-gated-preview';
+const BUILD_ID = 'v20260116ai-initial-empty-visual-bullets';
 
 
 let data = null;
@@ -687,7 +687,10 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     formatTouched = true;
   }
 
-  function setBulletsSelected({forceText=false} = {}){
+  // Select "bullets" format visually.
+  // - setText: write guidance into #format or not
+  // - dispatch: dispatch input/change events (triggers live preview)
+  function setBulletsSelected({forceText=false, setText=true, dispatch=true} = {}){
     const wrap = document.getElementById("formatButtons");
     const formatEl = document.getElementById("format");
     if (!wrap || !formatEl) return;
@@ -699,11 +702,13 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     wrap.dataset.selected = "bullets";
 
     // テキストは「空のときだけ」入れる（ユーザー入力は壊さない）
-    if (!formatTouched && (forceText || !formatEl.value.trim())){
+    if (setText && !formatTouched && (forceText || !formatEl.value.trim())){
       const bulletsText = "出力は箇条書きで、見出し→箇条書きで読みやすくしてください。";
       formatEl.value = bulletsText;
-      formatEl.dispatchEvent(new Event("input", { bubbles: true }));
-      formatEl.dispatchEvent(new Event("change", { bubbles: true }));
+      if (dispatch){
+        formatEl.dispatchEvent(new Event("input", { bubbles: true }));
+        formatEl.dispatchEvent(new Event("change", { bubbles: true }));
+      }
     }
   }
 
@@ -721,12 +726,13 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
       if (!exampleBtn) return;
 
       // 既存処理（テンプレ適用）が先に走ることがあるので少し遅らせて反映
-      setTimeout(() => setBulletsSelected({forceText:false}), 0);
-      setTimeout(() => setBulletsSelected({forceText:false}), 80);
+      setTimeout(() => setBulletsSelected({forceText:false, setText:true, dispatch:true}), 0);
+      setTimeout(() => setBulletsSelected({forceText:false, setText:true, dispatch:true}), 80);
     });
 
     // 初回ロード直後にも「未選択」感を消す（任意）
-    setTimeout(() => setBulletsSelected({forceText:false}), 400);
+    // ただし初回は "自動生成" を発火させないため、テキスト挿入＆dispatchはしない
+    setTimeout(() => setBulletsSelected({forceText:false, setText:false, dispatch:false}), 400);
   }
 
   if (document.readyState === "loading") {

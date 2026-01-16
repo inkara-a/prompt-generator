@@ -565,3 +565,16 @@ textarea{min-height:92px; resize:vertical;}
 .clearWide:hover{
   transform: translateY(-1px);
 }
+
+/* =========================
+   v5.7.1 ガイド文：強調ボックスをやめて“さりげなく目立たせる”
+   ========================= */
+.copyGuideStrong{
+  background: transparent !important;
+  border: 0 !important;
+  border-left: 4px solid rgba(0,162,161,.55) !important;
+  padding: 6px 10px !important;
+  border-radius: 0 !important;
+  font-weight: 900 !important;
+  color:#0f172a !important;
+}

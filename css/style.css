@@ -352,30 +352,49 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* =========================
-   v5.2 選択中の見えづらさ改善（黄色ハイライト）
-   - 人気テンプレタブ(active)
-   - 出力の書き方ボタン(isActive/active)
+   v5.3 コーラル薄塗り＋太枠＋軽い浮き（タブ/出力形式/コピー）
    ========================= */
+:root{
+  --coral:#FF7F50;
+  --coral-bg:#FFF1EA;
+  --coral-text:#111111;
+  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
+}
+
+/* 人気テンプレ：選択中 */
 #exampleTabs .exTab.active{
-  border-color:#f5d126 !important;
-  background:#fdf3c7 !important;
-  color:#111 !important;
-  box-shadow:none !important;
+  border-color: var(--coral) !important;
+  background: var(--coral-bg) !important;
+  color: var(--coral-text) !important;
+  box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
 }
+#exampleTabs .exTab.active .tabIcon svg{ color: var(--coral-text) !important; }
 
-#exampleTabs .exTab.active .tabIcon svg{
-  color:#111 !important;
-}
-
+/* 出力の書き方（見た目）：選択中 */
 #formatButtons .formatBtn.isActive,
 #formatButtons .formatBtn.active{
-  border-color:#f5d126 !important;
-  background:#fdf3c7 !important;
-  color:#111 !important;
-  box-shadow:none !important;
+  border-color: var(--coral) !important;
+  background: var(--coral-bg) !important;
+  color: var(--coral-text) !important;
+  box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+#formatButtons .formatBtn.isActive svg,
+#formatButtons .formatBtn.active svg{ color: var(--coral-text) !important; }
+
+/* メインCTA：コピーしてChatGPTに貼り付ける（STEP2/STEP3どちらにも効かせる） */
+.copyMain, .copyBig, #copyBig, #copy{
+  background: var(--coral) !important;
+  border: 2px solid var(--coral) !important;
+  color: #fff !important;
+  box-shadow: var(--lift-shadow) !important;
+}
+.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover{
+  transform: translateY(-1px);
 }
 
-#formatButtons .formatBtn.isActive svg,
-#formatButtons .formatBtn.active svg{
-  color:#111 !important;
+/* タブ/ボタンの非選択状態は上品に */
+#exampleTabs .exTab{
+  border-width: 1px !important;
 }

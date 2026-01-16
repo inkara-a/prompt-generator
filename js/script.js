@@ -1098,3 +1098,33 @@ function isMeaningfulInput(){
   window.addEventListener("load", resetState);
   window.addEventListener("pageshow", resetState); // bfcache含む
 })();
+
+
+
+// v5.7.12 CLEAR_GUARD: 初期ロードで後から埋められても一定時間は空欄を維持
+(function(){
+  function getR(){ return document.getElementById("result"); }
+  function forceEmpty(){
+    const r = getR();
+    if(r) r.value = "";
+  }
+  function startGuard(){
+    let ticks = 0;
+    const maxTicks = 120; // 120 * 50ms = 6s
+    const timer = setInterval(()=>{
+      ticks++;
+      const st = window.__PG_STATE__ || null;
+      const interacted = st && typeof st.interacted === "boolean" ? st.interacted : false;
+      if(interacted){
+        clearInterval(timer);
+        return;
+      }
+      forceEmpty();
+      if(ticks >= maxTicks){
+        clearInterval(timer);
+      }
+    }, 50);
+  }
+  window.addEventListener("load", ()=>{ forceEmpty(); startGuard(); });
+  window.addEventListener("pageshow", ()=>{ forceEmpty(); startGuard(); });
+})();

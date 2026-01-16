@@ -806,3 +806,62 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind);
   else bind();
 })();
+
+
+
+// v5.6: copy feedback (1-2s)
+function setCopyFeedback(btn, text){
+  if(!btn) return;
+  const prev = btn.dataset.prevText || btn.textContent;
+  btn.dataset.prevText = prev;
+  btn.textContent = text;
+  btn.classList.add('isCopied');
+  setTimeout(()=>{
+    btn.textContent = prev;
+    btn.classList.remove('isCopied');
+  }, 1400);
+}
+
+
+// v5.6 COPY_HANDLER: unified copy buttons feedback (non-breaking)
+(function(){
+  const res = document.getElementById('result');
+  function doCopy(btn){
+    if(!res) return;
+    const txt = res.value || res.textContent || '';
+    if(!txt.trim()) return;
+    const ok = () => setCopyFeedback(btn, 'コピーしました！ ✅');
+    const ng = () => setCopyFeedback(btn, 'コピー失敗…');
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(ok).catch(()=>{
+        try{
+          const ta = document.createElement('textarea');
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          ok();
+        }catch(e){ ng(); }
+      });
+    }else{
+      try{
+        const ta = document.createElement('textarea');
+        ta.value = txt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        ok();
+      }catch(e){ ng(); }
+    }
+  }
+  const btn1 = document.getElementById('copy');
+  const btn2 = document.getElementById('copyBig');
+  if(btn1){
+    btn1.addEventListener('click', ()=> doCopy(btn1), {capture:true});
+  }
+  if(btn2){
+    btn2.addEventListener('click', ()=> doCopy(btn2), {capture:true});
+  }
+})();

@@ -476,3 +476,56 @@ textarea{min-height:92px; resize:vertical;}
 #formatButtons .formatBtn.active{
   background: #e6f7f7 !important;
 }
+
+/* =========================
+   v5.6 UX改善
+   (3) コピー完了フィードバック
+   (4) 生成プロンプトの強調
+   (5) AIリンクをコピー直下に配置
+   ========================= */
+.resultLabel{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#e6f7f7;
+  border:1px solid rgba(0,162,161,.22);
+  color:#0f172a;
+  font-weight:800;
+  font-size:12.5px;
+  margin: 8px 0 10px;
+}
+
+#result{
+  background:#f2fbfb !important;
+  border:1px solid rgba(0,162,161,.25) !important;
+}
+
+.aiLinksBar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin: 10px 0 8px;
+}
+
+.aiMini{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 10px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  color:#0f172a;
+  font-weight:800;
+  font-size:13px;
+  text-decoration:none;
+}
+
+.aiMini:hover{
+  transform: translateY(-1px);
+}
+
+.copyMain.isCopied, .copyBig.isCopied, #copyBig.isCopied, #copy.isCopied{
+  filter: brightness(0.95);
+}

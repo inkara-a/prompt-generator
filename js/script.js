@@ -1,4 +1,4 @@
-const BUILD_ID="v20260116q-interaction-gate";
+const BUILD_ID="v20260116r-gated-autopreview";
 
 
 
@@ -358,12 +358,32 @@ function buildPrompt() {
   return out.trim();
 }
 
-function autoPreview() {
+function autoPreview(force=false) {
   if (!result) return;
+
+  // 初期表示は空のまま（“見た目”のデフォルト選択は維持）
+  if (!force) {
+    if (!__userInteracted) {
+      result.value = "";
+      return;
+    }
+    const hasText =
+      (role?.value || "").trim() ||
+      (goal?.value || "").trim() ||
+      (context?.value || "").trim() ||
+      (constraints?.value || "").trim() ||
+      (request?.value || "").trim();
+    const hasTemplate = ((category?.value || "").trim() && (purpose?.value || "").trim());
+    if (!hasText && !hasTemplate) {
+      result.value = "";
+      return;
+    }
+  }
+
   result.value = buildPrompt();
 }
 
-[role, goal, context, constraints, format, request].forEach(x => x && x.addEventListener("input", autoPreview));
+[role, goal, context, constraints, format, request].forEach(x => x && x.addEventListener("input", () => { __userInteracted = true; autoPreview(); }));
 
 function flash(btn) {
   btn.classList.remove("flash");
@@ -396,6 +416,7 @@ el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
 
 // 一括クリア（人気テンプレ確認後にすぐ自分用を書ける）
 el("clearAll") && el("clearAll").addEventListener("click", () => {
+  __userInteracted = false;
   // テキスト入力を全部空に
   role.value = "";
   goal.value = "";
@@ -414,11 +435,8 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   if (st) st.textContent = "← ここを押すだけ";
   // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
   renderVars();
-
-  // プレビュー更新
-  autoPreview();
-
-  // 先頭の入力にフォーカス
+  // プレビュー更新はしない（空のままにする）
+// 先頭の入力にフォーカス
   role.focus();
 });
 
@@ -939,4 +957,34 @@ function isMeaningfulInput(){
   const c2 = document.getElementById("clearAllWide");
   if(c1) c1.addEventListener("click", reset, true);
   if(c2) c2.addEventListener("click", reset, true);
+})();
+
+
+// v5.7.9 INTERACTION_HOOKS: 選択/クリックでも“操作した”扱い
+(function(){
+  const mark = () => { __userInteracted = true; autoPreview(); };
+
+  category && category.addEventListener("change", mark);
+  purpose && purpose.addEventListener("change", mark);
+  preset && preset.addEventListener("change", mark);
+  smart && smart.addEventListener("change", mark);
+  mdOpt && mdOpt.addEventListener("change", mark);
+  stepOpt && stepOpt.addEventListener("change", mark);
+  askOpt && askOpt.addEventListener("change", mark);
+
+  const fb = document.getElementById("formatButtons");
+  if(fb){
+    fb.addEventListener("click", (e)=>{
+      const b = e.target.closest(".formatBtn");
+      if(b) mark();
+    }, true);
+  }
+
+  const exGrid = document.getElementById("exampleGrid");
+  if(exGrid){
+    exGrid.addEventListener("click", (e)=>{
+      const c = e.target.closest(".exCard, .exBtn, button, a, .exItem");
+      if(c) mark();
+    }, true);
+  }
 })();

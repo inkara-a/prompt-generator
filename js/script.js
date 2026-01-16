@@ -1,4 +1,4 @@
-const BUILD_ID = 'v20260116a-tabs-compact';
+const BUILD_ID="v20260116n-fix-initial-empty";
 
 
 let data = null;
@@ -865,3 +865,15 @@ function setCopyFeedback(btn, text){
     btn2.addEventListener('click', ()=> doCopy(btn2), {capture:true});
   }
 })();
+function isMeaningfulInput(){
+  const role = (el.role?.value || "").trim();
+  const goal = (el.goal?.value || "").trim();
+  const ctx = (el.context?.value || "").trim();
+  const cons = (el.constraints?.value || "").trim();
+  const req = (el.request?.value || "").trim();
+  const cat = (el.category?.value || "").trim();
+  const pur = (el.purpose?.value || "").trim();
+  // テンプレ選択（カテゴリ/用途）か、ユーザー入力が1つでもあれば“意味がある”
+  return !!(cat || pur || role || goal || ctx || cons || req);
+}
+

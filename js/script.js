@@ -1019,6 +1019,10 @@ function isMeaningfulInput(){
     // 既存の初期プレビューの後にも空にする（確実化）
     setTimeout(forceEmpty, 0);
     setTimeout(forceEmpty, 30);
+    setTimeout(forceEmpty, 120);
+    setTimeout(forceEmpty, 300);
+    requestAnimationFrame(forceEmpty);
+    requestAnimationFrame(()=>requestAnimationFrame(forceEmpty));
   });
 
   // autoPreview を必ず上書き
@@ -1071,4 +1075,26 @@ function isMeaningfulInput(){
   const c2 = document.getElementById("clearAllWide");
   if(c1) c1.addEventListener("click", onClear, true);
   if(c2) c2.addEventListener("click", onClear, true);
+})();
+
+
+
+// v5.7.11 INIT_HOOKS: リロード直後に後から埋められるのを確実に空にする
+(function(){
+  function forceEmpty(){
+    const r = document.getElementById("result");
+    if(r) r.value = "";
+  }
+  function resetState(){
+    if(window.__PG_STATE__) window.__PG_STATE__.interacted = false;
+    forceEmpty();
+    setTimeout(forceEmpty, 0);
+    setTimeout(forceEmpty, 50);
+    setTimeout(forceEmpty, 150);
+    setTimeout(forceEmpty, 350);
+    requestAnimationFrame(forceEmpty);
+    requestAnimationFrame(()=>requestAnimationFrame(forceEmpty));
+  }
+  window.addEventListener("load", resetState);
+  window.addEventListener("pageshow", resetState); // bfcache含む
 })();

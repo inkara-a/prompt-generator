@@ -1,8 +1,14 @@
+const BUILD_ID="v20260116ag-gated-preview";
 const BUILD_ID = 'v20260116a-tabs-compact';
 
 
 let data = null;
 const el = (id) => document.getElementById(id);
+
+// v5.7.22: 初期は生成エリアを空欄にする（ユーザーが何か操作したら自動生成開始）
+let userInteracted_v5722 = false;
+function markInteracted_v5722(){ userInteracted_v5722 = true; }
+function resetInteracted_v5722(){ userInteracted_v5722 = false; }
 
 const category = el("category");
 const purpose = el("purpose");
@@ -357,6 +363,12 @@ function buildPrompt() {
 }
 
 function autoPreview() {
+  const r = document.getElementById("result");
+  if(!userInteracted_v5722){
+    if(r) r.value = "";
+    return;
+  }
+
   if (!result) return;
   result.value = buildPrompt();
 }
@@ -865,3 +877,12 @@ function setCopyFeedback(btn, text){
     btn2.addEventListener('click', ()=> doCopy(btn2), {capture:true});
   }
 })();
+
+
+// v5.7.22: 操作した瞬間から自動生成を開始
+["role","goal","context","constraints","request","category","purpose","preset","format","outputContent"].forEach((id)=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener("input", ()=>{ markInteracted_v5722(); autoPreview(); }, {passive:true});
+  el.addEventListener("change", ()=>{ markInteracted_v5722(); autoPreview(); }, {passive:true});
+});

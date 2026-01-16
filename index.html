@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>用途別プロンプトジェネレーター</title>
-  <link rel="stylesheet" href="css/style.css?v=20260116y" />
+  <link rel="stylesheet" href="css/style.css?v=20260116z" />
 </head>
-<body>
+<body autocomplete="off">
   <div class="container">
     <header class="header">
       <div class="topBadge">AI初心者向けツール</div>
@@ -179,6 +179,24 @@
     </footer>
   </div>
 
-  <script src="js/script.js?v=20260116y"></script>
+  
+  <script>
+  // v5.7.17 PRESWAP_RESULT: ブラウザのフォーム復元で result が埋まっても、JS実行前に差し替えて空欄にする
+  (function(){
+    try{
+      var old = document.getElementById("result");
+      if(!old) return;
+      var fresh = old.cloneNode(false);
+      fresh.value = "";
+      fresh.readOnly = true;
+      fresh.setAttribute("data-fresh", "v5.7.17");
+      // autocomplete復元を避ける
+      fresh.setAttribute("autocomplete","off");
+      old.parentNode.replaceChild(fresh, old);
+    }catch(e){}
+  })();
+  </script>
+
+  <script src="js/script.js?v=20260116z"></script>
 </body>
 </html>

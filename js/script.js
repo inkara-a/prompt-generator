@@ -1288,3 +1288,95 @@ function isMeaningfulInput(){
   if(c1) c1.addEventListener("click", relock, true);
   if(c2) c2.addEventListener("click", relock, true);
 })();
+
+
+
+// v5.7.16 MUTATION_OBSERVER_GUARD: result要素が差し替えられても“未操作は空欄”を維持
+(function(){
+  const state = window.__PG_STATE__ = window.__PG_STATE__ || { interacted:false };
+
+  function markInteracted(){
+    state.interacted = true;
+  }
+
+  function installValueGuard(ta){
+    if(!ta || ta.__guard16) return;
+    ta.__guard16 = true;
+    const proto = Object.getPrototypeOf(ta);
+    const desc = Object.getOwnPropertyDescriptor(proto, "value");
+    if(!desc || !desc.set) return;
+
+    // 初期は空に
+    try{ desc.set.call(ta, ""); }catch(e){}
+
+    Object.defineProperty(ta, "value", {
+      configurable: true,
+      enumerable: true,
+      get(){ return desc.get.call(ta); },
+      set(v){
+        if(!state.interacted){
+          try{ desc.set.call(ta, ""); }catch(e){}
+          return;
+        }
+        try{ desc.set.call(ta, v); }catch(e){}
+      }
+    });
+  }
+
+  function forceEmptyIfNeeded(){
+    const ta = document.getElementById("result");
+    if(!ta) return;
+    installValueGuard(ta);
+    if(!state.interacted){
+      try{ ta.value = ""; }catch(e){}
+    }
+  }
+
+  function resetInitial(){
+    state.interacted = false;
+    forceEmptyIfNeeded();
+    // 後勝ち対策
+    setTimeout(forceEmptyIfNeeded, 0);
+    setTimeout(forceEmptyIfNeeded, 50);
+    setTimeout(forceEmptyIfNeeded, 150);
+    setTimeout(forceEmptyIfNeeded, 400);
+    requestAnimationFrame(forceEmptyIfNeeded);
+    requestAnimationFrame(()=>requestAnimationFrame(forceEmptyIfNeeded));
+  }
+
+  // ユーザー操作で解除
+  const unlock = ()=>{ markInteracted(); };
+  ["category","purpose","preset","role","goal","context","constraints","format","outputContent","request","smart","md","step","ask"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener("input", unlock, true);
+    el.addEventListener("change", unlock, true);
+  });
+  const fb = document.getElementById("formatButtons");
+  if(fb) fb.addEventListener("click", (e)=>{ if(e.target.closest(".formatBtn")) unlock(); }, true);
+  const exGrid = document.getElementById("exampleGrid");
+  if(exGrid) exGrid.addEventListener("click", (e)=>{ if(e.target.closest(".exCard, .exBtn, .exItem, button, a")) unlock(); }, true);
+
+  // クリアで再ロック
+  function relock(){
+    state.interacted = false;
+    forceEmptyIfNeeded();
+    setTimeout(forceEmptyIfNeeded, 0);
+    setTimeout(forceEmptyIfNeeded, 80);
+    setTimeout(forceEmptyIfNeeded, 250);
+  }
+  const c1 = document.getElementById("clearAll");
+  const c2 = document.getElementById("clearAllWide");
+  if(c1) c1.addEventListener("click", relock, true);
+  if(c2) c2.addEventListener("click", relock, true);
+
+  // DOM差し替え監視（resultが入れ替わっても再適用）
+  const mo = new MutationObserver(()=>{
+    if(!state.interacted) forceEmptyIfNeeded();
+  });
+  mo.observe(document.documentElement, { childList:true, subtree:true });
+
+  window.addEventListener("DOMContentLoaded", resetInitial);
+  window.addEventListener("load", resetInitial);
+  window.addEventListener("pageshow", resetInitial);
+})();

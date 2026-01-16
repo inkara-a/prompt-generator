@@ -1,4 +1,4 @@
-const BUILD_ID="v20260116n-fix-initial-empty";
+const BUILD_ID="v20260116p-fix-initial-empty-with-default-bullets";
 
 
 let data = null;
@@ -656,7 +656,9 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => { bind(); updateStepChecks(); });
+    document.addEventListener("DOMContentLoaded", () => {
+  setSelectPlaceholder(el.category, "カテゴリを選択");
+  setSelectPlaceholder(el.purpose, "用途を選択"); bind(); updateStepChecks(); });
   } else {
     bind(); updateStepChecks();
   }
@@ -865,6 +867,22 @@ function setCopyFeedback(btn, text){
     btn2.addEventListener('click', ()=> doCopy(btn2), {capture:true});
   }
 })();
+function setSelectPlaceholder(selectEl, label){
+  if(!selectEl) return;
+  // 先頭にプレースホルダーが無ければ追加
+  const first = selectEl.options?.[0];
+  if(!first || first.value !== ""){
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = label;
+    opt.disabled = true;
+    opt.selected = true;
+    selectEl.insertBefore(opt, selectEl.firstChild);
+  }
+  // 必ずプレースホルダーを初期選択にする（初期生成を防ぐ）
+  selectEl.value = "";
+}
+
 function isMeaningfulInput(){
   const role = (el.role?.value || "").trim();
   const goal = (el.goal?.value || "").trim();

@@ -1,4 +1,4 @@
-const BUILD_ID="v20260116ac-initpurposes-guard";
+const BUILD_ID="v20260116ad-initplaceholders-safe";
 
 
 
@@ -238,6 +238,13 @@ async function loadTemplates() {
 
 function initCategories() {
   category.innerHTML = "";
+  // v5.7.21: 初期は未選択にして、ユーザーが選んだら用途を出す
+  const ph = document.createElement("option");
+  ph.value = "";
+  ph.textContent = "カテゴリを選ぶ";
+  ph.selected = true;
+  category.appendChild(ph);
+
   for (const key in data) {
     const opt = document.createElement("option");
     opt.value = key;
@@ -248,20 +255,24 @@ function initCategories() {
 }
 
 function initPurposes() {
-  // v5.7.20: categoryが未選択でも落ちないようにする
+  // v5.7.21: category未選択でも壊れない + 初期は用途未選択
   purpose.innerHTML = "";
   const selected = (category && category.value) ? category.value : "";
+
+  // 先頭に必ずプレースホルダーを入れる
+  const ph = document.createElement("option");
+  ph.value = "";
+  ph.textContent = "用途を選ぶ";
+  ph.selected = true;
+  purpose.appendChild(ph);
+
   if (!selected || !data || !data[selected] || !data[selected].purposes) {
-    const opt = document.createElement("option");
-    opt.value = "";
-    opt.textContent = "用途を選ぶ";
-    purpose.appendChild(opt);
-    // プレースホルダーも初期向けに戻す
+    // 未選択時はプレースホルダーだけ表示して終了（自動生成しない）
     if (goal) goal.placeholder = "例：やりたいことを具体的に書く";
-    if (format) format.placeholder = "例：1.結論 2.理由 3.具体例 …";
-    autoPreview();
+    if (format) format.placeholder = "例：1.構成 2.HTML全文 3.CSS全文 …";
     return;
   }
+
   const purposes = data[selected].purposes;
   for (const p in purposes) {
     const opt = document.createElement("option");
@@ -269,8 +280,14 @@ function initPurposes() {
     opt.textContent = p;
     purpose.appendChild(opt);
   }
-  goal.placeholder = `例：${purpose.value} をやりたい（具体的に）`;
-  format.placeholder = `例：用途「${purpose.value}」に合う出力構成（番号付き）`;
+    if (purpose.value) {
+    goal.placeholder = `例：${purpose.value} をやりたい（具体的に）`;
+    format.placeholder = `例：用途「${purpose.value}」に合う出力構成（番号付き）`;
+  } else {
+    goal.placeholder = "例：やりたいことを具体的に書く";
+    format.placeholder = "例：1.構成 2.HTML全文 3.CSS全文 …";
+  }
+  // 用途が未選択の間は自動生成しない（空欄）
   autoPreview();
 }
 
@@ -344,6 +361,11 @@ function buildVarsSection(useMd) {
 }
 
 function buildPrompt() {
+  // v5.7.21 EMPTY_GUARD: 未選択+未入力なら空
+  const _t = (v) => (v || "").toString().trim();
+  const hasText = !!(_t(role?.value) || _t(goal?.value) || _t(context?.value) || _t(constraints?.value) || _t(request?.value));
+  const hasTemplate = !!(_t(category?.value) && _t(purpose?.value));
+  if (!hasText && !hasTemplate) return "";
   // v5.7.18: 入力が何もない初期状態・クリア直後は空欄にする（見た目のデフォルト選択は維持）
   const _t = (v) => (v || "").toString().trim();
   const hasText = !!(_t(role?.value) || _t(goal?.value) || _t(context?.value) || _t(constraints?.value) || _t(request?.value));
@@ -1400,11 +1422,12 @@ function isMeaningfulInput(){
 })();
 
 \n\n/* =========================
-   v5.7.19 SELECT_PLACEHOLDER_FIX
+   v5.7.19 SELECT_PLACEHOLDER_FIX (disabled in v5.7.21)
    - 初期/クリア時に category & purpose を未選択にする（先頭に空optionを追加）
    - 箇条書きの初期選択は維持（formatButtons側）
    ========================= */
-(function(){
+(function(){ return; // disabled
+
   function ensureEmptyOption(sel, label){
     if(!sel) return;
     // 既に value="" の option があればOK

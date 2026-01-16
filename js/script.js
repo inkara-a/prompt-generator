@@ -1,14 +1,15 @@
-const BUILD_ID="v20260116ag-gated-preview";
-const BUILD_ID = 'v20260116a-tabs-compact';
+const BUILD_ID = 'v20260116ah-gated-preview';
 
 
 let data = null;
 const el = (id) => document.getElementById(id);
 
-// v5.7.22: 初期は生成エリアを空欄にする（ユーザーが何か操作したら自動生成開始）
-let userInteracted_v5722 = false;
-function markInteracted_v5722(){ userInteracted_v5722 = true; }
-function resetInteracted_v5722(){ userInteracted_v5722 = false; }
+
+
+// v5.7.23: 初期は生成エリアを空欄にする（ユーザーが何か操作したら自動生成開始）
+let userInteracted_v5723 = false;
+const markInteracted_v5723 = () => { userInteracted_v5723 = true; };
+const resetInteracted_v5723 = () => { userInteracted_v5723 = false; };
 
 const category = el("category");
 const purpose = el("purpose");
@@ -363,9 +364,9 @@ function buildPrompt() {
 }
 
 function autoPreview() {
-  const r = document.getElementById("result");
-  if(!userInteracted_v5722){
-    if(r) r.value = "";
+  const r = el('result');
+  if (!userInteracted_v5723) {
+    if (r) r.value = '';
     return;
   }
 
@@ -406,6 +407,8 @@ el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
 
 // 一括クリア（人気テンプレ確認後にすぐ自分用を書ける）
 el("clearAll") && el("clearAll").addEventListener("click", () => {
+    resetInteracted_v5723();
+    const r = el('result'); if (r) r.value = '';
   // テキスト入力を全部空に
   role.value = "";
   goal.value = "";
@@ -879,10 +882,13 @@ function setCopyFeedback(btn, text){
 })();
 
 
-// v5.7.22: 操作した瞬間から自動生成を開始
-["role","goal","context","constraints","request","category","purpose","preset","format","outputContent"].forEach((id)=>{
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.addEventListener("input", ()=>{ markInteracted_v5722(); autoPreview(); }, {passive:true});
-  el.addEventListener("change", ()=>{ markInteracted_v5722(); autoPreview(); }, {passive:true});
+// v5.7.23: 操作した瞬間から自動生成を開始
+[
+  "role","goal","context","constraints","request",
+  "category","purpose","preset","format","outputContent"
+].forEach((id) => {
+  const node = el(id);
+  if (!node) return;
+  node.addEventListener("input", () => { markInteracted_v5723(); autoPreview(); }, { passive: true });
+  node.addEventListener("change", () => { markInteracted_v5723(); autoPreview(); }, { passive: true });
 });

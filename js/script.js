@@ -988,3 +988,87 @@ function isMeaningfulInput(){
     }, true);
   }
 })();
+
+
+
+/* =========================
+   v5.7.10 HARD_OVERRIDE
+   - 初期表示と一括クリア後は result を空欄固定
+   - 見た目（箇条書き初期選択）は維持
+   - ユーザーが何か操作したら自動生成を開始
+   ========================= */
+(function(){
+  const state = window.__PG_STATE__ = window.__PG_STATE__ || { interacted:false };
+
+  function hasMeaning(){
+    const get = (id) => (document.getElementById(id)?.value || "").trim();
+    const hasText = !!(get("role") || get("goal") || get("context") || get("constraints") || get("request"));
+    const hasTemplate = !!((document.getElementById("category")?.value || "").trim() && (document.getElementById("purpose")?.value || "").trim());
+    return hasText || hasTemplate;
+  }
+
+  function forceEmpty(){
+    const r = document.getElementById("result");
+    if(r) r.value = "";
+  }
+
+  // 初期は必ず空にする（既存コードが先に埋めても上書き）
+  document.addEventListener("DOMContentLoaded", ()=>{
+    state.interacted = false;
+    forceEmpty();
+    // 既存の初期プレビューの後にも空にする（確実化）
+    setTimeout(forceEmpty, 0);
+    setTimeout(forceEmpty, 30);
+  });
+
+  // autoPreview を必ず上書き
+  const origAutoPreview = window.autoPreview || (typeof autoPreview === "function" ? autoPreview : null);
+  function gatedAutoPreview(force=false){
+    const r = document.getElementById("result");
+    if(!r) return;
+    if(!force){
+      if(!state.interacted || !hasMeaning()){
+        r.value = "";
+        return;
+      }
+    }
+    // buildPrompt が存在するなら使う（既存実装に依存）
+    try{
+      if(typeof buildPrompt === "function"){
+        r.value = buildPrompt();
+      }else if(origAutoPreview){
+        origAutoPreview(true);
+      }
+    }catch(e){
+      // 失敗時は空
+      r.value = "";
+    }
+  }
+  window.autoPreview = gatedAutoPreview;
+  try{ autoPreview = gatedAutoPreview; }catch(e){}
+
+  // 操作フック：何か触れたら interacted=true
+  const mark = () => { state.interacted = true; window.autoPreview(false); };
+  const ids = ["category","purpose","preset","role","goal","context","constraints","format","outputContent","request","smart","md","step","ask"];
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener("input", mark, true);
+    el.addEventListener("change", mark, true);
+  });
+  const fb = document.getElementById("formatButtons");
+  if(fb) fb.addEventListener("click", (e)=>{ if(e.target.closest(".formatBtn")) mark(); }, true);
+  const exGrid = document.getElementById("exampleGrid");
+  if(exGrid) exGrid.addEventListener("click", (e)=>{ if(e.target.closest(".exCard, .exBtn, .exItem, button, a")) mark(); }, true);
+
+  // 一括クリア：interacted=false に戻して結果を空に（既存クリア後に確実に空にする）
+  function onClear(){
+    state.interacted = false;
+    setTimeout(forceEmpty, 0);
+    setTimeout(forceEmpty, 30);
+  }
+  const c1 = document.getElementById("clearAll");
+  const c2 = document.getElementById("clearAllWide");
+  if(c1) c1.addEventListener("click", onClear, true);
+  if(c2) c2.addEventListener("click", onClear, true);
+})();

@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>用途別プロンプトジェネレーター</title>
-  <link rel="stylesheet" href="css/style.css?v=20260116ad" />
+  <link rel="stylesheet" href="css/style.css?v=20260116o" />
 </head>
-<body autocomplete="off">
+<body>
   <div class="container">
     <header class="header">
       <div class="topBadge">AI初心者向けツール</div>
@@ -163,7 +163,7 @@
           <a class="aiMini" href="https://gemini.google.com/" target="_blank" rel="noopener">Geminiを開く</a>
           <a class="aiMini" href="https://claude.ai/" target="_blank" rel="noopener">Claudeを開く</a>
         </div>
-        <textarea id="result" name="result_v20260116x" autocomplete="off" readonly placeholder="ここに生成されたプロンプトが表示されます"></textarea>
+        <textarea id="result" readonly placeholder="ここに生成されたプロンプトが表示されます"></textarea>
 
         <div class="buttons">
 <button id="clearAll" class="secondary">一括クリア</button>
@@ -179,24 +179,6 @@
     </footer>
   </div>
 
-  
-  <script>
-  // v5.7.17 PRESWAP_RESULT: ブラウザのフォーム復元で result が埋まっても、JS実行前に差し替えて空欄にする
-  (function(){
-    try{
-      var old = document.getElementById("result");
-      if(!old) return;
-      var fresh = old.cloneNode(false);
-      fresh.value = "";
-      fresh.readOnly = true;
-      fresh.setAttribute("data-fresh", "v5.7.17");
-      // autocomplete復元を避ける
-      fresh.setAttribute("autocomplete","off");
-      old.parentNode.replaceChild(fresh, old);
-    }catch(e){}
-  })();
-  </script>
-
-  <script src="js/script.js?v=20260116ad"></script>
+  <script src="js/script.js?v=20260116o"></script>
 </body>
 </html>

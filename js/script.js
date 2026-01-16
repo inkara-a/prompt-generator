@@ -1,8 +1,6 @@
-const BUILD_ID="v20260116ad-initplaceholders-safe";
+const BUILD_ID = 'v20260116a-tabs-compact';
 
 
-
-let __userInteracted = false;
 let data = null;
 const el = (id) => document.getElementById(id);
 
@@ -238,13 +236,6 @@ async function loadTemplates() {
 
 function initCategories() {
   category.innerHTML = "";
-  // v5.7.21: 初期は未選択にして、ユーザーが選んだら用途を出す
-  const ph = document.createElement("option");
-  ph.value = "";
-  ph.textContent = "カテゴリを選ぶ";
-  ph.selected = true;
-  category.appendChild(ph);
-
   for (const key in data) {
     const opt = document.createElement("option");
     opt.value = key;
@@ -255,24 +246,8 @@ function initCategories() {
 }
 
 function initPurposes() {
-  // v5.7.21: category未選択でも壊れない + 初期は用途未選択
   purpose.innerHTML = "";
-  const selected = (category && category.value) ? category.value : "";
-
-  // 先頭に必ずプレースホルダーを入れる
-  const ph = document.createElement("option");
-  ph.value = "";
-  ph.textContent = "用途を選ぶ";
-  ph.selected = true;
-  purpose.appendChild(ph);
-
-  if (!selected || !data || !data[selected] || !data[selected].purposes) {
-    // 未選択時はプレースホルダーだけ表示して終了（自動生成しない）
-    if (goal) goal.placeholder = "例：やりたいことを具体的に書く";
-    if (format) format.placeholder = "例：1.構成 2.HTML全文 3.CSS全文 …";
-    return;
-  }
-
+  const selected = category.value;
   const purposes = data[selected].purposes;
   for (const p in purposes) {
     const opt = document.createElement("option");
@@ -280,14 +255,8 @@ function initPurposes() {
     opt.textContent = p;
     purpose.appendChild(opt);
   }
-    if (purpose.value) {
-    goal.placeholder = `例：${purpose.value} をやりたい（具体的に）`;
-    format.placeholder = `例：用途「${purpose.value}」に合う出力構成（番号付き）`;
-  } else {
-    goal.placeholder = "例：やりたいことを具体的に書く";
-    format.placeholder = "例：1.構成 2.HTML全文 3.CSS全文 …";
-  }
-  // 用途が未選択の間は自動生成しない（空欄）
+  goal.placeholder = `例：${purpose.value} をやりたい（具体的に）`;
+  format.placeholder = `例：用途「${purpose.value}」に合う出力構成（番号付き）`;
   autoPreview();
 }
 
@@ -331,7 +300,7 @@ function applyPreset(clearRequest=false) {
 }
 
 category.addEventListener("change", initPurposes);
-purpose.addEventListener("change", () => autoPreview());
+purpose.addEventListener("change", initPurposes);
 preset.addEventListener("change", () => applyPreset(false));
 
 if (smart) smart.addEventListener("change", () => { setAdvancedFromSmart(); autoPreview(); });
@@ -361,17 +330,6 @@ function buildVarsSection(useMd) {
 }
 
 function buildPrompt() {
-  // v5.7.21 EMPTY_GUARD: 未選択+未入力なら空
-  const _t = (v) => (v || "").toString().trim();
-  const hasText = !!(_t(role?.value) || _t(goal?.value) || _t(context?.value) || _t(constraints?.value) || _t(request?.value));
-  const hasTemplate = !!(_t(category?.value) && _t(purpose?.value));
-  if (!hasText && !hasTemplate) return "";
-  // v5.7.18: 入力が何もない初期状態・クリア直後は空欄にする（見た目のデフォルト選択は維持）
-  const _t = (v) => (v || "").toString().trim();
-  const hasText = !!(_t(role?.value) || _t(goal?.value) || _t(context?.value) || _t(constraints?.value) || _t(request?.value));
-  const hasTemplate = !!(_t(category?.value) && _t(purpose?.value));
-  if(!hasText && !hasTemplate) return "";
-
   const base = data?.[category.value]?.purposes?.[purpose.value] || "";
   const useMd = mdOpt?.checked ?? true;
 
@@ -398,32 +356,12 @@ function buildPrompt() {
   return out.trim();
 }
 
-function autoPreview(force=false) {
+function autoPreview() {
   if (!result) return;
-
-  // 初期表示は空のまま（“見た目”のデフォルト選択は維持）
-  if (!force) {
-    if (!__userInteracted) {
-      result.value = "";
-      return;
-    }
-    const hasText =
-      (role?.value || "").trim() ||
-      (goal?.value || "").trim() ||
-      (context?.value || "").trim() ||
-      (constraints?.value || "").trim() ||
-      (request?.value || "").trim();
-    const hasTemplate = ((category?.value || "").trim() && (purpose?.value || "").trim());
-    if (!hasText && !hasTemplate) {
-      result.value = "";
-      return;
-    }
-  }
-
   result.value = buildPrompt();
 }
 
-[role, goal, context, constraints, format, request].forEach(x => x && x.addEventListener("input", () => { __userInteracted = true; autoPreview(); }));
+[role, goal, context, constraints, format, request].forEach(x => x && x.addEventListener("input", autoPreview));
 
 function flash(btn) {
   btn.classList.remove("flash");
@@ -456,7 +394,6 @@ el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
 
 // 一括クリア（人気テンプレ確認後にすぐ自分用を書ける）
 el("clearAll") && el("clearAll").addEventListener("click", () => {
-  __userInteracted = false;
   // テキスト入力を全部空に
   role.value = "";
   goal.value = "";
@@ -475,8 +412,11 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   if (st) st.textContent = "← ここを押すだけ";
   // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
   renderVars();
-  // プレビュー更新はしない（空のままにする）
-// 先頭の入力にフォーカス
+
+  // プレビュー更新
+  autoPreview();
+
+  // 先頭の入力にフォーカス
   role.focus();
 });
 
@@ -716,9 +656,7 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-  setSelectPlaceholder(el.category, "カテゴリを選択");
-  setSelectPlaceholder(el.purpose, "用途を選択"); bind(); updateStepChecks(); });
+    document.addEventListener("DOMContentLoaded", () => { bind(); updateStepChecks(); });
   } else {
     bind(); updateStepChecks();
   }
@@ -926,548 +864,4 @@ function setCopyFeedback(btn, text){
   if(btn2){
     btn2.addEventListener('click', ()=> doCopy(btn2), {capture:true});
   }
-})();
-function setSelectPlaceholder(selectEl, label){
-  if(!selectEl) return;
-  // 先頭にプレースホルダーが無ければ追加
-  const first = selectEl.options?.[0];
-  if(!first || first.value !== ""){
-    const opt = document.createElement("option");
-    opt.value = "";
-    opt.textContent = label;
-    opt.disabled = true;
-    opt.selected = true;
-    selectEl.insertBefore(opt, selectEl.firstChild);
-  }
-  // 必ずプレースホルダーを初期選択にする（初期生成を防ぐ）
-  selectEl.value = "";
-}
-
-function isMeaningfulInput(){
-  const role = (el.role?.value || "").trim();
-  const goal = (el.goal?.value || "").trim();
-  const ctx = (el.context?.value || "").trim();
-  const cons = (el.constraints?.value || "").trim();
-  const req = (el.request?.value || "").trim();
-  const cat = (el.category?.value || "").trim();
-  const pur = (el.purpose?.value || "").trim();
-  // テンプレ選択（カテゴリ/用途）か、ユーザー入力が1つでもあれば“意味がある”
-  return !!(cat || pur || role || goal || ctx || cons || req);
-}
-
-
-
-// v5.7.8 INTERACTION_GATE: user interaction required before generating
-(function(){
-  function mark(){
-    __userInteracted = true;
-    // update immediately when user starts interacting
-    try{ updateResult(); }catch(e){}
-  }
-  const ids = ["category","purpose","preset","role","goal","context","constraints","outputContent","request","smart","md","step","ask","varName","varHint"];
-  ids.forEach(id=>{
-    const elx = document.getElementById(id);
-    if(!elx) return;
-    elx.addEventListener("change", mark);
-    elx.addEventListener("input", mark);
-  });
-  // 人気テンプレ（カード）クリックでも反映
-  const grid = document.getElementById("exampleGrid");
-  if(grid){
-    grid.addEventListener("click", (e)=>{
-      const t = e.target.closest(".exCard, .exBtn, button, a, .exItem");
-      if(t) mark();
-    }, true);
-  }
-  // 出力形式ボタン（見た目）クリック
-  const fb = document.getElementById("formatButtons");
-  if(fb){
-    fb.addEventListener("click", (e)=>{
-      const b = e.target.closest(".formatBtn");
-      if(b) mark();
-    }, true);
-  }
-  // 一括クリア系：interactedを戻して結果を空にする（箇条書きの選択状態は維持）
-  function reset(){
-    __userInteracted = false;
-    const r = document.getElementById("result");
-    if(r) r.value = "";
-  }
-  const c1 = document.getElementById("clearAll");
-  const c2 = document.getElementById("clearAllWide");
-  if(c1) c1.addEventListener("click", reset, true);
-  if(c2) c2.addEventListener("click", reset, true);
-})();
-
-
-// v5.7.9 INTERACTION_HOOKS: 選択/クリックでも“操作した”扱い
-(function(){
-  const mark = () => { __userInteracted = true; autoPreview(); };
-
-  category && category.addEventListener("change", mark);
-  purpose && purpose.addEventListener("change", mark);
-  preset && preset.addEventListener("change", mark);
-  smart && smart.addEventListener("change", mark);
-  mdOpt && mdOpt.addEventListener("change", mark);
-  stepOpt && stepOpt.addEventListener("change", mark);
-  askOpt && askOpt.addEventListener("change", mark);
-
-  const fb = document.getElementById("formatButtons");
-  if(fb){
-    fb.addEventListener("click", (e)=>{
-      const b = e.target.closest(".formatBtn");
-      if(b) mark();
-    }, true);
-  }
-
-  const exGrid = document.getElementById("exampleGrid");
-  if(exGrid){
-    exGrid.addEventListener("click", (e)=>{
-      const c = e.target.closest(".exCard, .exBtn, button, a, .exItem");
-      if(c) mark();
-    }, true);
-  }
-})();
-
-
-
-/* =========================
-   v5.7.10 HARD_OVERRIDE
-   - 初期表示と一括クリア後は result を空欄固定
-   - 見た目（箇条書き初期選択）は維持
-   - ユーザーが何か操作したら自動生成を開始
-   ========================= */
-(function(){
-  const state = window.__PG_STATE__ = window.__PG_STATE__ || { interacted:false };
-
-  function hasMeaning(){
-    const get = (id) => (document.getElementById(id)?.value || "").trim();
-    const hasText = !!(get("role") || get("goal") || get("context") || get("constraints") || get("request"));
-    const hasTemplate = !!((document.getElementById("category")?.value || "").trim() && (document.getElementById("purpose")?.value || "").trim());
-    return hasText || hasTemplate;
-  }
-
-  function forceEmpty(){
-    const r = document.getElementById("result");
-    if(r) r.value = "";
-  }
-
-  // 初期は必ず空にする（既存コードが先に埋めても上書き）
-  document.addEventListener("DOMContentLoaded", ()=>{
-    state.interacted = false;
-    forceEmpty();
-    // 既存の初期プレビューの後にも空にする（確実化）
-    setTimeout(forceEmpty, 0);
-    setTimeout(forceEmpty, 30);
-    setTimeout(forceEmpty, 120);
-    setTimeout(forceEmpty, 300);
-    requestAnimationFrame(forceEmpty);
-    requestAnimationFrame(()=>requestAnimationFrame(forceEmpty));
-  });
-
-  // autoPreview を必ず上書き
-  const origAutoPreview = window.autoPreview || (typeof autoPreview === "function" ? autoPreview : null);
-  function gatedAutoPreview(force=false){
-    const r = document.getElementById("result");
-    if(!r) return;
-    if(!force){
-      if(!state.interacted || !hasMeaning()){
-        r.value = "";
-        return;
-      }
-    }
-    // buildPrompt が存在するなら使う（既存実装に依存）
-    try{
-      if(typeof buildPrompt === "function"){
-        r.value = buildPrompt();
-      }else if(origAutoPreview){
-        origAutoPreview(true);
-      }
-    }catch(e){
-      // 失敗時は空
-      r.value = "";
-    }
-  }
-  window.autoPreview = gatedAutoPreview;
-  try{ autoPreview = gatedAutoPreview; }catch(e){}
-
-  // 操作フック：何か触れたら interacted=true
-  const mark = () => { state.interacted = true; window.autoPreview(false); };
-  const ids = ["category","purpose","preset","role","goal","context","constraints","format","outputContent","request","smart","md","step","ask"];
-  ids.forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.addEventListener("input", mark, true);
-    el.addEventListener("change", mark, true);
-  });
-  const fb = document.getElementById("formatButtons");
-  if(fb) fb.addEventListener("click", (e)=>{ if(e.target.closest(".formatBtn")) mark(); }, true);
-  const exGrid = document.getElementById("exampleGrid");
-  if(exGrid) exGrid.addEventListener("click", (e)=>{ if(e.target.closest(".exCard, .exBtn, .exItem, button, a")) mark(); }, true);
-
-  // 一括クリア：interacted=false に戻して結果を空に（既存クリア後に確実に空にする）
-  function onClear(){
-    state.interacted = false;
-    setTimeout(forceEmpty, 0);
-    setTimeout(forceEmpty, 30);
-  }
-  const c1 = document.getElementById("clearAll");
-  const c2 = document.getElementById("clearAllWide");
-  if(c1) c1.addEventListener("click", onClear, true);
-  if(c2) c2.addEventListener("click", onClear, true);
-})();
-
-
-
-// v5.7.11 INIT_HOOKS: リロード直後に後から埋められるのを確実に空にする
-(function(){
-  function forceEmpty(){
-    const r = document.getElementById("result");
-    if(r) r.value = "";
-  }
-  function resetState(){
-    if(window.__PG_STATE__) window.__PG_STATE__.interacted = false;
-    forceEmpty();
-    setTimeout(forceEmpty, 0);
-    setTimeout(forceEmpty, 50);
-    setTimeout(forceEmpty, 150);
-    setTimeout(forceEmpty, 350);
-    requestAnimationFrame(forceEmpty);
-    requestAnimationFrame(()=>requestAnimationFrame(forceEmpty));
-  }
-  window.addEventListener("load", resetState);
-  window.addEventListener("pageshow", resetState); // bfcache含む
-})();
-
-
-
-// v5.7.12 CLEAR_GUARD: 初期ロードで後から埋められても一定時間は空欄を維持
-(function(){
-  function getR(){ return document.getElementById("result"); }
-  function forceEmpty(){
-    const r = getR();
-    if(r) r.value = "";
-  }
-  function startGuard(){
-    let ticks = 0;
-    const maxTicks = 120; // 120 * 50ms = 6s
-    const timer = setInterval(()=>{
-      ticks++;
-      const st = window.__PG_STATE__ || null;
-      const interacted = st && typeof st.interacted === "boolean" ? st.interacted : false;
-      if(interacted){
-        clearInterval(timer);
-        return;
-      }
-      forceEmpty();
-      if(ticks >= maxTicks){
-        clearInterval(timer);
-      }
-    }, 50);
-  }
-  window.addEventListener("load", ()=>{ forceEmpty(); startGuard(); });
-  window.addEventListener("pageshow", ()=>{ forceEmpty(); startGuard(); });
-})();
-
-
-
-// v5.7.13 VALUE_SETTER_GUARD: interacted=false の間は result.value への書き込み自体を無効化
-(function(){
-  const state = window.__PG_STATE__ = window.__PG_STATE__ || { interacted:false };
-
-  function installGuard(){
-    const ta = document.getElementById("result");
-    if(!ta) return;
-
-    // placeholderを明示（空のとき“生成されてる感”を減らす）
-    if(!ta.getAttribute("placeholder")){
-      ta.setAttribute("placeholder", "ここに生成されたプロンプトが表示されます");
-    }
-
-    const proto = Object.getPrototypeOf(ta);
-    const desc = Object.getOwnPropertyDescriptor(proto, "value");
-    if(!desc || !desc.set || ta.__valueGuardInstalled) return;
-    ta.__valueGuardInstalled = true;
-
-    let internal = "";
-    // まず確実に空にする
-    try{ desc.set.call(ta, ""); }catch(e){}
-    internal = "";
-
-    Object.defineProperty(ta, "value", {
-      configurable: true,
-      enumerable: true,
-      get(){
-        try{ return desc.get.call(ta); }catch(e){ return internal; }
-      },
-      set(v){
-        // 未操作状態は“書き込み拒否”して常に空
-        if(!state.interacted){
-          internal = "";
-          try{ desc.set.call(ta, ""); }catch(e){}
-          return;
-        }
-        internal = v;
-        try{ desc.set.call(ta, v); }catch(e){}
-      }
-    });
-
-    // interactedになったらオリジナルへ戻す（以後は通常動作）
-    function maybeRestore(){
-      if(!state.interacted) return;
-      try{
-        Object.defineProperty(ta, "value", desc);
-      }catch(e){}
-    }
-
-    // 主要操作で interacted を立てる（既存フックがあってもOK）
-    const mark = ()=>{ state.interacted = true; maybeRestore(); };
-
-    ["category","purpose","preset","role","goal","context","constraints","format","outputContent","request","smart","md","step","ask"].forEach(id=>{
-      const el = document.getElementById(id);
-      if(!el) return;
-      el.addEventListener("input", mark, true);
-      el.addEventListener("change", mark, true);
-    });
-    const fb = document.getElementById("formatButtons");
-    if(fb) fb.addEventListener("click", (e)=>{ if(e.target.closest(".formatBtn")) mark(); }, true);
-    const exGrid = document.getElementById("exampleGrid");
-    if(exGrid) exGrid.addEventListener("click", (e)=>{ if(e.target.closest(".exCard, .exBtn, .exItem, button, a")) mark(); }, true);
-
-    // クリアで未操作に戻してガード再有効化
-    function onClear(){
-      state.interacted = false;
-      // 再インストール（valueが戻ってた場合に備える）
-      try{ desc.set.call(ta, ""); }catch(e){}
-      internal = "";
-      // ガードのsetterは残っているので、そのまま空を維持
-    }
-    const c1 = document.getElementById("clearAll");
-    const c2 = document.getElementById("clearAllWide");
-    if(c1) c1.addEventListener("click", onClear, true);
-    if(c2) c2.addEventListener("click", onClear, true);
-
-    // 念のため：load後にも空を強制（setterで弾く）
-    setTimeout(()=>{ try{ ta.value=""; }catch(e){} }, 0);
-    setTimeout(()=>{ try{ ta.value=""; }catch(e){} }, 50);
-    setTimeout(()=>{ try{ ta.value=""; }catch(e){} }, 200);
-  }
-
-  window.addEventListener("DOMContentLoaded", installGuard);
-  window.addEventListener("pageshow", installGuard);
-})();
-
-
-
-// v5.7.14 INTERACT_LOCK: localStorage復元などが interacted=true にしても無視（ユーザー操作だけで解除）
-(function(){
-  // interacted を“ロック”する
-  const raw = window.__PG_STATE__ || {};
-  let _interacted = false;
-  window.__PG_ALLOW_INTERACTED = false;
-
-  Object.defineProperty(raw, "interacted", {
-    configurable: true,
-    enumerable: true,
-    get(){ return _interacted; },
-    set(v){
-      // 許可が無い限り true を受け付けない（初期/復元で勝手にtrueにならない）
-      if(v === true && !window.__PG_ALLOW_INTERACTED) return;
-      _interacted = !!v;
-    }
-  });
-
-  window.__PG_STATE__ = raw;
-
-  function resultEl(){ return document.getElementById("result"); }
-  function forceEmpty(){
-    const r = resultEl();
-    if(r) r.value = "";
-  }
-
-  // 初期は確実に空にする（復元が走っても value setter guard と合わせて空に戻る）
-  function resetInitial(){
-    window.__PG_ALLOW_INTERACTED = false;
-    raw.interacted = false;
-    forceEmpty();
-    setTimeout(forceEmpty, 0);
-    setTimeout(forceEmpty, 80);
-    setTimeout(forceEmpty, 200);
-  }
-  window.addEventListener("DOMContentLoaded", resetInitial);
-  window.addEventListener("load", resetInitial);
-  window.addEventListener("pageshow", resetInitial);
-
-  // ユーザーが触れたら解除
-  function unlock(){
-    window.__PG_ALLOW_INTERACTED = true;
-    raw.interacted = true;
-  }
-  const ids = ["category","purpose","preset","role","goal","context","constraints","format","outputContent","request","smart","md","step","ask"];
-  ids.forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.addEventListener("input", unlock, true);
-    el.addEventListener("change", unlock, true);
-  });
-  const fb = document.getElementById("formatButtons");
-  if(fb) fb.addEventListener("click", (e)=>{ if(e.target.closest(".formatBtn")) unlock(); }, true);
-  const exGrid = document.getElementById("exampleGrid");
-  if(exGrid) exGrid.addEventListener("click", (e)=>{ if(e.target.closest(".exCard, .exBtn, .exItem, button, a")) unlock(); }, true);
-
-  // 一括クリアで再ロック
-  function relock(){
-    window.__PG_ALLOW_INTERACTED = false;
-    raw.interacted = false;
-    forceEmpty();
-    setTimeout(forceEmpty, 0);
-    setTimeout(forceEmpty, 80);
-  }
-  const c1 = document.getElementById("clearAll");
-  const c2 = document.getElementById("clearAllWide");
-  if(c1) c1.addEventListener("click", relock, true);
-  if(c2) c2.addEventListener("click", relock, true);
-})();
-
-
-
-// v5.7.16 MUTATION_OBSERVER_GUARD: result要素が差し替えられても“未操作は空欄”を維持
-(function(){
-  const state = window.__PG_STATE__ = window.__PG_STATE__ || { interacted:false };
-
-  function markInteracted(){
-    state.interacted = true;
-  }
-
-  function installValueGuard(ta){
-    if(!ta || ta.__guard16) return;
-    ta.__guard16 = true;
-    const proto = Object.getPrototypeOf(ta);
-    const desc = Object.getOwnPropertyDescriptor(proto, "value");
-    if(!desc || !desc.set) return;
-
-    // 初期は空に
-    try{ desc.set.call(ta, ""); }catch(e){}
-
-    Object.defineProperty(ta, "value", {
-      configurable: true,
-      enumerable: true,
-      get(){ return desc.get.call(ta); },
-      set(v){
-        if(!state.interacted){
-          try{ desc.set.call(ta, ""); }catch(e){}
-          return;
-        }
-        try{ desc.set.call(ta, v); }catch(e){}
-      }
-    });
-  }
-
-  function forceEmptyIfNeeded(){
-    const ta = document.getElementById("result");
-    if(!ta) return;
-    installValueGuard(ta);
-    if(!state.interacted){
-      try{ ta.value = ""; }catch(e){}
-    }
-  }
-
-  function resetInitial(){
-    state.interacted = false;
-    forceEmptyIfNeeded();
-    // 後勝ち対策
-    setTimeout(forceEmptyIfNeeded, 0);
-    setTimeout(forceEmptyIfNeeded, 50);
-    setTimeout(forceEmptyIfNeeded, 150);
-    setTimeout(forceEmptyIfNeeded, 400);
-    requestAnimationFrame(forceEmptyIfNeeded);
-    requestAnimationFrame(()=>requestAnimationFrame(forceEmptyIfNeeded));
-  }
-
-  // ユーザー操作で解除
-  const unlock = ()=>{ markInteracted(); };
-  ["category","purpose","preset","role","goal","context","constraints","format","outputContent","request","smart","md","step","ask"].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.addEventListener("input", unlock, true);
-    el.addEventListener("change", unlock, true);
-  });
-  const fb = document.getElementById("formatButtons");
-  if(fb) fb.addEventListener("click", (e)=>{ if(e.target.closest(".formatBtn")) unlock(); }, true);
-  const exGrid = document.getElementById("exampleGrid");
-  if(exGrid) exGrid.addEventListener("click", (e)=>{ if(e.target.closest(".exCard, .exBtn, .exItem, button, a")) unlock(); }, true);
-
-  // クリアで再ロック
-  function relock(){
-    state.interacted = false;
-    forceEmptyIfNeeded();
-    setTimeout(forceEmptyIfNeeded, 0);
-    setTimeout(forceEmptyIfNeeded, 80);
-    setTimeout(forceEmptyIfNeeded, 250);
-  }
-  const c1 = document.getElementById("clearAll");
-  const c2 = document.getElementById("clearAllWide");
-  if(c1) c1.addEventListener("click", relock, true);
-  if(c2) c2.addEventListener("click", relock, true);
-
-  // DOM差し替え監視（resultが入れ替わっても再適用）
-  const mo = new MutationObserver(()=>{
-    if(!state.interacted) forceEmptyIfNeeded();
-  });
-  mo.observe(document.documentElement, { childList:true, subtree:true });
-
-  window.addEventListener("DOMContentLoaded", resetInitial);
-  window.addEventListener("load", resetInitial);
-  window.addEventListener("pageshow", resetInitial);
-})();
-
-\n\n/* =========================
-   v5.7.19 SELECT_PLACEHOLDER_FIX (disabled in v5.7.21)
-   - 初期/クリア時に category & purpose を未選択にする（先頭に空optionを追加）
-   - 箇条書きの初期選択は維持（formatButtons側）
-   ========================= */
-(function(){ return; // disabled
-
-  function ensureEmptyOption(sel, label){
-    if(!sel) return;
-    // 既に value="" の option があればOK
-    const hasEmpty = Array.from(sel.options || []).some(o => (o.value || "") === "");
-    if(!hasEmpty){
-      const opt = document.createElement("option");
-      opt.value = "";
-      opt.textContent = label || "選んでください";
-      sel.insertBefore(opt, sel.firstChild);
-    }
-  }
-  function setUnselected(){
-    const cat = document.getElementById("category");
-    const pur = document.getElementById("purpose");
-    ensureEmptyOption(cat, "カテゴリを選ぶ");
-    ensureEmptyOption(pur, "用途を選ぶ");
-    // いったん value を空に（既存が後から埋めても再度空にする）
-    if(cat) cat.value = "";
-    if(pur) pur.value = "";
-  }
-
-  document.addEventListener("DOMContentLoaded", ()=>{
-    // populate後に効くよう、少し遅らせて2回実行
-    setUnselected();
-    setTimeout(setUnselected, 0);
-    setTimeout(setUnselected, 50);
-    setTimeout(setUnselected, 200);
-  });
-
-  // 一括クリア時も必ず未選択へ
-  function onClearFix(){
-    setTimeout(setUnselected, 0);
-    setTimeout(setUnselected, 50);
-    setTimeout(setUnselected, 200);
-    // resultも空
-    const r = document.getElementById("result");
-    if(r) r.value = "";
-  }
-  const c1 = document.getElementById("clearAll");
-  const c2 = document.getElementById("clearAllWide");
-  if(c1) c1.addEventListener("click", onClearFix, true);
-  if(c2) c2.addEventListener("click", onClearFix, true);
 })();

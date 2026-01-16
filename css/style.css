@@ -529,3 +529,39 @@ textarea{min-height:92px; resize:vertical;}
 .copyMain.isCopied, .copyBig.isCopied, #copyBig.isCopied, #copy.isCopied{
   filter: brightness(0.95);
 }
+
+/* =========================
+   v5.7 STEP3 重複削減＆導線強化
+   - ガイド文を目立たせる
+   - 一括クリアを結果幅いっぱい
+   ========================= */
+.copyArea{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.copyGuideStrong{
+  padding:10px 12px;
+  border-radius:12px;
+  background:#e6f7f7;
+  border:1px solid rgba(0,162,161,.28);
+  color:#0f172a;
+  font-weight:900;
+  font-size:13.5px;
+}
+
+.clearWide{
+  width:100%;
+  margin-top:10px;
+  padding:12px 14px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  font-weight:900;
+  cursor:pointer;
+}
+.clearWide:hover{
+  transform: translateY(-1px);
+}

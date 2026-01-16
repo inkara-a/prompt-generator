@@ -1,4 +1,4 @@
-const BUILD_ID="v20260116aa-buildprompt-empty";
+const BUILD_ID="v20260116ac-initpurposes-guard";
 
 
 
@@ -248,8 +248,20 @@ function initCategories() {
 }
 
 function initPurposes() {
+  // v5.7.20: categoryが未選択でも落ちないようにする
   purpose.innerHTML = "";
-  const selected = category.value;
+  const selected = (category && category.value) ? category.value : "";
+  if (!selected || !data || !data[selected] || !data[selected].purposes) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "用途を選ぶ";
+    purpose.appendChild(opt);
+    // プレースホルダーも初期向けに戻す
+    if (goal) goal.placeholder = "例：やりたいことを具体的に書く";
+    if (format) format.placeholder = "例：1.結論 2.理由 3.具体例 …";
+    autoPreview();
+    return;
+  }
   const purposes = data[selected].purposes;
   for (const p in purposes) {
     const opt = document.createElement("option");
@@ -302,7 +314,7 @@ function applyPreset(clearRequest=false) {
 }
 
 category.addEventListener("change", initPurposes);
-purpose.addEventListener("change", initPurposes);
+purpose.addEventListener("change", () => autoPreview());
 preset.addEventListener("change", () => applyPreset(false));
 
 if (smart) smart.addEventListener("change", () => { setAdvancedFromSmart(); autoPreview(); });

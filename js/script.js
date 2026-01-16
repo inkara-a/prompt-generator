@@ -1216,3 +1216,75 @@ function isMeaningfulInput(){
   window.addEventListener("DOMContentLoaded", installGuard);
   window.addEventListener("pageshow", installGuard);
 })();
+
+
+
+// v5.7.14 INTERACT_LOCK: localStorage復元などが interacted=true にしても無視（ユーザー操作だけで解除）
+(function(){
+  // interacted を“ロック”する
+  const raw = window.__PG_STATE__ || {};
+  let _interacted = false;
+  window.__PG_ALLOW_INTERACTED = false;
+
+  Object.defineProperty(raw, "interacted", {
+    configurable: true,
+    enumerable: true,
+    get(){ return _interacted; },
+    set(v){
+      // 許可が無い限り true を受け付けない（初期/復元で勝手にtrueにならない）
+      if(v === true && !window.__PG_ALLOW_INTERACTED) return;
+      _interacted = !!v;
+    }
+  });
+
+  window.__PG_STATE__ = raw;
+
+  function resultEl(){ return document.getElementById("result"); }
+  function forceEmpty(){
+    const r = resultEl();
+    if(r) r.value = "";
+  }
+
+  // 初期は確実に空にする（復元が走っても value setter guard と合わせて空に戻る）
+  function resetInitial(){
+    window.__PG_ALLOW_INTERACTED = false;
+    raw.interacted = false;
+    forceEmpty();
+    setTimeout(forceEmpty, 0);
+    setTimeout(forceEmpty, 80);
+    setTimeout(forceEmpty, 200);
+  }
+  window.addEventListener("DOMContentLoaded", resetInitial);
+  window.addEventListener("load", resetInitial);
+  window.addEventListener("pageshow", resetInitial);
+
+  // ユーザーが触れたら解除
+  function unlock(){
+    window.__PG_ALLOW_INTERACTED = true;
+    raw.interacted = true;
+  }
+  const ids = ["category","purpose","preset","role","goal","context","constraints","format","outputContent","request","smart","md","step","ask"];
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener("input", unlock, true);
+    el.addEventListener("change", unlock, true);
+  });
+  const fb = document.getElementById("formatButtons");
+  if(fb) fb.addEventListener("click", (e)=>{ if(e.target.closest(".formatBtn")) unlock(); }, true);
+  const exGrid = document.getElementById("exampleGrid");
+  if(exGrid) exGrid.addEventListener("click", (e)=>{ if(e.target.closest(".exCard, .exBtn, .exItem, button, a")) unlock(); }, true);
+
+  // 一括クリアで再ロック
+  function relock(){
+    window.__PG_ALLOW_INTERACTED = false;
+    raw.interacted = false;
+    forceEmpty();
+    setTimeout(forceEmpty, 0);
+    setTimeout(forceEmpty, 80);
+  }
+  const c1 = document.getElementById("clearAll");
+  const c2 = document.getElementById("clearAllWide");
+  if(c1) c1.addEventListener("click", relock, true);
+  if(c2) c2.addEventListener("click", relock, true);
+})();

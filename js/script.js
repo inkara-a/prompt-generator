@@ -1128,3 +1128,91 @@ function isMeaningfulInput(){
   window.addEventListener("load", ()=>{ forceEmpty(); startGuard(); });
   window.addEventListener("pageshow", ()=>{ forceEmpty(); startGuard(); });
 })();
+
+
+
+// v5.7.13 VALUE_SETTER_GUARD: interacted=false の間は result.value への書き込み自体を無効化
+(function(){
+  const state = window.__PG_STATE__ = window.__PG_STATE__ || { interacted:false };
+
+  function installGuard(){
+    const ta = document.getElementById("result");
+    if(!ta) return;
+
+    // placeholderを明示（空のとき“生成されてる感”を減らす）
+    if(!ta.getAttribute("placeholder")){
+      ta.setAttribute("placeholder", "ここに生成されたプロンプトが表示されます");
+    }
+
+    const proto = Object.getPrototypeOf(ta);
+    const desc = Object.getOwnPropertyDescriptor(proto, "value");
+    if(!desc || !desc.set || ta.__valueGuardInstalled) return;
+    ta.__valueGuardInstalled = true;
+
+    let internal = "";
+    // まず確実に空にする
+    try{ desc.set.call(ta, ""); }catch(e){}
+    internal = "";
+
+    Object.defineProperty(ta, "value", {
+      configurable: true,
+      enumerable: true,
+      get(){
+        try{ return desc.get.call(ta); }catch(e){ return internal; }
+      },
+      set(v){
+        // 未操作状態は“書き込み拒否”して常に空
+        if(!state.interacted){
+          internal = "";
+          try{ desc.set.call(ta, ""); }catch(e){}
+          return;
+        }
+        internal = v;
+        try{ desc.set.call(ta, v); }catch(e){}
+      }
+    });
+
+    // interactedになったらオリジナルへ戻す（以後は通常動作）
+    function maybeRestore(){
+      if(!state.interacted) return;
+      try{
+        Object.defineProperty(ta, "value", desc);
+      }catch(e){}
+    }
+
+    // 主要操作で interacted を立てる（既存フックがあってもOK）
+    const mark = ()=>{ state.interacted = true; maybeRestore(); };
+
+    ["category","purpose","preset","role","goal","context","constraints","format","outputContent","request","smart","md","step","ask"].forEach(id=>{
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.addEventListener("input", mark, true);
+      el.addEventListener("change", mark, true);
+    });
+    const fb = document.getElementById("formatButtons");
+    if(fb) fb.addEventListener("click", (e)=>{ if(e.target.closest(".formatBtn")) mark(); }, true);
+    const exGrid = document.getElementById("exampleGrid");
+    if(exGrid) exGrid.addEventListener("click", (e)=>{ if(e.target.closest(".exCard, .exBtn, .exItem, button, a")) mark(); }, true);
+
+    // クリアで未操作に戻してガード再有効化
+    function onClear(){
+      state.interacted = false;
+      // 再インストール（valueが戻ってた場合に備える）
+      try{ desc.set.call(ta, ""); }catch(e){}
+      internal = "";
+      // ガードのsetterは残っているので、そのまま空を維持
+    }
+    const c1 = document.getElementById("clearAll");
+    const c2 = document.getElementById("clearAllWide");
+    if(c1) c1.addEventListener("click", onClear, true);
+    if(c2) c2.addEventListener("click", onClear, true);
+
+    // 念のため：load後にも空を強制（setterで弾く）
+    setTimeout(()=>{ try{ ta.value=""; }catch(e){} }, 0);
+    setTimeout(()=>{ try{ ta.value=""; }catch(e){} }, 50);
+    setTimeout(()=>{ try{ ta.value=""; }catch(e){} }, 200);
+  }
+
+  window.addEventListener("DOMContentLoaded", installGuard);
+  window.addEventListener("pageshow", installGuard);
+})();

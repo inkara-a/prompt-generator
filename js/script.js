@@ -1,6 +1,8 @@
-const BUILD_ID="v20260116p-fix-initial-empty-with-default-bullets";
+const BUILD_ID="v20260116q-interaction-gate";
 
 
+
+let __userInteracted = false;
 let data = null;
 const el = (id) => document.getElementById(id);
 
@@ -895,3 +897,46 @@ function isMeaningfulInput(){
   return !!(cat || pur || role || goal || ctx || cons || req);
 }
 
+
+
+// v5.7.8 INTERACTION_GATE: user interaction required before generating
+(function(){
+  function mark(){
+    __userInteracted = true;
+    // update immediately when user starts interacting
+    try{ updateResult(); }catch(e){}
+  }
+  const ids = ["category","purpose","preset","role","goal","context","constraints","outputContent","request","smart","md","step","ask","varName","varHint"];
+  ids.forEach(id=>{
+    const elx = document.getElementById(id);
+    if(!elx) return;
+    elx.addEventListener("change", mark);
+    elx.addEventListener("input", mark);
+  });
+  // 人気テンプレ（カード）クリックでも反映
+  const grid = document.getElementById("exampleGrid");
+  if(grid){
+    grid.addEventListener("click", (e)=>{
+      const t = e.target.closest(".exCard, .exBtn, button, a, .exItem");
+      if(t) mark();
+    }, true);
+  }
+  // 出力形式ボタン（見た目）クリック
+  const fb = document.getElementById("formatButtons");
+  if(fb){
+    fb.addEventListener("click", (e)=>{
+      const b = e.target.closest(".formatBtn");
+      if(b) mark();
+    }, true);
+  }
+  // 一括クリア系：interactedを戻して結果を空にする（箇条書きの選択状態は維持）
+  function reset(){
+    __userInteracted = false;
+    const r = document.getElementById("result");
+    if(r) r.value = "";
+  }
+  const c1 = document.getElementById("clearAll");
+  const c2 = document.getElementById("clearAllWide");
+  if(c1) c1.addEventListener("click", reset, true);
+  if(c2) c2.addEventListener("click", reset, true);
+})();

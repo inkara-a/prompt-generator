@@ -398,3 +398,69 @@ textarea{min-height:92px; resize:vertical;}
 #exampleTabs .exTab{
   border-width: 1px !important;
 }
+
+/* =========================
+   v5.4 改善セット
+   1) 選択中だけ #00a2a1 を混ぜる（枠線をティール寄せ）
+   3) ボタンとタブの差別化（コピーは #00a2a1 ベタ）
+   4) タブ/ボタンの角丸は 12px に統一
+   ========================= */
+:root{
+  --teal:#00a2a1;
+  --coral-bg:#FFF1EA;
+  --ink:#111111;
+  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
+}
+
+/* --- (4) 角丸：タブ/ボタンは 12px --- */
+#exampleTabs .exTab,
+#formatButtons .formatBtn,
+.copyMain, .copyBig, #copyBig, #copy,
+.secondary, #openChatGPT, #clearAll{
+  border-radius: 12px !important;
+}
+
+/* --- (1) 選択中タブ：コーラル薄塗り + 枠をティール寄せ --- */
+#exampleTabs .exTab.active{
+  border-color: var(--teal) !important;
+  background: var(--coral-bg) !important;
+  color: var(--ink) !important;
+  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+
+#exampleTabs .exTab.active .tabIcon svg{
+  color: var(--ink) !important;
+}
+
+/* --- 出力形式ボタン：選択中 --- */
+#formatButtons .formatBtn.isActive,
+#formatButtons .formatBtn.active{
+  border-color: var(--teal) !important;
+  background: var(--coral-bg) !important;
+  color: var(--ink) !important;
+  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* --- (3) コピーはティールで最強CTA --- */
+.copyMain, .copyBig, #copyBig, #copy{
+  background: var(--teal) !important;
+  border: 2px solid var(--teal) !important;
+  color:#fff !important;
+  box-shadow: var(--lift-shadow) !important;
+}
+
+/* サブボタンは控えめ */
+.secondary, #openChatGPT, #clearAll{
+  background:#fff !important;
+  border:1px solid #e5e7eb !important;
+  color:#0f172a !important;
+}
+
+/* hover演出 */
+.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover,
+#exampleTabs .exTab:hover,
+#formatButtons .formatBtn:hover{
+  transform: translateY(-1px);
+}

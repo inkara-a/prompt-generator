@@ -464,3 +464,32 @@ textarea{min-height:92px; resize:vertical;}
 #formatButtons .formatBtn:hover{
   transform: translateY(-1px);
 }
+
+/* =========================
+   v5.5 背景色統一：#e6f7f7
+   対象：AI初心者向けツール / 人気テンプレ / タブ / 出力の書き方（見た目）
+   ========================= */
+:root{
+  --mint-bg:#e6f7f7;
+}
+
+/* AI初心者向けツール（バッジ） / 人気テンプレ（バッジ） */
+.badge{
+  background: var(--mint-bg) !important;
+}
+
+/* 人気テンプレ全体 */
+.examples{
+  background: var(--mint-bg) !important;
+  border: 1px solid #cfeeee !important;
+}
+
+/* 人気テンプレ：タブ（非選択） */
+#exampleTabs .exTab{
+  background: var(--mint-bg) !important;
+}
+
+/* 出力の書き方（見た目）ボタン（非選択） */
+#formatButtons .formatBtn{
+  background: var(--mint-bg) !important;
+}

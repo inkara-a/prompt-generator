@@ -1386,3 +1386,53 @@ function isMeaningfulInput(){
   window.addEventListener("load", resetInitial);
   window.addEventListener("pageshow", resetInitial);
 })();
+
+\n\n/* =========================
+   v5.7.19 SELECT_PLACEHOLDER_FIX
+   - 初期/クリア時に category & purpose を未選択にする（先頭に空optionを追加）
+   - 箇条書きの初期選択は維持（formatButtons側）
+   ========================= */
+(function(){
+  function ensureEmptyOption(sel, label){
+    if(!sel) return;
+    // 既に value="" の option があればOK
+    const hasEmpty = Array.from(sel.options || []).some(o => (o.value || "") === "");
+    if(!hasEmpty){
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = label || "選んでください";
+      sel.insertBefore(opt, sel.firstChild);
+    }
+  }
+  function setUnselected(){
+    const cat = document.getElementById("category");
+    const pur = document.getElementById("purpose");
+    ensureEmptyOption(cat, "カテゴリを選ぶ");
+    ensureEmptyOption(pur, "用途を選ぶ");
+    // いったん value を空に（既存が後から埋めても再度空にする）
+    if(cat) cat.value = "";
+    if(pur) pur.value = "";
+  }
+
+  document.addEventListener("DOMContentLoaded", ()=>{
+    // populate後に効くよう、少し遅らせて2回実行
+    setUnselected();
+    setTimeout(setUnselected, 0);
+    setTimeout(setUnselected, 50);
+    setTimeout(setUnselected, 200);
+  });
+
+  // 一括クリア時も必ず未選択へ
+  function onClearFix(){
+    setTimeout(setUnselected, 0);
+    setTimeout(setUnselected, 50);
+    setTimeout(setUnselected, 200);
+    // resultも空
+    const r = document.getElementById("result");
+    if(r) r.value = "";
+  }
+  const c1 = document.getElementById("clearAll");
+  const c2 = document.getElementById("clearAllWide");
+  if(c1) c1.addEventListener("click", onClearFix, true);
+  if(c2) c2.addEventListener("click", onClearFix, true);
+})();

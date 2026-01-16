@@ -466,30 +466,13 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* =========================
-   v5.5 背景色統一：#e6f7f7
-   対象：AI初心者向けツール / 人気テンプレ / タブ / 出力の書き方（見た目）
+   v5.4.1 選択中背景をミントに変更（タブ/出力形式）
    ========================= */
-:root{
-  --mint-bg:#e6f7f7;
+#exampleTabs .exTab.active{
+  background: #e6f7f7 !important;
 }
 
-/* AI初心者向けツール（バッジ） / 人気テンプレ（バッジ） */
-.badge{
-  background: var(--mint-bg) !important;
-}
-
-/* 人気テンプレ全体 */
-.examples{
-  background: var(--mint-bg) !important;
-  border: 1px solid #cfeeee !important;
-}
-
-/* 人気テンプレ：タブ（非選択） */
-#exampleTabs .exTab{
-  background: var(--mint-bg) !important;
-}
-
-/* 出力の書き方（見た目）ボタン（非選択） */
-#formatButtons .formatBtn{
-  background: var(--mint-bg) !important;
+#formatButtons .formatBtn.isActive,
+#formatButtons .formatBtn.active{
+  background: #e6f7f7 !important;
 }

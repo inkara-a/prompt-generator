@@ -1,4 +1,4 @@
-const BUILD_ID = "v20260116al-mint-selected-excard";
+const BUILD_ID = "v20260116am-format-placeholder-fixed";
 let data = null;
 const el = (id) => document.getElementById(id);
 
@@ -271,7 +271,8 @@ function initPurposes() {
     purpose.appendChild(opt);
   }
   goal.placeholder = `例：${purpose.value} をやりたい（具体的に）`;
-  format.placeholder = `例：用途「${purpose.value}」に合う出力構成（番号付き）`;
+  // 初期プレースホルダーは固定（初心者が迷わないように具体例を表示）
+  format.placeholder = "例：1.方針 2.コード全文 3.使い方 4.注意点";
   autoPreview();
 }
 

@@ -581,8 +581,9 @@ textarea{min-height:92px; resize:vertical;}
 
 /* v5.7.24-stable: selected popular template */
 .exCard.selected{
-  border-color: var(--coral) !important;
-  background: var(--coral-bg) !important;
-  box-shadow: 0 0 0 2px rgba(255,127,80,.20), 0 8px 18px rgba(0,0,0,0.08);
+  border-color: #00a2a1 !important;
+  background: #e6f7f7 !important;
+  box-shadow: 0 0 0 2px rgba(0,162,161,.18), 0 8px 18px rgba(0,0,0,0.08);
 }
+
 

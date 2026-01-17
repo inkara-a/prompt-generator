@@ -1,4 +1,4 @@
-const BUILD_ID = "v20260116ak-stable-ui";
+const BUILD_ID = "v20260116al-mint-selected-excard";
 let data = null;
 const el = (id) => document.getElementById(id);
 

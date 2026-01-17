@@ -1,6 +1,4 @@
-v20260116ak-stable-ui;
-
-
+const BUILD_ID = "v20260116ak-stable-ui";
 let data = null;
 const el = (id) => document.getElementById(id);
 

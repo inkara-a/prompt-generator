@@ -1,4 +1,4 @@
-const BUILD_ID = 'v20260116ai-initial-empty-visual-bullets';
+const BUILD_ID = 'v20260116al-testfix-fixall';
 
 
 let data = null;
@@ -38,6 +38,17 @@ const clearVarsBtn = el("clearVars");
 const varListEl = el("varList");
 
 let lastFocusedField = null;
+
+// v5.7.24-testfix: focus reset（ボタン等を押した後に古い入力欄へ挿入されるのを防ぐ）
+document.addEventListener('click', (e) => {
+  const t = e.target;
+  if (!t) return;
+  const tag = (t.tagName || '').toLowerCase();
+  if (tag !== 'input' && tag !== 'textarea') {
+    lastFocusedField = null;
+  }
+});
+
 const VARS_KEY = "pg_vars_v1";
 
 let examples = [];
@@ -92,8 +103,7 @@ function renderExampleTabs() {
       renderExampleTabs();
       renderExampleButtons();
       // テンプレ選択で出力形式などが変わるので再初期化
-      initFormatButtons();
-      updateStepChecks && updateStepChecks();
+try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
     });
     tabsEl.appendChild(b);
   });
@@ -346,6 +356,8 @@ function buildPrompt() {
   out += section("状況・素材", context.value, useMd);
   out += section("守ってほしいルール", constraints.value, useMd);
   out += section("ほしい出力の形", format.value, useMd);
+  // v5.7.24-testfix: テンプレ固有の出力項目（outputContent）をプロンプトに含める
+  out += section("出してほしい内容（テンプレの中身）", (outputContent && outputContent.value) || "", useMd);
 
   out += buildVarsSection(useMd);
   out += useMd ? `# 用途テンプレ\n${base}\n\n` : `用途テンプレ\n${base}\n\n`;
@@ -383,6 +395,18 @@ function flash(btn) {
 }
 
 async function doCopy() {
+// v5.7.24-testfix: 空コピー防止（初回ロードで空欄のままコピーを押してもダミー生成しない）
+const roleTxt = (el("role")?.value || "").trim();
+const goalTxt = (el("goal")?.value || "").trim();
+const reqTxt  = (el("request")?.value || "").trim();
+const hasAny = (roleTxt.length + goalTxt.length + reqTxt.length) > 0;
+if (!hasAny) {
+  // 生成もコピーもしない（安心感のフィードバックだけ出す）
+  const st = el("copyState");
+  if (st) st.textContent = "まずは内容を入力してからコピーしてね";
+  return "";
+}
+
   const text = buildPrompt();
   result.value = text;
   try {
@@ -509,12 +533,8 @@ function renderExampleButtons() {
       
     // 人気テンプレを最初に選んだときは「出力の書き方」をデフォルトで箇条書きにする（不自然さ防止）
     try {
-      const wrap = document.getElementById("formatButtons");
-      const formatEl = document.getElementById("format");
-      const hasSelected = wrap && (wrap.dataset.selected || "");
-      if (wrap && formatEl && !hasSelected && !formatEl.value.trim()) {
-        const btn = wrap.querySelector('.formatBtn[data-key="bullets"]');
-        if (btn) btn.click();
+      if (window.__setBulletsSelected) {
+        window.__setBulletsSelected({ forceText: false, setText: true, dispatch: true });
       }
     } catch(e) {}
 }
@@ -534,39 +554,6 @@ renderVars();
 setAdvancedFromSmart();
 loadTemplates();
 
-
-// v7.7.1 出力形式：アイコンボタンで「出力の希望」を自動入力（初心者向け）
-function initFormatButtons() {
-  const wrap = el("formatButtons");
-  if (!wrap) return;
-
-  const presets = {
-    bullets: "出力は箇条書きで、見出し→箇条書きで読みやすくしてください。",
-    mail: "出力はメール形式で、件名→本文の順に、そのまま送れる丁寧な敬語で作ってください。",
-    table: "出力は「比較表」で、項目ごとに見やすく整理してください。",
-    steps: "出力は手順（ステップ）形式で、1→2→3…の番号付きで書いてください。"
-  };
-
-  const setActive = (key) => {
-    wrap.querySelectorAll(".formatBtn").forEach(b => b.classList.toggle("active", (b.dataset.key || "") === (key || "")));
-    wrap.dataset.selected = key || "";
-  };
-
-  wrap.querySelectorAll(".formatBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const key = btn.dataset.key || "";
-      if (format) {
-        format.value = presets[key] || "";
-        autoPreview();
-      }
-      setActive(key);
-    });
-  });
-
-  if (format) {
-    format.addEventListener("input", () => setActive(""));
-  }
-}
 
 
 
@@ -639,7 +626,17 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     const role = document.getElementById("role");
     const goal = document.getElementById("goal");
     const request = document.getElementById("request");
-    const step2ok = isFilled(role && role.value) || isFilled(goal && goal.value) || isFilled(request && request.value);
+        const contextEl = document.getElementById("context");
+    const constraintsEl = document.getElementById("constraints");
+    const outputEl = document.getElementById("outputContent");
+    const formatEl = document.getElementById("format");
+    const step2ok = isFilled(role && role.value)
+      || isFilled(goal && goal.value)
+      || isFilled(contextEl && contextEl.value)
+      || isFilled(constraintsEl && constraintsEl.value)
+      || isFilled(outputEl && outputEl.value)
+      || isFilled(formatEl && formatEl.value)
+      || isFilled(request && request.value);
 
     // Step3: 出力の書き方 or 出してほしい内容 のどちらかが入っていれば
     const format = document.getElementById("format");
@@ -656,6 +653,9 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
       b.classList.toggle("on", !!map[n]);
     });
   }
+
+  // v5.7.24-testfix: 外部から再判定できるように公開
+  try{ window.__updateStepChecks = updateStepChecks; }catch(e){}
   // expose for other auto-fill actions
   window.__updateStepChecks = updateStepChecks;
 
@@ -666,8 +666,7 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
       on(el,"change",updateStepChecks);
     });
     // 例テンプレクリック等でも更新されるので少し遅延して再判定
-    setTimeout(updateStepChecks, 200);
-    setTimeout(updateStepChecks, 800);
+    setTimeout(updateStepChecks, 0);
   }
 
   if (document.readyState === "loading") {
@@ -712,6 +711,8 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     }
   }
 
+  try{ window.__setBulletsSelected = setBulletsSelected; }catch(e){}
+
   function bind(){
     const formatEl = document.getElementById("format");
     if (formatEl){
@@ -720,16 +721,7 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
     }
 
     // 例ボタンは構造が変わりやすいので、document全体でクリック委譲
-    document.addEventListener("click", (e) => {
-      const t = e.target;
-      const exampleBtn = t && t.closest ? t.closest(".exCard, .exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
-      if (!exampleBtn) return;
-
-      // 既存処理（テンプレ適用）が先に走ることがあるので少し遅らせて反映
-      setTimeout(() => setBulletsSelected({forceText:false, setText:true, dispatch:true}), 0);
-      setTimeout(() => setBulletsSelected({forceText:false, setText:true, dispatch:true}), 80);
-    });
-
+    
     // 初回ロード直後にも「未選択」感を消す（任意）
     // ただし初回は "自動生成" を発火させないため、テキスト挿入＆dispatchはしない
     setTimeout(() => setBulletsSelected({forceText:false, setText:false, dispatch:false}), 400);
@@ -742,91 +734,6 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
   }
 })();
 
-
-/* v8.3.2 テンプレ適用後にStepチェックも更新（自動入力で緑にならない問題対策） */
-(function stepChecksAfterTemplatePick(){
-  function trigger(){
-    try{window.__updateStepChecks && window.__updateStepChecks();}catch(e){}
-  }
-  document.addEventListener("click", (e) => {
-    const btn = e.target && e.target.closest ? e.target.closest(".exCard, .exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
-    if (!btn) return;
-    setTimeout(trigger, 0);
-    setTimeout(trigger, 120);
-    setTimeout(trigger, 400);
-  });
-})();
-
-
-/* v8.3.3 Step2の✓が緑にならない問題を確実に解消（テンプレ自動入力を考慮）
-   - Step2は「AIの立場/やりたいこと/状況・素材/守ってほしいルール/追加のお願い」のどれかが埋まればOK
-   - 人気テンプレクリック後に入力イベント＋再判定を強制
-*/
-(function stepCheckHardFix_v833(){
-  function $(id){ return document.getElementById(id); }
-  function filled(v){ return (v || "").toString().trim().length > 0; }
-
-  function compute(){
-    const cat = $("category"), purpose = $("purpose");
-    const role = $("role"), goal = $("goal"), context = $("context"), constraints = $("constraints"), request = $("request");
-    const format = $("format"), outputContent = $("outputContent");
-    const result = $("result");
-
-    const step1ok = !!(cat && cat.value && cat.value !== "none") && !!(purpose && purpose.value && purpose.value !== "none");
-    const step2ok = filled(role && role.value) || filled(goal && goal.value) || filled(context && context.value) || filled(constraints && constraints.value) || filled(request && request.value);
-    const step3ok = filled(format && format.value) || filled(outputContent && outputContent.value);
-    const step4ok = filled(result && result.value);
-
-    return {1:step1ok,2:step2ok,3:step3ok,4:step4ok};
-  }
-
-  function apply(){
-    const map = compute();
-    document.querySelectorAll(".stepCheck").forEach(el => {
-      const n = Number(el.getAttribute("data-step")||"0");
-      el.classList.toggle("on", !!map[n]);
-    });
-  }
-
-  function fireInput(el){
-    if (!el) return;
-    el.dispatchEvent(new Event("input", { bubbles: true }));
-    el.dispatchEvent(new Event("change", { bubbles: true }));
-  }
-
-  function afterTemplatePick(){
-    // 自動入力はイベントが出ないことがあるので、主要フィールドに入力イベントを強制
-    ["role","goal","context","constraints","request","format","outputContent"].forEach(id => fireInput($(id)));
-    // 判定も複数回（反映タイミング差を吸収）
-    setTimeout(apply, 0);
-    setTimeout(apply, 120);
-    setTimeout(apply, 400);
-  }
-
-  function bind(){
-    ["category","purpose","role","goal","context","constraints","request","format","outputContent","result"].forEach(id => {
-      const el = $(id);
-      if (!el) return;
-      el.addEventListener("input", apply);
-      el.addEventListener("change", apply);
-    });
-
-    // 人気テンプレ/例ボタン類のクリックを拾う
-    document.addEventListener("click", (e) => {
-      const btn = e.target && e.target.closest ? e.target.closest(".exCard, .exampleBtn, [data-example-id], .templateBtn, .popularTemplate") : null;
-      if (!btn) return;
-      afterTemplatePick();
-    });
-
-    // 初回
-    setTimeout(apply, 200);
-    // expose
-    window.__applyStepChecks = apply;
-  }
-
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind);
-  else bind();
-})();
 
 
 
@@ -844,48 +751,6 @@ function setCopyFeedback(btn, text){
 }
 
 
-// v5.6 COPY_HANDLER: unified copy buttons feedback (non-breaking)
-(function(){
-  const res = document.getElementById('result');
-  function doCopy(btn){
-    if(!res) return;
-    const txt = res.value || res.textContent || '';
-    if(!txt.trim()) return;
-    const ok = () => setCopyFeedback(btn, 'コピーしました！ ✅');
-    const ng = () => setCopyFeedback(btn, 'コピー失敗…');
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(txt).then(ok).catch(()=>{
-        try{
-          const ta = document.createElement('textarea');
-          ta.value = txt;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-          ok();
-        }catch(e){ ng(); }
-      });
-    }else{
-      try{
-        const ta = document.createElement('textarea');
-        ta.value = txt;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        ok();
-      }catch(e){ ng(); }
-    }
-  }
-  const btn1 = document.getElementById('copy');
-  const btn2 = document.getElementById('copyBig');
-  if(btn1){
-    btn1.addEventListener('click', ()=> doCopy(btn1), {capture:true});
-  }
-  if(btn2){
-    btn2.addEventListener('click', ()=> doCopy(btn2), {capture:true});
-  }
-})();
 
 
 // v5.7.23: 操作した瞬間から自動生成を開始
@@ -897,4 +762,25 @@ function setCopyFeedback(btn, text){
   if (!node) return;
   node.addEventListener("input", () => { markInteracted_v5723(); autoPreview(); }, { passive: true });
   node.addEventListener("change", () => { markInteracted_v5723(); autoPreview(); }, { passive: true });
+});
+
+// data-bind-copy-v5724: single source of truth for copy buttons
+(function bindCopyButtons(){
+  const c = el("copy");
+  const b = el("copyBig");
+  const handler = async (ev)=>{ ev && ev.preventDefault && ev.preventDefault(); const msg = await doCopy();
+    // optional: setCopyFeedback if available
+    try{ if(msg && ev && ev.currentTarget) setCopyFeedback(ev.currentTarget, msg + ' ✅'); }catch(e){}
+  };
+  if(c) c.addEventListener('click', handler);
+  if(b) b.addEventListener('click', handler);
+})();
+
+// clearLastFocusOnDocClick_v5724
+document.addEventListener('click', (e)=>{
+  const t = e.target;
+  if(!t) return;
+  const tag = (t.tagName||'').toLowerCase();
+  if(tag==='input' || tag==='textarea') return;
+  lastFocusedField = null;
 });

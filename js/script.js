@@ -37,16 +37,6 @@ const varListEl = el("varList");
 
 let lastFocusedField = null;
 
-// v5.7.24-testfix: focus reset（ボタン等を押した後に古い入力欄へ挿入されるのを防ぐ）
-document.addEventListener('click', (e) => {
-  const t = e.target;
-  if (!t) return;
-  const tag = (t.tagName || '').toLowerCase();
-  if (tag !== 'input' && tag !== 'textarea') {
-    lastFocusedField = null;
-  }
-});
-
 const VARS_KEY = "pg_vars_v1";
 
 let examples = [];
@@ -420,9 +410,6 @@ if (!hasAny) {
   return text;
 }
 
-el("copy") && el("copy").addEventListener("click", async (e) => { await doCopy(); flash(e.currentTarget); });
-el("copyBig") && el("copyBig").addEventListener("click", async (e) => { await doCopy(); flash(e.currentTarget); });
-
 el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
   await doCopy();
   window.open("https://chat.openai.com/", "_blank");
@@ -774,7 +761,7 @@ function setCopyFeedback(btn, text){
   const b = el("copyBig");
   const handler = async (ev)=>{ ev && ev.preventDefault && ev.preventDefault(); const msg = await doCopy();
     // optional: setCopyFeedback if available
-    try{ if(msg && ev && ev.currentTarget) setCopyFeedback(ev.currentTarget, msg + ' ✅'); }catch(e){}
+    try{ if(ev && ev.currentTarget) setCopyFeedback(ev.currentTarget, "コピーしました ✅"); }catch(e){}
   };
   if(c) c.addEventListener('click', handler);
   if(b) b.addEventListener('click', handler);
@@ -784,7 +771,6 @@ function setCopyFeedback(btn, text){
 document.addEventListener('click', (e)=>{
   const t = e.target;
   if(!t) return;
-  const tag = (t.tagName||'').toLowerCase();
-  if(tag==='input' || tag==='textarea') return;
+  if(t.closest && t.closest("input, textarea")) return;
   lastFocusedField = null;
 });

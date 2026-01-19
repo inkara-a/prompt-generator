@@ -32,8 +32,17 @@ body{
 h2{margin:0 0 12px; font-size:18px}
 h3{margin:16px 0 8px; font-size:14px; color:#374151}
 label{display:block;margin-top:12px;font-weight:600;font-size:13px;color:#111827}
-select, textarea, input, button{
+select, textarea, input{
   width:100%;
+  margin-top:8px;
+  padding:10px;
+  box-sizing:border-box;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+}
+button{
+  width:auto;
   margin-top:8px;
   padding:10px;
   box-sizing:border-box;
@@ -47,6 +56,9 @@ textarea{min-height:92px; resize:vertical;}
 .buttons button{flex:1; border:none; cursor:pointer; font-weight:800;}
 #generate{background:#2563eb;color:#fff;}
 .secondary{background:#e5e7eb;color:#111827;}
+.copyMain, #copy, #clearAll{
+  width:100%;
+}
 .opts{display:flex; flex-direction:column; gap:8px; margin-top:8px;}
 .opt{font-weight:600; color:#374151; display:flex; gap:8px; align-items:center;}
 .opt input{width:auto; margin:0;}

@@ -1,0 +1,619 @@
+body{
+  background:#f4f6f8;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color:#111827;
+}
+.container{
+  max-width:1100px;
+  margin:24px auto;
+  padding:0 16px;
+}
+.header{
+  background:#fff;
+  padding:18px 20px;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.header h1{margin:0;}
+.sub{margin:6px 0 0; color:#6b7280; font-size:13px}
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:16px;
+  margin-top:16px;
+}
+.card{
+  background:#fff;
+  padding:18px 18px 16px;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.card.wide{grid-column:1 / -1;}
+
+/* STEP1 横長：上段は項目を横並び（PC） */
+.step1Fields{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+.step1Fields .field label{
+  margin-top:0;
+}
+@media (max-width: 900px){
+  .step1Fields{grid-template-columns:1fr;}
+}
+h2{margin:0 0 12px; font-size:18px}
+h3{margin:16px 0 8px; font-size:14px; color:#374151}
+label{display:block;margin-top:12px;font-weight:600;font-size:13px;color:#111827}
+select, textarea, input{
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  box-sizing:border-box;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+}
+button{
+  width:auto;
+  margin-top:8px;
+  padding:10px;
+  box-sizing:border-box;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  font-size:14px;
+}
+textarea{min-height:92px; resize:vertical;}
+#result{min-height:320px;}
+.buttons{display:flex; gap:10px; margin-top:12px;}
+.buttons button{flex:1; border:none; cursor:pointer; font-weight:800;}
+#generate{background:#2563eb;color:#fff;}
+.secondary{background:#e5e7eb;color:#111827;}
+.copyMain, #copy, #clearAll{
+  width:100%;
+}
+.opts{display:flex; flex-direction:column; gap:8px; margin-top:8px;}
+.opt{font-weight:600; color:#374151; display:flex; gap:8px; align-items:center;}
+.opt input{width:auto; margin:0;}
+.hint{color:#6b7280;font-size:13px;margin-top:10px}
+.footer{margin:18px 0 8px; color:#6b7280; text-align:center}
+@media (max-width: 900px){
+  .grid{grid-template-columns: 1fr;}
+}
+
+/* Step1 should stay horizontal while the page is still in 2-column layout (desktop) */
+@media (min-width: 901px){
+  .step1Fields{display:flex; gap:12px;}
+  .step1Fields .field{flex:1 1 0; min-width:0;}
+}
+
+.desc{color:#6b7280;font-size:13px;margin:6px 0 12px; line-height:1.5}
+.mono{font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:#f3f4f6; padding:2px 6px; border-radius:6px; color:#111827}
+.varRow{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+.varList{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+.chip{
+  display:inline-flex; align-items:center; gap:8px;
+  background:#f3f4f6; border:1px solid #e5e7eb;
+  padding:6px 10px; border-radius:999px; cursor:pointer;
+  font-weight:700; font-size:13px;
+}
+.chip small{font-weight:600; color:#6b7280}
+.chip .x{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:18px; height:18px; border-radius:999px;
+  background:#e5e7eb; color:#111827; font-weight:900;
+}
+#insertVar{background:#111827;color:#fff;}
+@media (max-width: 900px){
+  .varRow{grid-template-columns: 1fr;}
+}
+
+
+/* v5 additions */
+.examples{margin-top:14px}
+.badge{display:inline-block;background: var(--brand);color: #fff;font-weight:900;padding:6px 10px;border-radius:999px;font-size:12px}
+.exTitle{margin:10px 0 4px;font-size:18px}
+.exSub{margin:0;color:#6b7280;font-size:13px}
+.exGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.exCard{
+  background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px 12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06); cursor:pointer;
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+.exCard:hover{transform:translateY(-1px); box-shadow:0 10px 28px rgba(0,0,0,.08)}
+.exCard h3{margin:0 0 6px;font-size:14px}
+.exCard p{margin:0;color:#6b7280;font-size:12px;line-height:1.4}
+.step{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.stepNo{background: var(--brand);color: #fff;font-weight:900;border-radius:999px;padding:6px 10px;font-size:12px}
+.stepText{font-weight:900}
+.smartRow{margin-top:14px;padding:12px;border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
+.bigOpt{font-size:15px}
+.copyBar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.copyMain{background:#111827;color:#fff;border:none;padding:12px 12px;border-radius:12px;font-weight:900;cursor:pointer}
+.copyState{color:#6b7280;font-weight:800}
+.copyBig{background:#16a34a;color:#fff;border:none;border-radius:12px;font-weight:900;cursor:pointer}
+.flash{animation: flash .6s ease;}
+@keyframes flash{0%{transform:scale(1);}35%{transform:scale(1.02);}100%{transform:scale(1);}}
+@media (max-width: 900px){.exGrid{grid-template-columns:1fr}}
+
+
+/* v6 additions */
+.buttons{flex-wrap:wrap}
+
+
+/* v7 - example tabs */
+.exTabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.exTab{
+  border:1px solid #e5e7eb;
+  background:#fff;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:900;
+  font-size:12px;
+  cursor:pointer;
+}
+.exTab.active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+}
+
+
+/* v7.7.1 - visual output format buttons */
+.formatButtons{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px}
+.formatBtn{
+  border:1px solid #e5e7eb;
+  background:#fff;
+  border-radius:12px;
+  padding:10px 12px;
+  font-weight:900;
+  font-size:13px;
+  cursor:pointer;
+}
+.formatBtn.active{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+}
+.smallHint{font-size:12px;color:#6b7280;margin-bottom:8px}
+
+/* v7.7.1 - paste guide */
+.pasteGuide{margin-top:10px;padding:10px 12px;border:1px dashed #e5e7eb;border-radius:14px;background:#fafafa}
+.pasteGuideText{font-weight:900;margin-bottom:8px}
+.aiLinks{display:flex;flex-wrap:wrap;gap:8px}
+.aiLink{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid #e5e7eb;background:#fff;border-radius:999px;
+  padding:8px 12px;font-weight:900;font-size:13px;text-decoration:none;color:#111827;
+}
+.aiLink:hover{transform:translateY(-1px)}
+
+/* v8 - split output fields */
+#outputContent{min-height:120px}
+
+
+/* v8.2 - SVG icons (cross-platform) */
+.formatBtn{display:inline-flex;align-items:center;gap:8px}
+.formatBtn .fi{width:18px;height:18px;display:inline-block}
+.formatBtn .fi path{stroke:currentColor}
+.formatBtn .fitxt{display:inline-block}
+
+/* v8.2 - step checkmarks */
+.stepCheck{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  border-radius:999px;
+  border:2px solid #d1d5db;
+  background:#fff;
+  color:#9ca3af;
+  font-weight:900;
+  font-size:14px;
+  vertical-align:middle;
+  opacity:1;
+  transform:scale(1);
+  margin-left:10px;
+}
+.stepCheck.on{
+  border-color:#10b981;
+  background:#10b981;
+  color:#ffffff;
+  box-shadow:0 6px 18px rgba(16,185,129,.25);
+}
+
+/* v9 - buttons moved under result */
+.buttonsUnderResult{display:flex;gap:10px;margin:12px 0 0}
+.buttonsUnderResult .secondary{flex:1}
+@media (max-width: 900px){
+  .buttonsUnderResult{flex-direction:column}
+}
+
+
+/* v9 UI tweaks */
+.topBadge{display:inline-flex;align-items:center;gap:.5rem;padding:6px 12px;border-radius:999px;background:rgba(0,162,161,.12);color:#00a2a1;font-weight:700;font-size:12px;border:1px solid rgba(0,162,161,.18);margin-bottom:10px}
+
+
+/* --- Popular template tabs: icon + short label --- */
+.exTab{display:inline-flex;align-items:center;gap:8px}
+.exTab .tabIcon{display:inline-flex;align-items:center;justify-content:center}
+.exTab .tabIcon svg{width:16px;height:16px}
+.exTab .tabLabel{white-space:nowrap}
+
+
+
+/* === UI polish: tabs compact + headings color to brand teal === */
+:root{
+  --brand:#00a2a1;
+  --brand-weak: rgba(0,162,161,.12);
+  --brand-line: rgba(0,162,161,.25);
+}
+
+/* Badge (人気テンプレなど) を見出し.pngの雰囲気に */
+.badge{
+  background: var(--brand);
+  color: #fff;
+  border: 1px solid var(--brand-line) !important;
+  font-weight: 900 !important;
+}
+
+/* STEP見出し（黒→ブランド色） */
+.stepNo{
+  background: var(--brand);
+  color: #fff;
+  border: 1px solid var(--brand-line) !important;
+  font-weight: 900 !important;
+}
+
+/* 人気テンプレのタブをモックtabu.pngみたいにコンパクトに */
+.exTabs{
+  gap: 10px !important;
+  margin-top: 12px !important;
+}
+.exTab{
+  padding: 6px 10px !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  border-radius: 999px !important;
+  line-height: 1 !important;
+}
+.exTab .tabIcon svg{
+  width: 16px !important;
+  height: 16px !important;
+}
+.exTab .tabLabel{
+  letter-spacing: .02em;
+}
+
+/* タブが長く見えないように余白を抑える */
+.exTab{gap:8px !important;}
+
+
+/* Compact exTabs pills */
+.exTabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.exTab{
+  padding:6px 10px !important;
+  border-radius:999px !important;
+  font-size:13px !important;
+  line-height:1 !important;
+}
+.exTab .tabIcon svg{width:14px;height:14px}
+.exGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width: 640px){
+  .exGrid{grid-template-columns:1fr}
+}
+
+/* =========================
+   人気テンプレ：タブをモックみたいに短く（強制上書き）
+   ========================= */
+#exampleTabs{
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  margin-top: 10px !important;
+}
+
+#exampleTabs .exTab{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+
+  font-size: 13px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+
+  min-height: 32px !important;
+  border: 1px solid #e5e7eb !important;
+  background: #fff !important;
+}
+
+#exampleTabs .exTab .tabIcon{
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#exampleTabs .exTab .tabIcon svg{
+  width: 14px !important;
+  height: 14px !important;
+}
+
+#exampleTabs .exTab.active{
+  border-color: rgba(0,162,161,.55) !important;
+  box-shadow: 0 0 0 4px rgba(0,162,161,.12) !important;
+}
+
+/* =========================
+   人気テンプレ：タブをモックみたいに短く（さらに強制）
+   ========================= */
+#exampleTabs button,
+#exampleTabs .exTab{
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+}
+
+/* =========================
+   v5.1 さらに強制：タブが縦並びになる/横に詰まらない問題を潰す
+   （ボタンが width:100% や flex:1 を持っていても負けないように）
+   ========================= */
+#exampleTabs, .exTabs{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:8px !important;
+}
+
+#exampleTabs .exTab{
+  width:auto !important;
+  max-width:none !important;
+  flex:0 0 auto !important;   /* ← ここが肝：均等伸長を無効化 */
+}
+
+#exampleTabs .exTab .tabLabel{
+  display:inline-block !important;
+}
+
+/* =========================
+   v5.3 コーラル薄塗り＋太枠＋軽い浮き（タブ/出力形式/コピー）
+   ========================= */
+:root{
+  --coral:#FF7F50;
+  --coral-bg:#FFF1EA;
+  --coral-text:#111111;
+  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
+}
+
+/* 人気テンプレ：選択中 */
+#exampleTabs .exTab.active{
+  border-color: var(--coral) !important;
+  background: var(--coral-bg) !important;
+  color: var(--coral-text) !important;
+  box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+#exampleTabs .exTab.active .tabIcon svg{ color: var(--coral-text) !important; }
+
+/* 出力の書き方（見た目）：選択中 */
+#formatButtons .formatBtn.isActive,
+#formatButtons .formatBtn.active{
+  border-color: var(--coral) !important;
+  background: var(--coral-bg) !important;
+  color: var(--coral-text) !important;
+  box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+#formatButtons .formatBtn.isActive svg,
+#formatButtons .formatBtn.active svg{ color: var(--coral-text) !important; }
+
+/* メインCTA：コピーしてChatGPTに貼り付ける（STEP2/STEP3どちらにも効かせる） */
+.copyMain, .copyBig, #copyBig, #copy{
+  background: var(--coral) !important;
+  border: 2px solid var(--coral) !important;
+  color: #fff !important;
+  box-shadow: var(--lift-shadow) !important;
+}
+.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover{
+  transform: translateY(-1px);
+}
+
+/* タブ/ボタンの非選択状態は上品に */
+#exampleTabs .exTab{
+  border-width: 1px !important;
+}
+
+/* =========================
+   v5.4 改善セット
+   1) 選択中だけ #00a2a1 を混ぜる（枠線をティール寄せ）
+   3) ボタンとタブの差別化（コピーは #00a2a1 ベタ）
+   4) タブ/ボタンの角丸は 12px に統一
+   ========================= */
+:root{
+  --teal:#00a2a1;
+  --coral-bg:#FFF1EA;
+  --ink:#111111;
+  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
+}
+
+/* --- (4) 角丸：タブ/ボタンは 12px --- */
+#exampleTabs .exTab,
+#formatButtons .formatBtn,
+.copyMain, .copyBig, #copyBig, #copy,
+.secondary, #openChatGPT, #clearAll{
+  border-radius: 12px !important;
+}
+
+/* --- (1) 選択中タブ：コーラル薄塗り + 枠をティール寄せ --- */
+#exampleTabs .exTab.active{
+  border-color: var(--teal) !important;
+  background: var(--coral-bg) !important;
+  color: var(--ink) !important;
+  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+
+#exampleTabs .exTab.active .tabIcon svg{
+  color: var(--ink) !important;
+}
+
+/* --- 出力形式ボタン：選択中 --- */
+#formatButtons .formatBtn.isActive,
+#formatButtons .formatBtn.active{
+  border-color: var(--teal) !important;
+  background: var(--coral-bg) !important;
+  color: var(--ink) !important;
+  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* --- (3) コピーはティールで最強CTA --- */
+.copyMain, .copyBig, #copyBig, #copy{
+  background: var(--teal) !important;
+  border: 2px solid var(--teal) !important;
+  color:#fff !important;
+  box-shadow: var(--lift-shadow) !important;
+}
+
+/* サブボタンは控えめ */
+.secondary, #openChatGPT, #clearAll{
+  background:#fff !important;
+  border:1px solid #e5e7eb !important;
+  color:#0f172a !important;
+}
+
+/* hover演出 */
+.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover,
+#exampleTabs .exTab:hover,
+#formatButtons .formatBtn:hover{
+  transform: translateY(-1px);
+}
+
+/* =========================
+   v5.4.1 選択中背景をミントに変更（タブ/出力形式）
+   ========================= */
+#exampleTabs .exTab.active{
+  background: #e6f7f7 !important;
+}
+
+#formatButtons .formatBtn.isActive,
+#formatButtons .formatBtn.active{
+  background: #e6f7f7 !important;
+}
+
+/* =========================
+   v5.6 UX改善
+   (3) コピー完了フィードバック
+   (4) 生成プロンプトの強調
+   (5) AIリンクをコピー直下に配置
+   ========================= */
+.resultLabel{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#e6f7f7;
+  border:1px solid rgba(0,162,161,.22);
+  color:#0f172a;
+  font-weight:800;
+  font-size:12.5px;
+  margin: 8px 0 10px;
+}
+
+#result{
+  background:#f2fbfb !important;
+  border:1px solid rgba(0,162,161,.25) !important;
+}
+
+.aiLinksBar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin: 10px 0 8px;
+}
+
+.aiMini{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 10px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  color:#0f172a;
+  font-weight:800;
+  font-size:13px;
+  text-decoration:none;
+}
+
+.aiMini:hover{
+  transform: translateY(-1px);
+}
+
+.copyMain.isCopied, .copyBig.isCopied, #copyBig.isCopied, #copy.isCopied{
+  filter: brightness(0.95);
+}
+
+/* =========================
+   v5.7 STEP3 重複削減＆導線強化
+   - ガイド文を目立たせる
+   - 一括クリアを結果幅いっぱい
+   ========================= */
+.copyArea{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.copyGuideStrong{
+  padding:10px 12px;
+  border-radius:12px;
+  background:#e6f7f7;
+  border:1px solid rgba(0,162,161,.28);
+  color:#0f172a;
+  font-weight:900;
+  font-size:13.5px;
+}
+
+.clearWide{
+  width:100%;
+  margin-top:10px;
+  padding:12px 14px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  font-weight:900;
+  cursor:pointer;
+}
+.clearWide:hover{
+  transform: translateY(-1px);
+}
+
+/* =========================
+   v5.7.1 ガイド文：強調ボックスをやめて“さりげなく目立たせる”
+   ========================= */
+.copyGuideStrong{
+  background: transparent !important;
+  border: 0 !important;
+  border-left: 4px solid rgba(0,162,161,.55) !important;
+  padding: 6px 10px !important;
+  border-radius: 0 !important;
+  font-weight: 900 !important;
+  color:#0f172a !important;
+}
+
+/* v5.7.24-stable: selected popular template */
+.exCard.selected{
+  border-color: #00a2a1 !important;
+  background: #e6f7f7 !important;
+  box-shadow: 0 0 0 2px rgba(0,162,161,.18), 0 8px 18px rgba(0,0,0,0.08);
+}
+
+

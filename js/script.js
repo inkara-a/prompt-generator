@@ -582,7 +582,11 @@ function renderExampleButtons() {
       autoPreview();
       try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
 
-      try{ const step1 = document.querySelector(".step.step1"); if(step1) smoothScrollTo(step1, -16); }catch(e){}
+      try{
+        const presetEl = document.getElementById("preset");
+        const target = presetEl ? presetEl : (document.querySelector(".step1Wide") || document.querySelector("#step1"));
+        if(target) smoothScrollTo(target, -24);
+      }catch(e){}
 
     });
     grid.appendChild(card);

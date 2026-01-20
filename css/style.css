@@ -663,12 +663,13 @@ textarea{min-height:92px; resize:vertical;}
 
 .chapinavi-brand__name{
   font-weight: 800;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: .02em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 60vw;
+  color: rgba(0,0,0,.78);
 }
 
 .chapinavi-nav{
@@ -747,9 +748,34 @@ textarea{min-height:92px; resize:vertical;}
   display: block;
 }
 
+/* Main title hierarchy */
+.chapinavi-title__main{
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1.15;
+}
+
+.chapinavi-title__brand{
+  font-weight: 700;
+  font-size: 16px;
+  color: #666666;
+  white-space: nowrap;
+}
+
+/* Sub catch copy: keep it supportive, not dominant */
+.header .sub{
+  color: #666666;
+  font-size: 14px;
+}
+
 /* SP: サイト名を詰める */
 @media (max-width: 720px){
   .chapinavi-brand__name{ max-width: 70vw; }
+  .chapinavi-header__inner{ padding: 8px 12px; }
+  .chapinavi-brand__logoBox{ width: 44px; height: 44px; }
+  .chapinavi-title__main{ font-size: 24px; }
+  .chapinavi-title__brand{ font-size: 13px; }
+  .header .sub{ font-size: 13px; }
 }
 
 

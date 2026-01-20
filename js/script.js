@@ -1,6 +1,12 @@
 const BUILD_ID = "v20260116am-format-placeholder-fixed";
 let data = null;
 const el = (id) => document.getElementById(id);
+// Smooth scroll helper (offset-aware)
+function smoothScrollTo(elm, offsetPx = -12) {
+  if (!elm || !elm.getBoundingClientRect) return;
+  const top = elm.getBoundingClientRect().top + window.scrollY + offsetPx;
+  window.scrollTo({ top, behavior: "smooth" });
+}
 
 
 
@@ -480,7 +486,10 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   autoPreview();
 
   // 先頭の入力にフォーカス
-  role.focus();
+  try{ role.focus({ preventScroll: true }); }catch(e){ try{ role.focus(); }catch(_e){} }
+  // After clear, bring "人気テンプレ" back into view
+  try{ const ex = document.querySelector(".examples"); if(ex) smoothScrollTo(ex, -16); }catch(e){}
+
 });
 
 addVarBtn && addVarBtn.addEventListener("click", () => {
@@ -573,7 +582,8 @@ function renderExampleButtons() {
       autoPreview();
       try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
 
-      role.scrollIntoView({ behavior: "smooth", block: "center" });
+      try{ const step1 = document.querySelector(".step.step1"); if(step1) smoothScrollTo(step1, -16); }catch(e){}
+
     });
     grid.appendChild(card);
   });

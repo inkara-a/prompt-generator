@@ -81,6 +81,11 @@ textarea{min-height:92px; resize:vertical;}
   .grid{grid-template-columns: 1fr;}
 }
 
+/* Step1 should stay horizontal while the page is still in 2-column layout (desktop) */
+@media (min-width: 901px){
+  .step1Fields{display:flex; gap:12px;}
+  .step1Fields .field{flex:1 1 0; min-width:0;}
+}
 
 .desc{color:#6b7280;font-size:13px;margin:6px 0 12px; line-height:1.5}
 .mono{font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:#f3f4f6; padding:2px 6px; border-radius:6px; color:#111827}

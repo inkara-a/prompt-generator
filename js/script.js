@@ -446,8 +446,10 @@ async function doCopy() {
 
   const hasAny = !!(roleTxt || goalTxt || reqTxt || ctxTxt || outTxt || formatTxt);
 
+  // 完全未入力（コピーしても意味がない）
+  // -> コピーはしない。呼び出し側が reason を見て「まずは内容を入力してね」を表示する。
   if (!existing && !hasAny) {
-    return { ok: false, reason: 'empty' };
+    return { ok: false, reason: 'no_input' };
   }
 
   const text = existing || buildPrompt();
@@ -481,7 +483,7 @@ async function doCopy() {
       } finally {
         document.body.removeChild(ta);
       }
-      return { ok: false, reason: 'copy-failed' };
+      return { ok: false, reason: 'copy_failed' };
     }
   } finally {
     window.__isCopying_v58 = false;
@@ -873,7 +875,7 @@ function setCopyFeedback(btn, text, ok = true){
     try{
       if(res && res.ok){
         setCopyFeedback(btn, "コピーしました ✅");
-      } else if(res && res.reason === 'no_input'){
+      } else if(res && (res.reason === 'no_input' || res.reason === 'empty')){
         setCopyFeedback(btn, "まずは内容を入力してね");
       } else if(res && res.reason === 'busy'){
         setCopyFeedback(btn, "処理中…");

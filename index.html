@@ -24,10 +24,55 @@
   <link rel="stylesheet" href="css/style.css?v=20260116am" />
 </head>
 <body>
+  <!-- Thin Header -->
+  <header class="chapinavi-header" role="banner">
+    <div class="chapinavi-header__inner">
+      <a class="chapinavi-brand" href="https://inkara.co.jp/tools/ai-prompt-navi" aria-label="チャッピーのAIプロンプトナビ ホーム">
+        <img
+          class="chapinavi-brand__logo"
+          src="assets/chapinavi_logo_transparent.png"
+          alt="チャピナビ ロゴ"
+          width="28"
+          height="28"
+          decoding="async"
+        />
+        <span class="chapinavi-brand__name">チャッピーのAIプロンプトナビ</span>
+      </a>
+
+      <nav class="chapinavi-nav" aria-label="ヘッダーメニュー">
+        <a
+          class="chapinavi-nav__link chapinavi-nav__link--x"
+          href="https://x.com/intent/tweet?text=%E3%83%81%E3%83%A3%E3%83%94%E3%83%8A%E3%83%93AI%20%EF%BD%9C%20%E7%94%A8%E9%80%94%E5%88%A5%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E7%94%9F%E6%88%90%E3%83%84%E3%83%BC%E3%83%AB%0Ahttps%3A%2F%2Finkara.co.jp%2Ftools%2Fai-prompt-navi"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Xでシェア（別タブで開く）"
+        >
+          <span class="chapinavi-xicon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="chapinavi-xsvg" aria-hidden="true">
+              <path d="M18.9 2H22l-6.8 7.8L23 22h-6.9l-5.4-6.9L4.7 22H2l7.3-8.5L1 2h7.1l4.9 6.2L18.9 2zM17.7 19.9h1.7L7.2 4H5.3l12.4 15.9z" />
+            </svg>
+          </span>
+          <span class="chapinavi-xtext">でシェア</span>
+          <span class="chapinavi-ext" aria-hidden="true">↗︎</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
   <div class="container">
     <header class="header">
       <div class="topBadge">AI初心者向けツール</div>
-      <h1>チャッピーのAIプロンプトナビ｜用途別テンプレート生成・作成ツール</h1>
+      <h1 class="chapinavi-title">
+        <img
+          class="chapinavi-title__logo"
+          src="assets/chapinavi_logo_transparent.png"
+          alt=""
+          width="26"
+          height="26"
+          aria-hidden="true"
+        />
+        チャッピーのAIプロンプトナビ｜用途別テンプレート生成・作成ツール
+      </h1>
       <p class="sub">ボタンを押すだけで「そのまま使える指示文（プロンプト）」が作れます。<br>作ったプロンプトを ChatGPT や Gemini に貼り付けて使いましょう。</p>
 
       <section class="examples">

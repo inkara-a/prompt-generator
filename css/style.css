@@ -646,10 +646,19 @@ textarea{min-height:92px; resize:vertical;}
   min-width: 0;
 }
 
+/* Logo box: size is fixed, image uses % to keep aspect (object-fit) */
+.chapinavi-brand__logoBox{
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  display: inline-block;
+}
+
 .chapinavi-brand__logo{
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .chapinavi-brand__name{
@@ -706,22 +715,15 @@ textarea{min-height:92px; resize:vertical;}
   display: block;
 }
 
-.chapinavi-xtext{
-  font-weight: 700;
-}
+.chapinavi-xtext{ font-weight: 700; }
 
 .chapinavi-ext{
   font-size: 12px;
   opacity: .7;
 }
 
-.chapinavi-nav__link--x:hover .chapinavi-xicon{
-  background: rgba(0,0,0,.95);
-}
-
-.chapinavi-nav__link--x:hover .chapinavi-ext{
-  opacity: 1;
-}
+.chapinavi-nav__link--x:hover .chapinavi-xicon{ background: rgba(0,0,0,.95); }
+.chapinavi-nav__link--x:hover .chapinavi-ext{ opacity: 1; }
 
 /* Title mini logo */
 .chapinavi-title{
@@ -731,10 +733,18 @@ textarea{min-height:92px; resize:vertical;}
   flex-wrap: wrap; /* タイトルが2行でも崩れない */
 }
 
-.chapinavi-title__logo{
-  width: 26px;
-  height: 26px;
+.chapinavi-title__logoBox{
+  width: 52px;
+  height: 52px;
   flex: 0 0 auto;
+  display: inline-block;
+}
+
+.chapinavi-title__logo{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 /* SP: サイト名を詰める */

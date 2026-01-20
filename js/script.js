@@ -433,7 +433,6 @@ async function doCopy() {
   // - If result is empty but the user has entered something, buildPrompt() then copy.
   // - If everything is truly empty, do NOT generate/copy; just show a hint.
 
-  const btnState = el('copyState');
   const r = el('result');
 
   const existing = (r?.value || '').trim();
@@ -448,7 +447,6 @@ async function doCopy() {
   const hasAny = !!(roleTxt || goalTxt || reqTxt || ctxTxt || outTxt || formatTxt);
 
   if (!existing && !hasAny) {
-    if (btnState) btnState.textContent = 'まずは内容を入力してからコピーしてね';
     return { ok: false, reason: 'empty' };
   }
 
@@ -464,7 +462,6 @@ async function doCopy() {
   try {
     try {
       await navigator.clipboard.writeText(text);
-      if (btnState) btnState.textContent = 'コピーしました！';
       return { ok: true };
     } catch (e) {
       // Fallback for environments where Clipboard API is unavailable
@@ -479,13 +476,11 @@ async function doCopy() {
       try {
         const ok = document.execCommand('copy');
         if (ok) {
-          if (btnState) btnState.textContent = 'コピーしました！';
           return { ok: true };
         }
       } finally {
         document.body.removeChild(ta);
       }
-      if (btnState) btnState.textContent = 'コピーに失敗しました（ブラウザの権限をご確認ください）';
       return { ok: false, reason: 'copy-failed' };
     }
   } finally {
@@ -516,8 +511,6 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
 
   // 出力欄もクリア
   if (result) result.value = "";
-  const st = el("copyState");
-  if (st) st.textContent = "← ここを押すだけ";
   // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
   renderVars();
 
@@ -826,16 +819,25 @@ if (outputContent) outputContent.addEventListener("input", () => { try{autoPrevi
 
 
 // v5.6: copy feedback (1-2s)
-function setCopyFeedback(btn, text){
+function setCopyFeedback(btn, text, ok = true){
   if(!btn) return;
+  // clear previous timer if any
+  const tid = btn.dataset.fbTimer ? Number(btn.dataset.fbTimer) : 0;
+  if(tid) { try{ clearTimeout(tid); }catch(e){} }
+
   const prev = btn.dataset.prevText || btn.textContent;
   btn.dataset.prevText = prev;
   btn.textContent = text;
-  btn.classList.add('isCopied');
-  setTimeout(()=>{
+  btn.classList.toggle('isCopied', !!ok);
+  btn.classList.toggle('isWarn', !ok);
+
+  const t = setTimeout(()=>{
     btn.textContent = prev;
     btn.classList.remove('isCopied');
+    btn.classList.remove('isWarn');
+    btn.dataset.fbTimer = '';
   }, 1400);
+  btn.dataset.fbTimer = String(t);
 }
 
 
@@ -856,9 +858,24 @@ function setCopyFeedback(btn, text){
 (function bindCopyButtons(){
   const c = el("copy");
   const b = el("copyBig");
-  const handler = async (ev)=>{ ev && ev.preventDefault && ev.preventDefault(); const msg = await doCopy();
-    // optional: setCopyFeedback if available
-    try{ if(ev && ev.currentTarget) setCopyFeedback(ev.currentTarget, "コピーしました ✅"); }catch(e){}
+  const handler = async (ev)=>{
+    ev && ev.preventDefault && ev.preventDefault();
+    let res = null;
+    try{ res = await doCopy(); }catch(e){ res = { ok:false, reason:'copy-failed', error:e }; }
+
+    // ボタン内テキストを1.4秒だけ差し替える
+    try{
+      const btn = ev && ev.currentTarget ? ev.currentTarget : null;
+      if(!btn) return;
+
+      if(res && res.ok){
+        setCopyFeedback(btn, "コピーしました ✅", true);
+      } else if(res && res.reason === 'empty'){
+        setCopyFeedback(btn, "まずは内容を入力してね", false);
+      } else {
+        setCopyFeedback(btn, "コピーできませんでした", false);
+      }
+    }catch(e){}
   };
   if(c) c.addEventListener('click', handler);
   if(b) b.addEventListener('click', handler);

@@ -29,6 +29,19 @@ body{
   box-shadow:0 8px 24px rgba(0,0,0,.06);
 }
 .card.wide{grid-column:1 / -1;}
+
+/* STEP1 横長：上段は項目を横並び（PC） */
+.step1Fields{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+.step1Fields .field label{
+  margin-top:0;
+}
+@media (max-width: 900px){
+  .step1Fields{grid-template-columns:1fr;}
+}
 h2{margin:0 0 12px; font-size:18px}
 h3{margin:16px 0 8px; font-size:14px; color:#374151}
 label{display:block;margin-top:12px;font-weight:600;font-size:13px;color:#111827}

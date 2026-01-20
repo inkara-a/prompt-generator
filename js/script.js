@@ -41,6 +41,26 @@ const VARS_KEY = "pg_vars_v1";
 
 let examples = [];
 
+// Fetch helper with fallbacks.
+// GitHub Pages / subdir deploy / local preview server など、置き場所が変わっても壊れにくくする。
+async function fetchJsonWithFallback(paths) {
+  let lastErr = null;
+  for (const p of paths) {
+    try {
+      const url = new URL(p, window.location.href).toString();
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) {
+        lastErr = new Error(`HTTP ${res.status} for ${url}`);
+        continue;
+      }
+      return await res.json();
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error("fetch failed");
+}
+
 
 let activeExampleTab = "dev";
 
@@ -211,19 +231,26 @@ function attachFocusTracker(node) {
 
 async function loadTemplates() {
   try {
-    let res = await fetch("./data/templates.json", { cache: "no-store" });
-    if (!res.ok) {
-      res = await fetch("./generator/data/templates.json", { cache: "no-store" });
-    }
-    data = await res.json();
+    // templates.json
+    data = await fetchJsonWithFallback([
+      "./data/templates.json",
+      "data/templates.json",
+      "./generator/data/templates.json",
+      "generator/data/templates.json",
+      "../data/templates.json",
+      "../generator/data/templates.json",
+    ]);
 
     // 人気テンプレ（examples.json）
     try {
-      let exRes = await fetch("./data/examples.json", { cache: "no-store" });
-      if (!exRes.ok) {
-        exRes = await fetch("./generator/data/examples.json", { cache: "no-store" });
-      }
-      examples = await exRes.json();
+      examples = await fetchJsonWithFallback([
+        "./data/examples.json",
+        "data/examples.json",
+        "./generator/data/examples.json",
+        "generator/data/examples.json",
+        "../data/examples.json",
+        "../generator/data/examples.json",
+      ]);
     } catch (e) {
       console.warn("examples.json の読み込みに失敗しました", e);
       examples = [];
@@ -240,6 +267,12 @@ async function loadTemplates() {
 }
 
 function initCategories() {
+  if (!category) return;
+  if (!data || typeof data !== "object") {
+    // ここに来るのは fetch 失敗時など。UIは壊さず空のままにする。
+    category.innerHTML = "";
+    return;
+  }
   category.innerHTML = "";
   for (const key in data) {
     const opt = document.createElement("option");
@@ -251,9 +284,14 @@ function initCategories() {
 }
 
 function initPurposes() {
+  if (!purpose) return;
+  if (!data || typeof data !== "object") {
+    purpose.innerHTML = "";
+    return;
+  }
   purpose.innerHTML = "";
   const selected = category.value;
-  const purposes = data[selected].purposes;
+  const purposes = data[selected] && data[selected].purposes ? data[selected].purposes : {};
   for (const p in purposes) {
     const opt = document.createElement("option");
     opt.value = p;

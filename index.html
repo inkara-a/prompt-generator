@@ -23,28 +23,36 @@
     </header>
 
     <main class="grid">
-      <!-- STEP 1 -->
-      <section class="card">
+      <!-- STEP 1（横長） -->
+      <section class="card wide step1Wide">
         <div class="step">
           <span class="stepNo">STEP 1</span><span class="stepText">テンプレを選ぶ</span>
           <span class="stepCheck" data-step="1" aria-hidden="true">✓</span>
         </div>
 
-        <label>カテゴリ</label>
-        <select id="category"></select>
+        <div class="step1Fields">
+          <div class="field">
+            <label>カテゴリ</label>
+            <select id="category"></select>
+          </div>
 
-        <label>用途</label>
-        <select id="purpose"></select>
+          <div class="field">
+            <label>用途</label>
+            <select id="purpose"></select>
+          </div>
 
-        <label>テンプレの型（選ぶだけ） <span class="muted">（迷ったらそのままでOK）</span></label>
-        <select id="preset">
+          <div class="field">
+            <label>テンプレの型 <span class="muted">（迷ったらそのままでOK）</span></label>
+            <select id="preset">
           <option value="none">そのまま（自由に書く）</option>
           <option value="sns">SNS投稿（短め）</option>
           <option value="email">メール（丁寧）</option>
           <option value="doc">説明文・マニュアル</option>
           <option value="code">コード（実装）</option>
           <option value="plan">企画・要件整理</option>
-        </select>
+            </select>
+          </div>
+        </div>
 
         <div class="smartRow">
           <label class="opt bigOpt">
@@ -114,7 +122,36 @@
         <p class="hint">※ ふだんは「テンプレ選択 → コピー」だけでOKです。</p>
       </section>
 
-      <!-- Optional: variables -->
+      <!-- STEP 3 / Result（右カラム） -->
+      <section class="card">
+        <div class="step">
+          <span class="stepNo">STEP 3</span><span class="stepText">これをコピーして使う</span>
+          <span class="stepCheck" data-step="3" aria-hidden="true">✓</span>
+        </div>
+
+        <div class="copyArea">
+          <button id="copy" class="copyMain">コピーしてChatGPTに貼り付ける</button>
+        
+        <div id="copyState" class="copyState"></div>
+        <div class="copyGuideStrong">✅ コピーしたら、ChatGPT（またはGeminiなど）にそのまま貼り付けてください。</div>
+
+        </div>
+        <div class="aiLinksBar" id="aiLinksBar">
+          <a class="aiMini" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPTを開く</a>
+          <a class="aiMini" href="https://gemini.google.com/" target="_blank" rel="noopener">Geminiを開く</a>
+          <a class="aiMini" href="https://claude.ai/" target="_blank" rel="noopener">Claudeを開く</a>
+        </div>
+        <textarea id="result" readonly placeholder="ここに生成されたプロンプトが表示されます"></textarea>
+
+        <div class="buttons">
+<button id="clearAll" class="secondary">一括クリア</button>
+        </div>
+
+        <!-- Keep hidden for backward compatibility if script references it -->
+        <button id="copyBig" style="display:none" aria-hidden="true"></button>
+      </section>
+
+      <!-- Optional: variables（左カラムの下） -->
       <section class="card">
         <details class="details">
           <summary>穴埋めパーツ（テンプレ化） <span class="muted">（必要なときだけ）</span></summary>
@@ -143,35 +180,6 @@
           <div class="varList" id="varList"></div>
           <p class="hint">ヒント：チップをクリックすると、その穴埋めを挿入できます。</p>
         </details>
-      </section>
-
-      <!-- STEP 3 / Result -->
-      <section class="card wide">
-        <div class="step">
-          <span class="stepNo">STEP 3</span><span class="stepText">これをコピーして使う</span>
-          <span class="stepCheck" data-step="3" aria-hidden="true">✓</span>
-        </div>
-
-        <div class="copyArea">
-          <button id="copy" class="copyMain">コピーしてChatGPTに貼り付ける</button>
-        
-        <div id="copyState" class="copyState"></div>
-        <div class="copyGuideStrong">✅ コピーしたら、ChatGPT（またはGeminiなど）にそのまま貼り付けてください。</div>
-
-        </div>
-        <div class="aiLinksBar" id="aiLinksBar">
-          <a class="aiMini" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPTを開く</a>
-          <a class="aiMini" href="https://gemini.google.com/" target="_blank" rel="noopener">Geminiを開く</a>
-          <a class="aiMini" href="https://claude.ai/" target="_blank" rel="noopener">Claudeを開く</a>
-        </div>
-        <textarea id="result" readonly placeholder="ここに生成されたプロンプトが表示されます"></textarea>
-
-        <div class="buttons">
-<button id="clearAll" class="secondary">一括クリア</button>
-        </div>
-
-        <!-- Keep hidden for backward compatibility if script references it -->
-        <button id="copyBig" style="display:none" aria-hidden="true"></button>
       </section>
     </main>
 

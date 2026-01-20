@@ -428,30 +428,69 @@ function flash(btn) {
 }
 
 async function doCopy() {
-// v5.7.24-testfix: 空コピー防止（初回ロードで空欄のままコピーを押してもダミー生成しない）
-const roleTxt = (el("role")?.value || "").trim();
-const goalTxt = (el("goal")?.value || "").trim();
-const reqTxt  = (el("request")?.value || "").trim();
-const hasAny = (roleTxt.length + goalTxt.length + reqTxt.length) > 0;
-if (!hasAny) {
-  // 生成もコピーもしない（安心感のフィードバックだけ出す）
-  const st = el("copyState");
-  if (st) st.textContent = "まずは内容を入力してからコピーしてね";
-  return "";
-}
+  // Copy behavior:
+  // - If result already has text, copy it as-is.
+  // - If result is empty but the user has entered something, buildPrompt() then copy.
+  // - If everything is truly empty, do NOT generate/copy; just show a hint.
 
-  const text = buildPrompt();
-  result.value = text;
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch {
-    result.focus();
-    result.select();
-    document.execCommand("copy");
+  const btnState = el('copyState');
+  const r = el('result');
+
+  const existing = (r?.value || '').trim();
+
+  const roleTxt = (el('role')?.value || '').trim();
+  const goalTxt = (el('goal')?.value || '').trim();
+  const reqTxt  = (el('request')?.value || '').trim();
+  const ctxTxt  = (el('context')?.value || '').trim();
+  const outTxt  = (el('outputContent')?.value || '').trim();
+  const formatTxt = (el('format')?.value || '').trim();
+
+  const hasAny = !!(roleTxt || goalTxt || reqTxt || ctxTxt || outTxt || formatTxt);
+
+  if (!existing && !hasAny) {
+    if (btnState) btnState.textContent = 'まずは内容を入力してからコピーしてね';
+    return { ok: false, reason: 'empty' };
   }
-  const st = el("copyState");
-  if (st) st.textContent = "コピーしました！→ ChatGPTに貼り付けてOK";
-  return text;
+
+  const text = existing || buildPrompt();
+  if (r) r.value = text;
+
+  // iOS/Safariなどで連打されると失敗率が上がるので排他
+  if (window.__isCopying_v58) {
+    return { ok: false, reason: 'busy' };
+  }
+  window.__isCopying_v58 = true;
+
+  try {
+    try {
+      await navigator.clipboard.writeText(text);
+      if (btnState) btnState.textContent = 'コピーしました！';
+      return { ok: true };
+    } catch (e) {
+      // Fallback for environments where Clipboard API is unavailable
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.left = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        const ok = document.execCommand('copy');
+        if (ok) {
+          if (btnState) btnState.textContent = 'コピーしました！';
+          return { ok: true };
+        }
+      } finally {
+        document.body.removeChild(ta);
+      }
+      if (btnState) btnState.textContent = 'コピーに失敗しました（ブラウザの権限をご確認ください）';
+      return { ok: false, reason: 'copy-failed' };
+    }
+  } finally {
+    window.__isCopying_v58 = false;
+  }
 }
 
 el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
@@ -582,11 +621,17 @@ function renderExampleButtons() {
       autoPreview();
       try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
 
-      try{
-        const presetEl = document.getElementById("preset");
-        const target = presetEl ? presetEl : (document.querySelector(".step1Wide") || document.querySelector("#step1"));
-        if(target) smoothScrollTo(target, -24);
-      }catch(e){}
+    // Scroll to STEP1 (template selector) after example selection
+    try{
+      const presetEl = document.getElementById("preset");
+      const step1El = document.querySelector(".step1Wide") || document.querySelector("#step1");
+      const target = step1El || presetEl;
+      if(target){
+        // run twice (immediate + delayed) to survive layout changes after DOM updates
+        requestAnimationFrame(() => smoothScrollTo(target, -24));
+        setTimeout(() => smoothScrollTo(target, -24), 180);
+      }
+    }catch(e){}
 
     });
     grid.appendChild(card);

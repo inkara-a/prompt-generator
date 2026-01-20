@@ -854,31 +854,34 @@ function setCopyFeedback(btn, text, ok = true){
   node.addEventListener("change", () => { markInteracted_v5723(); autoPreview(); }, { passive: true });
 });
 
-// data-bind-copy-v5724: single source of truth for copy buttons
-(function bindCopyButtons(){
-  const c = el("copy");
-  const b = el("copyBig");
-  const handler = async (ev)=>{
-    ev && ev.preventDefault && ev.preventDefault();
+// data-bind-copy-v58: single source of truth (delegation)
+(function bindCopyButtons_v58(){
+  if(window.__copyBind_v58) return;
+  window.__copyBind_v58 = true;
+
+  document.addEventListener('click', async (ev)=>{
+    const t = ev && ev.target ? ev.target : null;
+    const btn = t && t.closest ? t.closest('#copy, #copyBig') : null;
+    if(!btn) return;
+
+    try{ ev.preventDefault(); }catch(e){}
+
     let res = null;
-    try{ res = await doCopy(); }catch(e){ res = { ok:false, reason:'copy-failed', error:e }; }
+    try{ res = await doCopy(); }catch(e){ res = { ok:false, reason:'copy_failed', error:e }; }
 
-    // ボタン内テキストを1.4秒だけ差し替える
+    // ボタン内テキストを1.4秒だけ差し替える（下のメッセージは出さない）
     try{
-      const btn = ev && ev.currentTarget ? ev.currentTarget : null;
-      if(!btn) return;
-
       if(res && res.ok){
-        setCopyFeedback(btn, "コピーしました ✅", true);
-      } else if(res && res.reason === 'empty'){
-        setCopyFeedback(btn, "まずは内容を入力してね", false);
+        setCopyFeedback(btn, "コピーしました ✅");
+      } else if(res && res.reason === 'no_input'){
+        setCopyFeedback(btn, "まずは内容を入力してね");
+      } else if(res && res.reason === 'busy'){
+        setCopyFeedback(btn, "処理中…");
       } else {
-        setCopyFeedback(btn, "コピーできませんでした", false);
+        setCopyFeedback(btn, "コピーできませんでした");
       }
     }catch(e){}
-  };
-  if(c) c.addEventListener('click', handler);
-  if(b) b.addEventListener('click', handler);
+  }, true);
 })();
 
 // clearLastFocusOnDocClick_v5724

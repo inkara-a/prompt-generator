@@ -278,6 +278,10 @@ textarea{min-height:92px; resize:vertical;}
   --chap-purple-dark: #5b21b6;
   --chap-gray: #e5e7eb;
   --chap-gray-dark: #d1d5db;
+  /* Secondary button (clearAll) */
+  --chap-gray-bg: #f1f5f9;
+  --chap-gray-bg-hover: #e2e8f0;
+
 
   --brand:#00a2a1;
   --brand-soft: #8f80ff;
@@ -800,12 +804,47 @@ textarea{min-height:92px; resize:vertical;}
   display: block;
 }
 
-.chapinavi-title__main,
+.chapinavi-title__main{ 
+  font-size: clamp(20px, 2.6vw, 26px); /* about 2/3 of the old size */
+  font-weight: 900;
+  letter-spacing: .01em;
+}
+
 .chapinavi-title__brand{
+  font-size: clamp(13px, 1.6vw, 16px);
+  font-weight: 800;
+  color: rgba(0,0,0,.72);
+}
+
+/* Keep H1 visually centered with logo box */
+.chapinavi-title__main, .chapinavi-title__brand{
   display: inline-flex;
   align-items: center;
   line-height: 1;
 }
 
-\n.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover{ background: var(--chap-purple-dark) !important; border-color: var(--chap-purple-dark) !important; }
-\n.secondary:hover, #openChatGPT:hover, #clearAll:hover{ background: var(--chap-gray-bg-hover) !important; }
+@media (max-width: 720px){
+  /* Slightly tighter on mobile */
+  .chapinavi-title{ gap: 8px; }
+  .chapinavi-title__logoBox{ width: 34px; height: 34px; }
+}
+
+/* Primary / Secondary button colors */
+.copyMain, #copy{
+  background: var(--chap-purple) !important;
+  border-color: var(--chap-purple) !important;
+  color: #fff !important;
+}
+.copyMain:hover, #copy:hover{
+  background: var(--chap-purple-dark) !important;
+  border-color: var(--chap-purple-dark) !important;
+}
+
+.secondary, #clearAll{
+  background: var(--chap-gray-bg) !important;
+  border-color: rgba(15,23,42,.10) !important;
+  color: rgba(15,23,42,.86) !important;
+}
+.secondary:hover, #clearAll:hover{
+  background: var(--chap-gray-bg-hover) !important;
+}

@@ -24,10 +24,10 @@ body{
 }
 .card{
   background:#fff;
-  padding:18px 18px 16px;
-  border-radius:12px;
-  box-shadow:0 6px 18px rgba(0,0,0,.06);
-  border:1px solid rgba(15,23,42,.08);
+  border:1px solid rgba(17,24,39,.08);
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(17,24,39,.08);
+  padding:16px;
 }
 .card.wide{grid-column:1 / -1;}
 
@@ -67,9 +67,14 @@ button{
 textarea{min-height:92px; resize:vertical;}
 #result{min-height:320px;}
 .buttons{display:flex; gap:10px; margin-top:12px;}
-.buttons button{flex:1; border:none; cursor:pointer; font-weight:800;}
+.buttons /* removed global button flex reset */
 #generate{background:#2563eb;color:#fff;}
-.secondary{background:#e5e7eb;color:#111827;}
+.secondary{
+  background: var(--chap-gray-bg);
+  color: rgba(0,0,0,.78);
+  border: 1px solid rgba(17,24,39,.12);
+}
+.secondary:hover{ background: var(--chap-gray-bg-hover); }
 .copyMain, #copy, #clearAll{
   width:100%;
 }
@@ -147,7 +152,13 @@ textarea{min-height:92px; resize:vertical;}
 .smartRow{margin-top:14px;padding:12px;border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
 .bigOpt{font-size:15px}
 .copyBar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.copyMain{background:#111827;color:#fff;border:none;padding:12px 12px;border-radius:12px;font-weight:900;cursor:pointer}
+.copyMain{
+  width:100%;
+  background: var(--chap-purple);
+  color:#fff;
+  border:1px solid rgba(0,0,0,.06);
+}
+.copyMain:hover{ background: var(--chap-purple-dark); }
 .copyState{color:#6b7280;font-weight:800}
 .copyBig{background:#16a34a;color:#fff;border:none;border-radius:12px;font-weight:900;cursor:pointer}
 .flash{animation: flash .6s ease;}
@@ -502,19 +513,19 @@ textarea{min-height:92px; resize:vertical;}
   transform: translateY(-1px) !important;
 }
 
-/* --- (3) コピーはティールで最強CTA --- */
+/* --- (3) コピーはブランド紫で主CTA --- */
 .copyMain, .copyBig, #copyBig, #copy{
-  background: var(--teal) !important;
-  border: 2px solid var(--teal) !important;
+  background: var(--chap-purple) !important;
+  border: 2px solid var(--chap-purple) !important;
   color:#fff !important;
   box-shadow: var(--lift-shadow) !important;
 }
 
-/* サブボタンは控えめ */
+/* サブボタンは控えめ（グレー） */
 .secondary, #openChatGPT, #clearAll{
-  background:#fff !important;
-  border:1px solid #e5e7eb !important;
-  color:#0f172a !important;
+  background: var(--chap-gray-bg) !important;
+  border: 1px solid rgba(17,24,39,.12) !important;
+  color: rgba(0,0,0,.78) !important;
 }
 
 /* hover演出 */
@@ -796,60 +807,5 @@ textarea{min-height:92px; resize:vertical;}
   line-height: 1;
 }
 
-
-
-/* ===== UI Polish v5.8 (Chappy) ===== */
-:root{
-  --brand-purple: #6b5bd6;
-  --brand-purple-soft: #e7e3ff;
-  --brand-purple-text: #4b3db8;
-}
-
-/* Page background a bit softer */
-body{
-  background: #f9fafb;
-}
-
-/* Cards: keep thin border + subtle shadow for clarity */
-.card{
-  background: #ffffff;
-  border: 1px solid rgba(15,23,42,.08);
-  box-shadow: 0 10px 24px rgba(15,23,42,.06);
-}
-
-/* Step badge: soft purple + center */
-.stepNo{
-  background: var(--brand-purple-soft);
-  color: var(--brand-purple-text);
-  min-width: 76px; /* keep STEP 1.. in one line */
-  justify-content: center;
-}
-
-/* Header brand name: PC long / SP short */
-.chapinavi-brand__name--short{ display:none; }
-.chapinavi-brand__name--long{ display:inline; }
-
-@media (max-width: 720px){
-  .chapinavi-brand__name--long{ display:none; }
-  .chapinavi-brand__name--short{ display:inline; }
-}
-
-/* Copy button: primary purple */
-#copy.copyMain{
-  background: var(--brand-purple);
-  color: #fff;
-  border-color: rgba(0,0,0,0);
-}
-#copy.copyMain:hover{
-  filter: brightness(0.96);
-}
-#copy.copyMain.isWarn{
-  background: #475569; /* warning state still readable */
-}
-
-/* Autofill flash (template pick) */
-.autofillFlash{
-  background: #fff7ed;
-  box-shadow: 0 0 0 3px rgba(107,91,214,.18);
-  transition: background .25s ease, box-shadow .25s ease;
-}
+\n.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover{ background: var(--chap-purple-dark) !important; border-color: var(--chap-purple-dark) !important; }
+\n.secondary:hover, #openChatGPT:hover, #clearAll:hover{ background: var(--chap-gray-bg-hover) !important; }

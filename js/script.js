@@ -616,19 +616,7 @@ function renderExampleButtons() {
       autoPreview();
       try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
 
-    
-      // Autofill highlight: make it feel "ドラマチック" (短時間だけハイライト)
-      try{
-        ["role","goal","context","constraints","format","outputContent","request"].forEach((id)=>{
-          const n = document.getElementById(id);
-          if(!n) return;
-          if(!(n.value||"").toString().trim()) return;
-          n.classList.add("autofillFlash");
-          setTimeout(()=>{ try{ n.classList.remove("autofillFlash"); }catch(e){} }, 650);
-        });
-      }catch(e){}
-
-// Scroll to STEP1 (template selector) after example selection
+    // Scroll to STEP1 (template selector) after example selection
     try{
       const presetEl = document.getElementById("preset");
       const step1El = document.querySelector(".step1Wide") || document.querySelector("#step1");

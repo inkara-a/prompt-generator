@@ -796,3 +796,60 @@ textarea{min-height:92px; resize:vertical;}
   line-height: 1;
 }
 
+
+
+/* ===== UI Polish v5.8 (Chappy) ===== */
+:root{
+  --brand-purple: #6b5bd6;
+  --brand-purple-soft: #e7e3ff;
+  --brand-purple-text: #4b3db8;
+}
+
+/* Page background a bit softer */
+body{
+  background: #f9fafb;
+}
+
+/* Cards: keep thin border + subtle shadow for clarity */
+.card{
+  background: #ffffff;
+  border: 1px solid rgba(15,23,42,.08);
+  box-shadow: 0 10px 24px rgba(15,23,42,.06);
+}
+
+/* Step badge: soft purple + center */
+.stepNo{
+  background: var(--brand-purple-soft);
+  color: var(--brand-purple-text);
+  min-width: 76px; /* keep STEP 1.. in one line */
+  justify-content: center;
+}
+
+/* Header brand name: PC long / SP short */
+.chapinavi-brand__name--short{ display:none; }
+.chapinavi-brand__name--long{ display:inline; }
+
+@media (max-width: 720px){
+  .chapinavi-brand__name--long{ display:none; }
+  .chapinavi-brand__name--short{ display:inline; }
+}
+
+/* Copy button: primary purple */
+#copy.copyMain{
+  background: var(--brand-purple);
+  color: #fff;
+  border-color: rgba(0,0,0,0);
+}
+#copy.copyMain:hover{
+  filter: brightness(0.96);
+}
+#copy.copyMain.isWarn{
+  background: #475569; /* warning state still readable */
+}
+
+/* Autofill flash (template pick) */
+.autofillFlash{
+  background: #fff7ed;
+  box-shadow: 0 0 0 3px rgba(107,91,214,.18);
+  transition: background .25s ease, box-shadow .25s ease;
+}

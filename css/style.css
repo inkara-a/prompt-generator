@@ -24,10 +24,9 @@ body{
 }
 .card{
   background:#fff;
-  border:1px solid rgba(17,24,39,.08);
+  border:1px solid rgba(15,23,42,.10);
   border-radius:16px;
-  box-shadow:0 6px 16px rgba(17,24,39,.08);
-  padding:16px;
+  box-shadow:0 8px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
 }
 .card.wide{grid-column:1 / -1;}
 

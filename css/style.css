@@ -133,13 +133,16 @@ textarea{min-height:92px; resize:vertical;}
   font-weight: 900;
   font-size: 12px;
   letter-spacing: .02em;
-  padding: 0 12px;
+  padding: 0;
+  width: 76px;
+
   height: 28px;
   border-radius: 999px;
   color: var(--brand-ink);
   background: var(--brand-soft);
   border: 1px solid rgba(0,0,0,.06);
 }
+
 .stepText{font-weight:900}
 .smartRow{margin-top:14px;padding:12px;border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
 .bigOpt{font-size:15px}
@@ -753,167 +756,22 @@ textarea{min-height:92px; resize:vertical;}
   align-items: center;
   gap: 10px;
   flex-wrap: wrap; /* タイトルが2行でも崩れない */
+  line-height: 1;
 }
 
 .chapinavi-title__logoBox{
   width: 52px;
-  height: 52px;
+  height: 48px;
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.chapinavi-title__logo{
-  display: block;
-  height: 100%;
-  width: auto;
-}
-
-/* Main title hierarchy */
-.chapinavi-title__main{
-font-weight: 900;
-  font-size: 32px;
-  line-height: 1.15;
-  display: inline-flex;
-  align-items: center;
-  line-height: 1.1;
-}
-
+.chapinavi-title__main,
 .chapinavi-title__brand{
-font-weight: 700;
-  font-size: 16px;
-  color: #666666;
-  white-space: nowrap;
   display: inline-flex;
   align-items: center;
-  line-height: 1.1;
+  line-height: 1;
 }
 
-/* Sub catch copy: keep it supportive, not dominant */
-.header .sub{
-  color: #666666;
-  font-size: 14px;
-}
-
-/* SP: サイト名を詰める */
-@media (max-width: 720px){
-  .chapinavi-brand__name{ max-width: 70vw; }
-  .chapinavi-header__inner{ padding: 8px 12px; }
-  .chapinavi-brand__logoBox{ width: 44px; height: 44px; }
-  .chapinavi-title__main{ font-size: 24px; }
-  .chapinavi-title__brand{ font-size: 13px; }
-  .header .sub{ font-size: 13px; }
-}
-
-
-
-
-/* ===== Chapinavi Title Hierarchy Tuning ===== */
-.chapinavi-title{
-  margin: 10px 0 6px;
-  gap: 12px;
-  flex-wrap: nowrap;
-  align-items: baseline;
-}
-
-.chapinavi-brandInline{
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: .02em;
-  color: rgba(15,23,42,.72);
-  white-space: nowrap;
-}
-
-.chapinavi-mainTitle{
-  font-weight: 900;
-  letter-spacing: .01em;
-  font-size: clamp(22px, 2.2vw, 34px);
-  line-height: 1.15;
-}
-
-.chapinavi-sub{
-  font-size: 13px;
-  color: #667085;
-  font-weight: 600;
-}
-
-/* Step number badge */
-.stepNo{
-  display: inline-grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: rgba(111,75,184,.92);
-  color: #fff;
-  font-weight: 900;
-  font-size: 14px;
-  letter-spacing: 0;
-  flex: 0 0 auto;
-}
-
-/* Primary/secondary buttons */
-.copyMain{
-  background: rgba(111,75,184,.96);
-  border-color: rgba(111,75,184,.96);
-}
-.copyMain:hover{ filter: brightness(0.98); }
-
-#clearAll{
-  background:#f2f4f7;
-  border-color:#e4e7ec;
-  color:#344054;
-}
-#clearAll:hover{ background:#eaecf0; }
-
-/* Mobile: lighten header + allow title wrap */
-@media (max-width: 720px){
-  .chapinavi-header__inner{ padding: 8px 12px; }
-  .chapinavi-brand__logo{ width:24px; height:24px; }
-  .chapinavi-brand__name{ font-size: 13px; max-width: 58vw; }
-  .chapinavi-title{ flex-wrap: wrap; gap: 8px; }
-  .chapinavi-brandInline{ font-size: 12px; }
-  .chapinavi-sub{ display:none; } /* keep hero area compact on SP */
-  .header{ padding:18px 16px; }
-  .stepNo{ width:30px; height:30px; font-size: 13px; }
-}
-
-/* Mid widths: allow wrap before overflow */
-@media (max-width: 980px){
-  .chapinavi-title{ flex-wrap: wrap; }
-}
-
-
-.chapinavi-brand__name--short{ display:none; }
-.chapinavi-brand__name--full{ display:inline; font-size: 13px; }
-@media (max-width: 720px){
-  .chapinavi-brand__name--full{ display:none; }
-  .chapinavi-brand__name--short{ display:inline; }
-}
-
-
-
-/* ===== Chapinavi buttons: primary/secondary ===== */
-#copy, .copyMain{
-  background: var(--chap-purple) !important;
-  border-color: var(--chap-purple-dark) !important;
-  color: #fff !important;
-}
-#copy:hover, .copyMain:hover{
-  background: var(--chap-purple-dark) !important;
-}
-#clearAll{
-  background: var(--chap-gray) !important;
-  border-color: var(--chap-gray-dark) !important;
-  color: #111827 !important;
-}
-#clearAll:hover{
-  background: var(--chap-gray-dark) !important;
-}
-
-
-
-@media (max-width: 720px){
-  .stepNo{ height: 26px; padding: 0 10px; font-size: 11px; }
-}

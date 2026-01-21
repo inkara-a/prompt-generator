@@ -272,6 +272,11 @@ textarea{min-height:92px; resize:vertical;}
   --brand-soft: #8f80ff;
   --brand-weak: rgba(0,162,161,.12);
   --brand-line: rgba(0,162,161,.25);
+
+  /* Step badge (淡い紫) */
+  --chap-step-bg: #d6d0ff;
+  --chap-step-border: rgba(109,40,217,.20);
+  --chap-step-text: #2f2568;
 }
 
 /* Badge (人気テンプレなど) を見出し.pngの雰囲気に */
@@ -284,9 +289,9 @@ textarea{min-height:92px; resize:vertical;}
 
 /* STEP見出し（黒→ブランド色） */
 .stepNo{
-  background: var(--brand);
-  color: #fff;
-  border: 1px solid var(--brand-line) !important;
+  background: var(--chap-step-bg);
+  color: var(--chap-step-text);
+  border: 1px solid var(--chap-step-border) !important;
   font-weight: 900 !important;
 }
 
@@ -696,6 +701,15 @@ textarea{min-height:92px; resize:vertical;}
   color: rgba(0,0,0,.78);
 }
 
+/* PC: show full name. SP: show short name to keep 1 line */
+.chapinavi-brand__name--short{ display:none; }
+
+@media (max-width: 720px){
+  .chapinavi-brand__name{ max-width: 70vw; }
+  .chapinavi-brand__name--full{ display:none; }
+  .chapinavi-brand__name--short{ display:inline; }
+}
+
 .chapinavi-nav{
   display: inline-flex;
   align-items: center;
@@ -760,12 +774,19 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 .chapinavi-title__logoBox{
-  width: 52px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.chapinavi-title__logo{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .chapinavi-title__main,

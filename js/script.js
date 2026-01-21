@@ -427,6 +427,25 @@ function flash(btn) {
   btn.classList.add("flash");
 }
 
+// 人気テンプレ選択時：下のフォームが埋まるのを「パッ」と見せる
+function flashAutofill(){
+  try{
+    const targets = [
+      document.querySelector('.step2'),
+      document.querySelector('.step3'),
+    ];
+    targets.forEach(el => {
+      if(!el) return;
+      el.classList.remove('autofillFlash');
+      void el.offsetWidth;
+      el.classList.add('autofillFlash');
+    });
+    setTimeout(()=>{
+      targets.forEach(el => el && el.classList.remove('autofillFlash'));
+    }, 980);
+  }catch(e){}
+}
+
 async function doCopy() {
   // Copy behavior:
   // - If result already has text, copy it as-is.
@@ -615,6 +634,9 @@ function renderExampleButtons() {
       setAdvancedFromSmart();
       autoPreview();
       try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
+
+      // Make the auto-fill feel "alive"
+      try{ flashAutofill && flashAutofill(); }catch(e){}
 
     // Scroll to STEP1 (template selector) after example selection
     try{

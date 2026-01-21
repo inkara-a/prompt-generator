@@ -30,6 +30,16 @@ body{
 }
 .card.wide{grid-column:1 / -1;}
 
+/* 人気テンプレ選択時：フォームが埋まるのを "パッ" と感じる演出 */
+@keyframes chapinaviAutofillPulse{
+  0%   { background:#fff; border-color: rgba(15,23,42,.10); box-shadow:0 8px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04); }
+  25%  { background: rgba(109,40,217,.04); border-color: rgba(109,40,217,.28); box-shadow:0 10px 20px rgba(15,23,42,.07), 0 2px 6px rgba(15,23,42,.05); }
+  100% { background:#fff; border-color: rgba(15,23,42,.10); box-shadow:0 8px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04); }
+}
+.autofillFlash{
+  animation: chapinaviAutofillPulse 900ms ease-out 1;
+}
+
 /* STEP1 横長：上段は項目を横並び（PC） */
 .step1Fields{
   display:grid;
@@ -138,7 +148,8 @@ textarea{min-height:92px; resize:vertical;}
   font-size: 12px;
   letter-spacing: .02em;
   padding: 0;
-  width: 76px;
+  width: 88px; /* STEP 1 が折り返さない幅 */
+  white-space: nowrap;
 
   height: 28px;
   border-radius: 999px;
@@ -282,10 +293,11 @@ textarea{min-height:92px; resize:vertical;}
   --chap-gray-bg-hover: #e2e8f0;
 
 
-  --brand:#00a2a1;
+  /* Brand color (ロゴの濃い紫に統一) */
+  --brand: var(--chap-purple);
   --brand-soft: #8f80ff;
-  --brand-weak: rgba(0,162,161,.12);
-  --brand-line: rgba(0,162,161,.25);
+  --brand-weak: rgba(109,40,217,.12);
+  --brand-line: rgba(109,40,217,.25);
 
   /* Step badge (淡い紫) */
   --chap-step-bg: #d6d0ff;
@@ -309,39 +321,27 @@ textarea{min-height:92px; resize:vertical;}
   font-weight: 900 !important;
 }
 
-/* 人気テンプレのタブをモックtabu.pngみたいにコンパクトに */
-.exTabs{
-  gap: 10px !important;
-  margin-top: 12px !important;
-}
+/* Example tabs: same "浮き出し" as cards */
+.exTabs{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .exTab{
-  padding: 6px 10px !important;
-  font-size: 13px !important;
-  font-weight: 900 !important;
-  border-radius: 999px !important;
-  line-height: 1 !important;
-}
-.exTab .tabIcon svg{
-  width: 16px !important;
-  height: 16px !important;
-}
-.exTab .tabLabel{
-  letter-spacing: .02em;
-}
-
-/* タブが長く見えないように余白を抑える */
-.exTab{gap:8px !important;}
-
-
-/* Compact exTabs pills */
-.exTabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.exTab{
-  padding:6px 10px !important;
-  border-radius:999px !important;
+  padding:10px 12px !important;
+  border-radius:16px !important;
   font-size:13px !important;
-  line-height:1 !important;
+  line-height:1.2 !important;
+  background: #fff !important;
+  border: 1px solid rgba(15, 23, 42, 0.10) !important;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 6px 14px rgba(15, 23, 42, 0.06);
 }
-.exTab .tabIcon svg{width:14px;height:14px}
+.exTab .tabIcon svg{width:16px;height:16px}
+.exTab:hover{
+  border-color: rgba(15, 23, 42, 0.16) !important;
+}
+.exTab.active{
+  background: rgba(106, 73, 200, 0.08) !important;
+  border-color: rgba(106, 73, 200, 0.22) !important;
+}
 .exGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width: 640px){
   .exGrid{grid-template-columns:1fr}
@@ -358,48 +358,24 @@ textarea{min-height:92px; resize:vertical;}
   margin-top: 10px !important;
 }
 
-#exampleTabs .exTab{
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-
-  padding: 6px 10px !important;
-  border-radius: 999px !important;
-
-  font-size: 13px !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-
-  min-height: 32px !important;
-  border: 1px solid #e5e7eb !important;
-  background: #fff !important;
-}
-
-#exampleTabs .exTab .tabIcon{
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-#exampleTabs .exTab .tabIcon svg{
-  width: 14px !important;
-  height: 14px !important;
-}
-
 #exampleTabs .exTab.active{
-  border-color: rgba(0,162,161,.55) !important;
-  box-shadow: 0 0 0 4px rgba(0,162,161,.12) !important;
+  border-color: rgba(124, 83, 227, .55) !important;
+  background: rgba(124, 83, 227, .06) !important;
+  box-shadow: 0 0 0 4px rgba(124, 83, 227, .12), 0 4px 14px rgba(15,23,42,.06) !important;
 }
 
 /* =========================
-   人気テンプレ：タブをモックみたいに短く（さらに強制）
+   人気テンプレ：タブもカードと同じ「浮き出し」
    ========================= */
 #exampleTabs button,
 #exampleTabs .exTab{
-  padding: 6px 10px !important;
-  border-radius: 999px !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
   font-size: 13px !important;
-  line-height: 1 !important;
+  line-height: 1.1 !important;
+  border: 1px solid rgba(15, 23, 42, .10) !important;
+  background: #fff !important;
+  box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 20px rgba(15,23,42,.04) !important;
 }
 
 /* =========================
@@ -424,131 +400,7 @@ textarea{min-height:92px; resize:vertical;}
   display:inline-block !important;
 }
 
-/* =========================
-   v5.3 コーラル薄塗り＋太枠＋軽い浮き（タブ/出力形式/コピー）
-   ========================= */
-:root{
-  --coral:#FF7F50;
-  --coral-bg:#FFF1EA;
-  --coral-text:#111111;
-  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
-}
-
-/* 人気テンプレ：選択中 */
-#exampleTabs .exTab.active{
-  border-color: var(--coral) !important;
-  background: var(--coral-bg) !important;
-  color: var(--coral-text) !important;
-  box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
-  transform: translateY(-1px) !important;
-}
-#exampleTabs .exTab.active .tabIcon svg{ color: var(--coral-text) !important; }
-
-/* 出力の書き方（見た目）：選択中 */
-#formatButtons .formatBtn.isActive,
-#formatButtons .formatBtn.active{
-  border-color: var(--coral) !important;
-  background: var(--coral-bg) !important;
-  color: var(--coral-text) !important;
-  box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
-  transform: translateY(-1px) !important;
-}
-#formatButtons .formatBtn.isActive svg,
-#formatButtons .formatBtn.active svg{ color: var(--coral-text) !important; }
-
-/* メインCTA：コピーしてChatGPTに貼り付ける（STEP2/STEP3どちらにも効かせる） */
-.copyMain, .copyBig, #copyBig, #copy{
-  background: var(--coral) !important;
-  border: 2px solid var(--coral) !important;
-  color: #fff !important;
-  box-shadow: var(--lift-shadow) !important;
-}
-.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover{
-  transform: translateY(-1px);
-}
-
-/* タブ/ボタンの非選択状態は上品に */
-#exampleTabs .exTab{
-  border-width: 1px !important;
-}
-
-/* =========================
-   v5.4 改善セット
-   1) 選択中だけ #00a2a1 を混ぜる（枠線をティール寄せ）
-   3) ボタンとタブの差別化（コピーは #00a2a1 ベタ）
-   4) タブ/ボタンの角丸は 12px に統一
-   ========================= */
-:root{
-  --teal:#00a2a1;
-  --coral-bg:#FFF1EA;
-  --ink:#111111;
-  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
-}
-
-/* --- (4) 角丸：タブ/ボタンは 12px --- */
-#exampleTabs .exTab,
-#formatButtons .formatBtn,
-.copyMain, .copyBig, #copyBig, #copy,
-.secondary, #openChatGPT, #clearAll{
-  border-radius: 12px !important;
-}
-
-/* --- (1) 選択中タブ：コーラル薄塗り + 枠をティール寄せ --- */
-#exampleTabs .exTab.active{
-  border-color: var(--teal) !important;
-  background: var(--coral-bg) !important;
-  color: var(--ink) !important;
-  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
-  transform: translateY(-1px) !important;
-}
-
-#exampleTabs .exTab.active .tabIcon svg{
-  color: var(--ink) !important;
-}
-
-/* --- 出力形式ボタン：選択中 --- */
-#formatButtons .formatBtn.isActive,
-#formatButtons .formatBtn.active{
-  border-color: var(--teal) !important;
-  background: var(--coral-bg) !important;
-  color: var(--ink) !important;
-  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
-  transform: translateY(-1px) !important;
-}
-
-/* --- (3) コピーはブランド紫で主CTA --- */
-.copyMain, .copyBig, #copyBig, #copy{
-  background: var(--chap-purple) !important;
-  border: 2px solid var(--chap-purple) !important;
-  color:#fff !important;
-  box-shadow: var(--lift-shadow) !important;
-}
-
-/* サブボタンは控えめ（グレー） */
-.secondary, #openChatGPT, #clearAll{
-  background: var(--chap-gray-bg) !important;
-  border: 1px solid rgba(17,24,39,.12) !important;
-  color: rgba(0,0,0,.78) !important;
-}
-
-/* hover演出 */
-.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover,
-#exampleTabs .exTab:hover,
-#formatButtons .formatBtn:hover{
-  transform: translateY(-1px);
-}
-
-/* =========================
-   v5.4.1 選択中背景をミントに変更（タブ/出力形式）
-   ========================= */
-#exampleTabs .exTab.active{
-  background: #e6f7f7 !important;
-}
-
-#formatButtons .formatBtn.isActive,
-#formatButtons .formatBtn.active{
-  background: #e6f7f7 !important;
-}
+/* (旧スタイル上書きは削除：タブ/ボタンは薄紫＋白カードで統一) */
 
 /* =========================
    v5.6 UX改善

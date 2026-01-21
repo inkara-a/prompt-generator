@@ -246,6 +246,11 @@ textarea{min-height:92px; resize:vertical;}
 
 /* === UI polish: tabs compact + headings color to brand teal === */
 :root{
+  --chap-purple: #6d28d9;
+  --chap-purple-dark: #5b21b6;
+  --chap-gray: #e5e7eb;
+  --chap-gray-dark: #d1d5db;
+
   --brand:#00a2a1;
   --brand-weak: rgba(0,162,161,.12);
   --brand-line: rgba(0,162,161,.25);
@@ -856,3 +861,32 @@ textarea{min-height:92px; resize:vertical;}
 @media (max-width: 980px){
   .chapinavi-title{ flex-wrap: wrap; }
 }
+
+
+.chapinavi-brand__name--short{ display:none; }
+.chapinavi-brand__name--full{ display:inline; font-size: 13px; }
+@media (max-width: 720px){
+  .chapinavi-brand__name--full{ display:none; }
+  .chapinavi-brand__name--short{ display:inline; }
+}
+
+
+
+/* ===== Chapinavi buttons: primary/secondary ===== */
+#copy, .copyMain{
+  background: var(--chap-purple) !important;
+  border-color: var(--chap-purple-dark) !important;
+  color: #fff !important;
+}
+#copy:hover, .copyMain:hover{
+  background: var(--chap-purple-dark) !important;
+}
+#clearAll{
+  background: var(--chap-gray) !important;
+  border-color: var(--chap-gray-dark) !important;
+  color: #111827 !important;
+}
+#clearAll:hover{
+  background: var(--chap-gray-dark) !important;
+}
+

@@ -1,6 +1,17 @@
 const BUILD_ID = "v20260116am-format-placeholder-fixed";
 let data = null;
 const el = (id) => document.getElementById(id);
+
+// Safe debounce helper (v5.8 refactor): avoids heavy work on every keystroke
+function debounce(fn, wait = 300) {
+  let t = null;
+  return function debounced(...args) {
+    try { if (t) clearTimeout(t); } catch (e) {}
+    t = setTimeout(() => {
+      try { fn.apply(this, args); } catch (e) {}
+    }, wait);
+  };
+}
 // Smooth scroll helper (offset-aware)
 function smoothScrollTo(elm, offsetPx = -12) {
   if (!elm || !elm.getBoundingClientRect) return;
@@ -258,13 +269,11 @@ async function loadTemplates() {
         "../generator/data/examples.json",
       ]);
     } catch (e) {
-      console.warn("examples.json の読み込みに失敗しました", e);
-      examples = [];
+examples = [];
     }
   } catch (e) {
     alert("テンプレートJSONの読み込みに失敗しました。\nNetlifyなどのサーバー上で開いてください。");
-    console.error(e);
-    return;
+return;
   }
   initCategories();
   renderExampleTabs();
@@ -419,7 +428,8 @@ function autoPreview() {
   result.value = buildPrompt();
 }
 
-[role, goal, context, constraints, format, request].forEach(x => x && x.addEventListener("input", autoPreview));
+// Debounced preview (v5.8 refactor)
+const autoPreviewDebounced = debounce(() => { autoPreview(); }, 300);
 
 function flash(btn) {
   btn.classList.remove("flash");
@@ -691,9 +701,6 @@ loadTemplates();
 })();
 
 
-if (outputContent) outputContent.addEventListener("input", () => { try{autoPreview();}catch(e){} });
-
-
 /* v8.2 - Stepチェック演出（入力が入ったら小さな✓） */
 (function attachStepChecks(){
   function on(el, ev, fn){ if(el) el.addEventListener(ev, fn); }
@@ -846,15 +853,20 @@ function setCopyFeedback(btn, text, ok = true){
 
 
 // v5.7.23: 操作した瞬間から自動生成を開始
-[
-  "role","goal","context","constraints","request",
-  "category","purpose","preset","format","outputContent"
-].forEach((id) => {
+// data-bind-preview-v58: single binding for preview (delegation is not needed; direct bind once)
+(function bindPreview_v58(){
+  if (window.__previewBind_v58) return;
+  window.__previewBind_v58 = true;
+
+["role","goal","context","constraints","request",
+  "category","purpose","preset","format","outputContent"].forEach((id) => {
   const node = el(id);
   if (!node) return;
-  node.addEventListener("input", () => { markInteracted_v5723(); autoPreview(); }, { passive: true });
-  node.addEventListener("change", () => { markInteracted_v5723(); autoPreview(); }, { passive: true });
+  node.addEventListener("input", () => { markInteracted_v5723(); autoPreviewDebounced(); }, { passive: true });
+  node.addEventListener("change", () => { markInteracted_v5723(); autoPreviewDebounced(); }, { passive: true });
 });
+
+})();
 
 // data-bind-copy-v58: single source of truth (delegation)
 (function bindCopyButtons_v58(){

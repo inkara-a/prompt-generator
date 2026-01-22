@@ -656,9 +656,9 @@ textarea {
 
 /* STEP見出し（黒→ブランド色） */
 .stepNo {
-  background: var(--chap-step-bg);
-  color: var(--chap-step-text);
-  border: 1px solid var(--chap-step-border) !important;
+  background: var(--chap-step-bg, #d6d0ff);
+  color: var(--chap-step-text, #2f2568);
+  border: 1px solid var(--chap-step-border, rgba(109,40,217,.20)) !important;
   font-weight: 900 !important;
 }
 

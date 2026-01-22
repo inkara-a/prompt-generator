@@ -1256,3 +1256,10 @@ textarea {
 .secondary:hover, #clearAll:hover{
   background: var(--chap-gray-bg-hover) !important;
 }
+
+/* ====== STEPバッジ（fix19準拠・適用保証） ====== */
+.step .stepNo{
+  background: var(--chap-step-bg, #d6d0ff) !important;
+  border: 1px solid var(--chap-step-border, rgba(109,40,217,.20)) !important;
+  color: var(--chap-step-text, #2f2568) !important;
+}

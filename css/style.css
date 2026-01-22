@@ -1256,3 +1256,18 @@ textarea {
 .secondary:hover, #clearAll:hover{
   background: var(--chap-gray-bg-hover) !important;
 }
+/* ====== 一括クリアボタン（fix15準拠：枠/背景のみ） ====== */
+:root{
+  --chap-gray: #e5e7eb;
+  --chap-gray-dark: #d1d5db;
+}
+
+#clearAll{
+  background: var(--chap-gray) !important;
+  border-color: var(--chap-gray-dark) !important;
+  color: #111827 !important;
+}
+
+#clearAll:hover{
+  background: var(--chap-gray-dark) !important;
+}

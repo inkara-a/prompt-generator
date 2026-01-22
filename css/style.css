@@ -1199,7 +1199,7 @@ textarea {
 .chapinavi-title__main {
   font-size: clamp(20px, 2.6vw, 26px);
   /* about 2/3 of the old size */
-  font-weight: 900
+  font-weight: 900;
   letter-spacing: .01em;
 }
 
@@ -1259,4 +1259,14 @@ textarea {
 }
 #clearAll:hover{
   background: var(--chap-gray-dark, #d1d5db) !important;
+}
+
+/* ====== ボタン文字の太さ（fix15準拠：コピー/一括クリアのみ） ====== */
+#copy,
+.copyMain{
+  font-weight: 900 !important;
+}
+
+#clearAll{
+  font-weight: 900 !important;
 }

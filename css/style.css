@@ -1,51 +1,92 @@
-body{
+/* ================================
+   Reset / Base Styles
+================================ */
+
+body {
   background:#f8fafc;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   color:#111827;
 }
-.container{
+
+.container {
   max-width:1100px;
   margin:24px auto;
   padding:0 16px;
 }
-.header{
+
+.header {
   background:#fff;
   padding:22px 22px;
   border-radius:12px;
   box-shadow:0 8px 24px rgba(0,0,0,.06);
 }
-.header h1{margin:0;}
-.sub{margin:6px 0 0; color:#6b7280; font-size:13px}
-.grid{
+
+.header h1 {
+  margin:0;
+}
+
+.sub {
+  margin:6px 0 0;
+  color:#6b7280;
+  font-size:13px;
+}
+
+.grid {
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap:16px;
   margin-top:16px;
 }
-.card{
+
+.card {
   background:#fff;
   border:1px solid rgba(15,23,42,.10);
   border-radius:16px;
   box-shadow:0 8px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
 }
-.card.wide{grid-column:1 / -1;}
+
+.card.wide {
+  grid-column:1 / -1;
+}
 
 /* STEP1 横長：上段は項目を横並び（PC） */
-.step1Fields{
+.step1Fields {
   display:grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap:12px;
 }
-.step1Fields .field label{
+
+.step1Fields .field label {
   margin-top:0;
 }
-@media (max-width: 900px){
-  .step1Fields{grid-template-columns:1fr;}
+
+@media (max-width: 900px) {
+  .step1Fields {
+    grid-template-columns:1fr;
+  }
+
 }
-h2{margin:0 0 12px; font-size:18px}
-h3{margin:16px 0 8px; font-size:14px; color:#374151}
-label{display:block;margin-top:12px;font-weight:600;font-size:13px;color:#111827}
-select, textarea, input{
+
+h2 {
+  margin:0 0 12px;
+  font-size:18px;
+}
+
+h3; {
+  margin:16px 0 8px;
+  font-size:14px;
+  color:#374151;
+}
+
+label; {
+  display:block;
+  margin-top:12px;
+  font-weight:600;
+  font-size:13px;
+  color:#111827;
+}
+
+select, textarea, input {
   width:100%;
   margin-top:8px;
   padding:10px;
@@ -54,7 +95,8 @@ select, textarea, input{
   border:1px solid #e5e7eb;
   font-size:14px;
 }
-button{
+
+button {
   width:auto;
   margin-top:8px;
   padding:10px;
@@ -63,73 +105,233 @@ button{
   border:1px solid #e5e7eb;
   font-size:14px;
 }
-textarea{min-height:92px; resize:vertical;}
-#result{min-height:320px;}
-.buttons{display:flex; gap:10px; margin-top:12px;}
+
+textarea {
+  min-height:92px;
+  resize:vertical;
+}
+
+#result {
+  min-height:320px;
+}
+
+.buttons {
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+
 .buttons /* removed global button flex reset */
-#generate{background:#2563eb;color:#fff;}
-.secondary{
+#generate {
+  background:#2563eb;
+  color:#fff;
+}
+
+.secondary {
   background: var(--chap-gray-bg);
   color: rgba(0,0,0,.78);
   border: 1px solid rgba(17,24,39,.12);
 }
-.secondary:hover{ background: var(--chap-gray-bg-hover); }
-.copyMain, #copy, #clearAll{
+
+.secondary:hover; {
+  background: var(--chap-gray-bg-hover);
+}
+
+.copyMain, #copy, #clearAll {
   width:100%;
 }
-.opts{display:flex; flex-direction:column; gap:8px; margin-top:8px;}
-.opt{font-weight:600; color:#374151; display:flex; gap:8px; align-items:center;}
-.opt input{width:auto; margin:0;}
-.hint{color:#6b7280;font-size:13px;margin-top:10px}
-.footer{margin:18px 0 8px; color:#6b7280; text-align:center}
-@media (max-width: 900px){
-  .grid{grid-template-columns: 1fr;}
+
+.opts {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:8px;
+}
+
+.opt {
+  font-weight:600;
+  color:#374151;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.opt input {
+  width:auto;
+  margin:0;
+}
+
+.hint {
+  color:#6b7280;
+  font-size:13px;
+  margin-top:10px;
+}
+
+.footer {
+  margin:18px 0 8px;
+  color:#6b7280;
+  text-align:center;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
 }
 
 /* Step1 should stay horizontal while the page is still in 2-column layout (desktop) */
-@media (min-width: 901px){
-  .step1Fields{display:flex; gap:12px;}
-  .step1Fields .field{flex:1 1 0; min-width:0;}
+@media (min-width: 901px) {
+  .step1Fields {
+    display:flex;
+    gap:12px;
+  }
+
+  .step1Fields .field {
+    flex:1 1 0;
+    min-width:0;
+  }
+
 }
 
-.desc{color:#6b7280;font-size:13px;margin:6px 0 12px; line-height:1.5}
-.mono{font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:#f3f4f6; padding:2px 6px; border-radius:6px; color:#111827}
-.varRow{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
-.varList{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
-.chip{
-  display:inline-flex; align-items:center; gap:8px;
-  background:#f3f4f6; border:1px solid #e5e7eb;
-  padding:6px 10px; border-radius:999px; cursor:pointer;
-  font-weight:700; font-size:13px;
-}
-.chip small{font-weight:600; color:#6b7280}
-.chip .x{
-  display:inline-flex; align-items:center; justify-content:center;
-  width:18px; height:18px; border-radius:999px;
-  background:#e5e7eb; color:#111827; font-weight:900;
-}
-#insertVar{background:#111827;color:#fff;}
-@media (max-width: 900px){
-  .varRow{grid-template-columns: 1fr;}
+.desc {
+  color:#6b7280;
+  font-size:13px;
+  margin:6px 0 12px;
+  line-height:1.5;
 }
 
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background:#f3f4f6;
+  padding:2px 6px;
+  border-radius:6px;
+  color:#111827;
+}
+
+.varRow {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+}
+
+.varList {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+.chip {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  padding:6px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:13px;
+}
+
+.chip small {
+  font-weight:600;
+  color:#6b7280;
+}
+
+.chip .x {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  background:#e5e7eb;
+  color:#111827;
+  font-weight:900;
+}
+
+#insertVar {
+  background:#111827;
+  color:#fff;
+}
+
+@media (max-width: 900px) {
+  .varRow {
+    grid-template-columns: 1fr;
+  }
+
+}
 
 /* v5 additions */
-.examples{margin-top:14px}
-.badge{display:inline-block;background: var(--brand);color: #fff;font-weight:900;padding:6px 10px;border-radius:999px;font-size:12px}
-.exTitle{margin:10px 0 4px;font-size:18px}
-.exSub{margin:0;color:#6b7280;font-size:13px}
-.exGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-.exCard{
-  background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px 12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.06); cursor:pointer;
+.examples {
+  margin-top:14px;
+}
+
+.badge {
+  display:inline-block;
+  background: var(--brand);
+  color: #fff;
+  font-weight:900;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+
+.exTitle {
+  margin:10px 0 4px;
+  font-size:18px;
+}
+
+.exSub {
+  margin:0;
+  color:#6b7280;
+  font-size:13px;
+}
+
+.exGrid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+
+.exCard {
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:12px 12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+  cursor:pointer;
   transition:transform .08s ease, box-shadow .08s ease;
 }
-.exCard:hover{transform:translateY(-1px); box-shadow:0 10px 28px rgba(0,0,0,.08)}
-.exCard h3{margin:0 0 6px;font-size:14px}
-.exCard p{margin:0;color:#6b7280;font-size:12px;line-height:1.4}
-.step{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.stepNo{
+
+.exCard:hover; {
+  transform:translateY(-1px);
+  box-shadow:0 10px 28px rgba(0,0,0,.08);
+}
+
+.exCard h3 {
+  margin:0 0 6px;
+  font-size:14px;
+}
+
+.exCard p {
+  margin:0;
+  color:#6b7280;
+  font-size:12px;
+  line-height:1.4;
+}
+
+.step {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.stepNo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -139,7 +341,6 @@ textarea{min-height:92px; resize:vertical;}
   letter-spacing: .02em;
   padding: 0;
   width: 76px;
-
   height: 28px;
   border-radius: 999px;
   color: var(--brand-ink);
@@ -147,31 +348,94 @@ textarea{min-height:92px; resize:vertical;}
   border: 1px solid rgba(0,0,0,.06);
 }
 
-.stepText{font-weight:900}
-.smartRow{margin-top:14px;padding:12px;border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
-.bigOpt{font-size:15px}
-.copyBar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.copyMain{
+.stepText {
+  font-weight:900;
+}
+
+.smartRow {
+  margin-top:14px;
+  padding:12px;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  background:#fafafa;
+}
+
+.bigOpt {
+  font-size:15px;
+}
+
+.copyBar {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.copyMain {
   width:100%;
   background: var(--chap-purple);
   color:#fff;
   border:1px solid rgba(0,0,0,.06);
 }
-.copyMain:hover{ background: var(--chap-purple-dark); }
-.copyState{color:#6b7280;font-weight:800}
-.copyBig{background:#16a34a;color:#fff;border:none;border-radius:12px;font-weight:900;cursor:pointer}
-.flash{animation: flash .6s ease;}
-@keyframes flash{0%{transform:scale(1);}35%{transform:scale(1.02);}100%{transform:scale(1);}}
-@media (max-width: 900px){.exGrid{grid-template-columns:1fr}}
 
+.copyMain:hover; {
+  background: var(--chap-purple-dark);
+}
+
+.copyState {
+  color:#6b7280;
+  font-weight:800;
+}
+
+.copyBig {
+  background:#16a34a;
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.flash {
+  animation: flash .6s ease;
+}
+
+@keyframes flash {
+  0%; {
+    transform:scale(1);
+  }
+
+  35%; {
+    transform:scale(1.02);
+  }
+
+  100%; {
+    transform:scale(1);
+  }
+
+}
+
+@media (max-width: 900px) {
+  .exGrid {
+    grid-template-columns:1fr;
+  }
+
+}
 
 /* v6 additions */
-.buttons{flex-wrap:wrap}
-
+.buttons {
+  flex-wrap:wrap;
+}
 
 /* v7 - example tabs */
-.exTabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.exTab{
+.exTabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+.exTab {
   border:1px solid #e5e7eb;
   background:#fff;
   border-radius:999px;
@@ -180,16 +444,22 @@ textarea{min-height:92px; resize:vertical;}
   font-size:12px;
   cursor:pointer;
 }
-.exTab.active{
+
+.exTab.active {
   background:#111827;
   color:#fff;
   border-color:#111827;
 }
 
-
 /* v7.7.1 - visual output format buttons */
-.formatButtons{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px}
-.formatBtn{
+.formatButtons {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:8px 0 2px;
+}
+
+.formatBtn {
   border:1px solid #e5e7eb;
   background:#fff;
   border-radius:12px;
@@ -198,36 +468,85 @@ textarea{min-height:92px; resize:vertical;}
   font-size:13px;
   cursor:pointer;
 }
-.formatBtn.active{
+
+.formatBtn.active {
   background:#111827;
   color:#fff;
   border-color:#111827;
 }
-.smallHint{font-size:12px;color:#6b7280;margin-bottom:8px}
+
+.smallHint {
+  font-size:12px;
+  color:#6b7280;
+  margin-bottom:8px;
+}
 
 /* v7.7.1 - paste guide */
-.pasteGuide{margin-top:10px;padding:10px 12px;border:1px dashed #e5e7eb;border-radius:14px;background:#fafafa}
-.pasteGuideText{font-weight:900;margin-bottom:8px}
-.aiLinks{display:flex;flex-wrap:wrap;gap:8px}
-.aiLink{
-  display:inline-flex;align-items:center;gap:6px;
-  border:1px solid #e5e7eb;background:#fff;border-radius:999px;
-  padding:8px 12px;font-weight:900;font-size:13px;text-decoration:none;color:#111827;
+.pasteGuide {
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px dashed #e5e7eb;
+  border-radius:14px;
+  background:#fafafa;
 }
-.aiLink:hover{transform:translateY(-1px)}
+
+.pasteGuideText {
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.aiLinks {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.aiLink {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid #e5e7eb;
+  background:#fff;
+  border-radius:999px;
+  padding:8px 12px;
+  font-weight:900;
+  font-size:13px;
+  text-decoration:none;
+  color:#111827;
+}
+
+.aiLink:hover; {
+  transform:translateY(-1px);
+}
 
 /* v8 - split output fields */
-#outputContent{min-height:120px}
-
+#outputContent {
+  min-height:120px;
+}
 
 /* v8.2 - SVG icons (cross-platform) */
-.formatBtn{display:inline-flex;align-items:center;gap:8px}
-.formatBtn .fi{width:18px;height:18px;display:inline-block}
-.formatBtn .fi path{stroke:currentColor}
-.formatBtn .fitxt{display:inline-block}
+.formatBtn {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+.formatBtn .fi {
+  width:18px;
+  height:18px;
+  display:inline-block;
+}
+
+.formatBtn .fi path {
+  stroke:currentColor;
+}
+
+.formatBtn .fitxt {
+  display:inline-block;
+}
 
 /* v8.2 - step checkmarks */
-.stepCheck{
+.stepCheck {
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -244,7 +563,8 @@ textarea{min-height:92px; resize:vertical;}
   transform:scale(1);
   margin-left:10px;
 }
-.stepCheck.on{
+
+.stepCheck.on {
   border-color:#10b981;
   background:#10b981;
   color:#ffffff;
@@ -252,49 +572,81 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* v9 - buttons moved under result */
-.buttonsUnderResult{display:flex;gap:10px;margin:12px 0 0}
-.buttonsUnderResult .secondary{flex:1}
-@media (max-width: 900px){
-  .buttonsUnderResult{flex-direction:column}
+.buttonsUnderResult {
+  display:flex;
+  gap:10px;
+  margin:12px 0 0;
 }
 
+.buttonsUnderResult .secondary {
+  flex:1;
+}
+
+@media (max-width: 900px) {
+  .buttonsUnderResult {
+    flex-direction:column;
+  }
+
+}
 
 /* v9 UI tweaks */
-.topBadge{display:inline-flex;align-items:center;gap:.5rem;padding:6px 12px;border-radius:999px;background:rgba(0,162,161,.12);color:#00a2a1;font-weight:700;font-size:12px;border:1px solid rgba(0,162,161,.18);margin-bottom:10px}
-
+.topBadge {
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(0,162,161,.12);
+  color:#00a2a1;
+  font-weight:700;
+  font-size:12px;
+  border:1px solid rgba(0,162,161,.18);
+  margin-bottom:10px;
+}
 
 /* --- Popular template tabs: icon + short label --- */
-.exTab{display:inline-flex;align-items:center;gap:8px}
-.exTab .tabIcon{display:inline-flex;align-items:center;justify-content:center}
-.exTab .tabIcon svg{width:16px;height:16px}
-.exTab .tabLabel{white-space:nowrap}
+.exTab {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
 
+.exTab .tabIcon {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
 
+.exTab .tabIcon svg {
+  width:16px;
+  height:16px;
+}
+
+.exTab .tabLabel {
+  white-space:nowrap;
+}
 
 /* === UI polish: tabs compact + headings color to brand teal === */
-:root{
+:root {
   --chap-purple: #6d28d9;
   --chap-purple-dark: #5b21b6;
   --chap-gray: #e5e7eb;
   --chap-gray-dark: #d1d5db;
   /* Secondary button (clearAll) */
-  --chap-gray-bg: #f1f5f9;
+  --chap-gray-bg: #f1f5f9
   --chap-gray-bg-hover: #e2e8f0;
-
-
   --brand:#00a2a1;
   --brand-soft: #8f80ff;
   --brand-weak: rgba(0,162,161,.12);
   --brand-line: rgba(0,162,161,.25);
-
   /* Step badge (淡い紫) */
-  --chap-step-bg: #d6d0ff;
+  --chap-step-bg: #d6d0ff
   --chap-step-border: rgba(109,40,217,.20);
   --chap-step-text: #2f2568;
 }
 
 /* Badge (人気テンプレなど) を見出し.pngの雰囲気に */
-.badge{
+.badge {
   background: var(--brand);
   color: #fff;
   border: 1px solid var(--brand-line) !important;
@@ -302,7 +654,7 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* STEP見出し（黒→ブランド色） */
-.stepNo{
+.stepNo {
   background: var(--chap-step-bg);
   color: var(--chap-step-text);
   border: 1px solid var(--chap-step-border) !important;
@@ -310,47 +662,68 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* 人気テンプレのタブをモックtabu.pngみたいにコンパクトに */
-.exTabs{
+.exTabs {
   gap: 10px !important;
   margin-top: 12px !important;
 }
-.exTab{
+
+.exTab {
   padding: 6px 10px !important;
   font-size: 13px !important;
   font-weight: 900 !important;
   border-radius: 999px !important;
   line-height: 1 !important;
 }
-.exTab .tabIcon svg{
+
+.exTab .tabIcon svg {
   width: 16px !important;
   height: 16px !important;
 }
-.exTab .tabLabel{
+
+.exTab .tabLabel {
   letter-spacing: .02em;
 }
 
 /* タブが長く見えないように余白を抑える */
-.exTab{gap:8px !important;}
-
+.exTab {
+  gap:8px !important;
+}
 
 /* Compact exTabs pills */
-.exTabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.exTab{
+.exTabs {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.exTab {
   padding:6px 10px !important;
   border-radius:999px !important;
   font-size:13px !important;
   line-height:1 !important;
 }
-.exTab .tabIcon svg{width:14px;height:14px}
-.exGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media (max-width: 640px){
-  .exGrid{grid-template-columns:1fr}
+
+.exTab .tabIcon svg {
+  width:14px;
+  height:14px;
+}
+
+.exGrid {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+@media (max-width: 640px) {
+  .exGrid {
+    grid-template-columns:1fr;
+  }
+
 }
 
 /* =========================
    人気テンプレ：タブをモックみたいに短く（強制上書き）
    ========================= */
-#exampleTabs{
+#exampleTabs {
   display: flex !important;
   gap: 8px !important;
   flex-wrap: wrap !important;
@@ -358,35 +731,32 @@ textarea{min-height:92px; resize:vertical;}
   margin-top: 10px !important;
 }
 
-#exampleTabs .exTab{
+#exampleTabs .exTab {
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
-
   padding: 6px 10px !important;
   border-radius: 999px !important;
-
   font-size: 13px !important;
   line-height: 1 !important;
   white-space: nowrap !important;
-
   min-height: 32px !important;
   border: 1px solid #e5e7eb !important;
   background: #fff !important;
 }
 
-#exampleTabs .exTab .tabIcon{
+#exampleTabs .exTab .tabIcon {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
-#exampleTabs .exTab .tabIcon svg{
+#exampleTabs .exTab .tabIcon svg {
   width: 14px !important;
   height: 14px !important;
 }
 
-#exampleTabs .exTab.active{
+#exampleTabs .exTab.active {
   border-color: rgba(0,162,161,.55) !important;
   box-shadow: 0 0 0 4px rgba(0,162,161,.12) !important;
 }
@@ -395,7 +765,7 @@ textarea{min-height:92px; resize:vertical;}
    人気テンプレ：タブをモックみたいに短く（さらに強制）
    ========================= */
 #exampleTabs button,
-#exampleTabs .exTab{
+#exampleTabs .exTab {
   padding: 6px 10px !important;
   border-radius: 999px !important;
   font-size: 13px !important;
@@ -406,7 +776,7 @@ textarea{min-height:92px; resize:vertical;}
    v5.1 さらに強制：タブが縦並びになる/横に詰まらない問題を潰す
    （ボタンが width:100% や flex:1 を持っていても負けないように）
    ========================= */
-#exampleTabs, .exTabs{
+#exampleTabs, .exTabs {
   display:flex !important;
   flex-wrap:wrap !important;
   align-items:center !important;
@@ -414,20 +784,21 @@ textarea{min-height:92px; resize:vertical;}
   gap:8px !important;
 }
 
-#exampleTabs .exTab{
+#exampleTabs .exTab {
   width:auto !important;
   max-width:none !important;
-  flex:0 0 auto !important;   /* ← ここが肝：均等伸長を無効化 */
+  flex:0 0 auto !important;
+  /* ← ここが肝：均等伸長を無効化 */
 }
 
-#exampleTabs .exTab .tabLabel{
+#exampleTabs .exTab .tabLabel {
   display:inline-block !important;
 }
 
 /* =========================
    v5.3 コーラル薄塗り＋太枠＋軽い浮き（タブ/出力形式/コピー）
    ========================= */
-:root{
+:root {
   --coral:#FF7F50;
   --coral-bg:#FFF1EA;
   --coral-text:#111111;
@@ -435,40 +806,47 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* 人気テンプレ：選択中 */
-#exampleTabs .exTab.active{
+#exampleTabs .exTab.active {
   border-color: var(--coral) !important;
   background: var(--coral-bg) !important;
   color: var(--coral-text) !important;
   box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
   transform: translateY(-1px) !important;
 }
-#exampleTabs .exTab.active .tabIcon svg{ color: var(--coral-text) !important; }
+
+#exampleTabs .exTab.active .tabIcon svg {
+  color: var(--coral-text) !important;
+}
 
 /* 出力の書き方（見た目）：選択中 */
 #formatButtons .formatBtn.isActive,
-#formatButtons .formatBtn.active{
+#formatButtons .formatBtn.active {
   border-color: var(--coral) !important;
   background: var(--coral-bg) !important;
   color: var(--coral-text) !important;
   box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
   transform: translateY(-1px) !important;
 }
+
 #formatButtons .formatBtn.isActive svg,
-#formatButtons .formatBtn.active svg{ color: var(--coral-text) !important; }
+#formatButtons .formatBtn.active svg {
+  color: var(--coral-text) !important;
+}
 
 /* メインCTA：コピーしてChatGPTに貼り付ける（STEP2/STEP3どちらにも効かせる） */
-.copyMain, .copyBig, #copyBig, #copy{
+.copyMain, .copyBig, #copyBig, #copy {
   background: var(--coral) !important;
   border: 2px solid var(--coral) !important;
   color: #fff !important;
   box-shadow: var(--lift-shadow) !important;
 }
-.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover{
+
+.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover; {
   transform: translateY(-1px);
 }
 
 /* タブ/ボタンの非選択状態は上品に */
-#exampleTabs .exTab{
+#exampleTabs .exTab {
   border-width: 1px !important;
 }
 
@@ -478,7 +856,7 @@ textarea{min-height:92px; resize:vertical;}
    3) ボタンとタブの差別化（コピーは #00a2a1 ベタ）
    4) タブ/ボタンの角丸は 12px に統一
    ========================= */
-:root{
+:root {
   --teal:#00a2a1;
   --coral-bg:#FFF1EA;
   --ink:#111111;
@@ -489,12 +867,12 @@ textarea{min-height:92px; resize:vertical;}
 #exampleTabs .exTab,
 #formatButtons .formatBtn,
 .copyMain, .copyBig, #copyBig, #copy,
-.secondary, #openChatGPT, #clearAll{
+.secondary, #openChatGPT, #clearAll {
   border-radius: 12px !important;
 }
 
 /* --- (1) 選択中タブ：コーラル薄塗り + 枠をティール寄せ --- */
-#exampleTabs .exTab.active{
+#exampleTabs .exTab.active {
   border-color: var(--teal) !important;
   background: var(--coral-bg) !important;
   color: var(--ink) !important;
@@ -502,13 +880,13 @@ textarea{min-height:92px; resize:vertical;}
   transform: translateY(-1px) !important;
 }
 
-#exampleTabs .exTab.active .tabIcon svg{
+#exampleTabs .exTab.active .tabIcon svg {
   color: var(--ink) !important;
 }
 
 /* --- 出力形式ボタン：選択中 --- */
 #formatButtons .formatBtn.isActive,
-#formatButtons .formatBtn.active{
+#formatButtons .formatBtn.active {
   border-color: var(--teal) !important;
   background: var(--coral-bg) !important;
   color: var(--ink) !important;
@@ -517,7 +895,7 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* --- (3) コピーはブランド紫で主CTA --- */
-.copyMain, .copyBig, #copyBig, #copy{
+.copyMain, .copyBig, #copyBig, #copy {
   background: var(--chap-purple) !important;
   border: 2px solid var(--chap-purple) !important;
   color:#fff !important;
@@ -525,7 +903,7 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* サブボタンは控えめ（グレー） */
-.secondary, #openChatGPT, #clearAll{
+.secondary, #openChatGPT, #clearAll {
   background: var(--chap-gray-bg) !important;
   border: 1px solid rgba(17,24,39,.12) !important;
   color: rgba(0,0,0,.78) !important;
@@ -534,19 +912,19 @@ textarea{min-height:92px; resize:vertical;}
 /* hover演出 */
 .copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover,
 #exampleTabs .exTab:hover,
-#formatButtons .formatBtn:hover{
+#formatButtons .formatBtn:hover {
   transform: translateY(-1px);
 }
 
 /* =========================
    v5.4.1 選択中背景をミントに変更（タブ/出力形式）
    ========================= */
-#exampleTabs .exTab.active{
+#exampleTabs .exTab.active {
   background: #e6f7f7 !important;
 }
 
 #formatButtons .formatBtn.isActive,
-#formatButtons .formatBtn.active{
+#formatButtons .formatBtn.active {
   background: #e6f7f7 !important;
 }
 
@@ -556,7 +934,7 @@ textarea{min-height:92px; resize:vertical;}
    (4) 生成プロンプトの強調
    (5) AIリンクをコピー直下に配置
    ========================= */
-.resultLabel{
+.resultLabel {
   display:inline-flex;
   align-items:center;
   gap:8px;
@@ -570,19 +948,19 @@ textarea{min-height:92px; resize:vertical;}
   margin: 8px 0 10px;
 }
 
-#result{
+#result {
   background:#f2fbfb !important;
   border:1px solid rgba(0,162,161,.25) !important;
 }
 
-.aiLinksBar{
+.aiLinksBar {
   display:flex;
   gap:10px;
   flex-wrap:wrap;
   margin: 10px 0 8px;
 }
 
-.aiMini{
+.aiMini {
   display:inline-flex;
   align-items:center;
   padding:8px 10px;
@@ -595,11 +973,11 @@ textarea{min-height:92px; resize:vertical;}
   text-decoration:none;
 }
 
-.aiMini:hover{
+.aiMini:hover; {
   transform: translateY(-1px);
 }
 
-.copyMain.isCopied, .copyBig.isCopied, #copyBig.isCopied, #copy.isCopied{
+.copyMain.isCopied, .copyBig.isCopied, #copyBig.isCopied, #copy.isCopied {
   filter: brightness(0.95);
 }
 
@@ -608,14 +986,14 @@ textarea{min-height:92px; resize:vertical;}
    - ガイド文を目立たせる
    - 一括クリアを結果幅いっぱい
    ========================= */
-.copyArea{
+.copyArea {
   display:flex;
   flex-direction:column;
   gap:10px;
   margin-bottom:10px;
 }
 
-.copyGuideStrong{
+.copyGuideStrong {
   padding:10px 12px;
   border-radius:12px;
   background:#e6f7f7;
@@ -625,7 +1003,7 @@ textarea{min-height:92px; resize:vertical;}
   font-size:13.5px;
 }
 
-.clearWide{
+.clearWide {
   width:100%;
   margin-top:10px;
   padding:12px 14px;
@@ -635,14 +1013,15 @@ textarea{min-height:92px; resize:vertical;}
   font-weight:900;
   cursor:pointer;
 }
-.clearWide:hover{
+
+.clearWide:hover; {
   transform: translateY(-1px);
 }
 
 /* =========================
    v5.7.1 ガイド文：強調ボックスをやめて“さりげなく目立たせる”
    ========================= */
-.copyGuideStrong{
+.copyGuideStrong {
   background: transparent !important;
   border: 0 !important;
   border-left: 4px solid rgba(0,162,161,.55) !important;
@@ -653,14 +1032,14 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* v5.7.24-stable: selected popular template */
-.exCard.selected{
+.exCard.selected {
   border-color: #00a2a1 !important;
   background: #e6f7f7 !important;
   box-shadow: 0 0 0 2px rgba(0,162,161,.18), 0 8px 18px rgba(0,0,0,0.08);
 }
 
 /* ===== Chapinavi Thin Header ===== */
-.chapinavi-header{
+.chapinavi-header {
   position: sticky;
   top: 0;
   z-index: 999;
@@ -670,7 +1049,7 @@ textarea{min-height:92px; resize:vertical;}
   border-bottom: 1px solid rgba(0,0,0,.06);
 }
 
-.chapinavi-header__inner{
+.chapinavi-header__inner {
   max-width: 1120px;
   margin: 0 auto;
   padding: 10px 16px;
@@ -680,7 +1059,7 @@ textarea{min-height:92px; resize:vertical;}
   gap: 16px;
 }
 
-.chapinavi-brand{
+.chapinavi-brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -690,21 +1069,21 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* Logo box: size is fixed, image uses % to keep aspect (object-fit) */
-.chapinavi-brand__logoBox{
+.chapinavi-brand__logoBox {
   width: 56px;
   height: 56px;
   flex: 0 0 auto;
   display: inline-block;
 }
 
-.chapinavi-brand__logo{
+.chapinavi-brand__logo {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.chapinavi-brand__name{
+.chapinavi-brand__name {
   font-weight: 800;
   font-size: 13px;
   letter-spacing: .02em;
@@ -716,21 +1095,32 @@ textarea{min-height:92px; resize:vertical;}
 }
 
 /* PC: show full name. SP: show short name to keep 1 line */
-.chapinavi-brand__name--short{ display:none; }
-
-@media (max-width: 720px){
-  .chapinavi-brand__name{ max-width: 70vw; }
-  .chapinavi-brand__name--full{ display:none; }
-  .chapinavi-brand__name--short{ display:inline; }
+.chapinavi-brand__name--short {
+  display:none;
 }
 
-.chapinavi-nav{
+@media (max-width: 720px) {
+  .chapinavi-brand__name {
+    max-width: 70vw;
+  }
+
+  .chapinavi-brand__name--full {
+    display:none;
+  }
+
+  .chapinavi-brand__name--short {
+    display:inline;
+  }
+
+}
+
+.chapinavi-nav {
   display: inline-flex;
   align-items: center;
 }
 
 /* Header button base */
-.chapinavi-nav__link{
+.chapinavi-nav__link {
   font-size: 13px;
   text-decoration: none;
   padding: 6px 10px;
@@ -740,19 +1130,19 @@ textarea{min-height:92px; resize:vertical;}
   color: rgba(0,0,0,.78);
 }
 
-.chapinavi-nav__link:hover{
+.chapinavi-nav__link:hover; {
   border-color: rgba(0,0,0,.14);
   color: rgba(0,0,0,.9);
 }
 
 /* X share (SVG icon) */
-.chapinavi-nav__link--x{
+.chapinavi-nav__link--x {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-.chapinavi-xicon{
+.chapinavi-xicon {
   display: inline-grid;
   place-items: center;
   width: 20px;
@@ -761,33 +1151,41 @@ textarea{min-height:92px; resize:vertical;}
   background: rgba(0,0,0,.88);
 }
 
-.chapinavi-xsvg{
+.chapinavi-xsvg {
   width: 12px;
   height: 12px;
   fill: #fff;
   display: block;
 }
 
-.chapinavi-xtext{ font-weight: 700; }
+.chapinavi-xtext {
+  font-weight: 700;
+}
 
-.chapinavi-ext{
+.chapinavi-ext {
   font-size: 12px;
   opacity: .7;
 }
 
-.chapinavi-nav__link--x:hover .chapinavi-xicon{ background: rgba(0,0,0,.95); }
-.chapinavi-nav__link--x:hover .chapinavi-ext{ opacity: 1; }
+.chapinavi-nav__link--x:hover .chapinavi-xicon; {
+  background: rgba(0,0,0,.95);
+}
+
+.chapinavi-nav__link--x:hover .chapinavi-ext; {
+  opacity: 1;
+}
 
 /* Title mini logo */
-.chapinavi-title{
+.chapinavi-title {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap; /* タイトルが2行でも崩れない */
-  line-height: 1;
+  flex-wrap: wrap;
+  /* タイトルが2行でも崩れない */
+  line-height: 1
 }
 
-.chapinavi-title__logoBox{
+.chapinavi-title__logoBox {
   width: 38px;
   height: 38px;
   flex: 0 0 auto;
@@ -796,54 +1194,82 @@ textarea{min-height:92px; resize:vertical;}
   justify-content: center;
 }
 
-.chapinavi-title__logo{
+.chapinavi-title__logo {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
 }
 
-.chapinavi-title__main{ 
-  font-size: clamp(20px, 2.6vw, 26px); /* about 2/3 of the old size */
-  font-weight: 900;
+.chapinavi-title__main {
+  font-size: clamp(20px, 2.6vw, 26px);
+  /* about 2/3 of the old size */
+  font-weight: 900
   letter-spacing: .01em;
 }
 
-.chapinavi-title__brand{
+.chapinavi-title__brand {
   font-size: clamp(13px, 1.6vw, 16px);
   font-weight: 800;
   color: rgba(0,0,0,.72);
 }
 
 /* Keep H1 visually centered with logo box */
-.chapinavi-title__main, .chapinavi-title__brand{
+.chapinavi-title__main, .chapinavi-title__brand {
   display: inline-flex;
   align-items: center;
   line-height: 1;
 }
 
-@media (max-width: 720px){
+@media (max-width: 720px) {
   /* Slightly tighter on mobile */
-  .chapinavi-title{ gap: 8px; }
-  .chapinavi-title__logoBox{ width: 34px; height: 34px; }
+  .chapinavi-title {
+    gap: 8px;
+  }
+
+  .chapinavi-title__logoBox {
+    width: 34px;
+    height: 34px;
+  }
+
 }
 
 /* Primary / Secondary button colors */
-.copyMain, #copy{
+.copyMain, #copy {
   background: var(--chap-purple) !important;
   border-color: var(--chap-purple) !important;
   color: #fff !important;
 }
-.copyMain:hover, #copy:hover{
+
+.copyMain:hover, #copy:hover; {
   background: var(--chap-purple-dark) !important;
   border-color: var(--chap-purple-dark) !important;
 }
 
-.secondary, #clearAll{
+.secondary, #clearAll {
   background: var(--chap-gray-bg) !important;
   border-color: rgba(15,23,42,.10) !important;
   color: rgba(15,23,42,.86) !important;
 }
-.secondary:hover, #clearAll:hover{
+
+.secondary:hover, #clearAll:hover; {
   background: var(--chap-gray-bg-hover) !important;
+}
+
+/* Example Tabs (Popular templates) - Card-like */
+.exTab{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  box-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 20px rgba(0,0,0,.06);
+}
+
+/* Autofill flash (when an example template fills the form) */
+@keyframes autofillPulse{
+  0%{ box-shadow:0 0 0 rgba(0,0,0,0); transform:translateY(0); }
+  35%{ box-shadow:0 0 0 6px rgba(142,97,255,.15); transform:translateY(-1px); }
+  100%{ box-shadow:0 0 0 rgba(0,0,0,0); transform:translateY(0); }
+}
+.autofillFlash{
+  animation:autofillPulse .55s ease-out 1;
 }

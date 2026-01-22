@@ -10,6 +10,19 @@ function smoothScrollTo(elm, offsetPx = -12) {
 
 
 
+
+function flashAutoFill(){
+  try{
+    const cards = document.querySelectorAll(".stepCard");
+    cards.forEach(c=>c.classList.remove("autofillFlash"));
+    // reflow
+    void document.body.offsetWidth;
+    cards.forEach(c=>c.classList.add("autofillFlash"));
+    // remove class after animation
+    setTimeout(()=>{ cards.forEach(c=>c.classList.remove("autofillFlash")); }, 650);
+  }catch(e){}
+}
+
 // v5.7.23: 初期は生成エリアを空欄にする（ユーザーが何か操作したら自動生成開始）
 let userInteracted_v5723 = false;
 const markInteracted_v5723 = () => { userInteracted_v5723 = true; };
@@ -615,6 +628,7 @@ function renderExampleButtons() {
       setAdvancedFromSmart();
       autoPreview();
       try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
+      try{ flashAutoFill(); }catch(e){}
 
     // Scroll to STEP1 (template selector) after example selection
     try{

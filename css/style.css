@@ -75,12 +75,7 @@ body {
   margin-top:0;
 }
 
-@media (max-width: 900px) {
-  .step1Fields {
-    grid-template-columns:1fr;
-  }
 
-}
 
 h2 {
   margin:0 0 12px;
@@ -227,26 +222,10 @@ textarea {
   text-align:center;
 }
 
-@media (max-width: 900px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
 
-}
 
 /* Step1 should stay horizontal while the page is still in 2-column layout (desktop) */
-@media (min-width: 901px) {
-  .step1Fields {
-    display:flex;
-    gap:12px;
-  }
 
-  .step1Fields .field {
-    flex:1 1 0;
-    min-width:0;
-  }
-
-}
 
 
 /* --- Description under title --- */
@@ -317,12 +296,7 @@ textarea {
   color:#fff;
 }
 
-@media (max-width: 900px) {
-  .varRow {
-    grid-template-columns: 1fr;
-  }
 
-}
 
 /* v5 additions */
 
@@ -502,12 +476,7 @@ textarea {
 
 }
 
-@media (max-width: 900px) {
-  .exGrid {
-    grid-template-columns:1fr;
-  }
 
-}
 
 /* v6 additions */
 .buttons {
@@ -689,12 +658,7 @@ textarea {
   flex:1;
 }
 
-@media (max-width: 900px) {
-  .buttonsUnderResult {
-    flex-direction:column;
-  }
 
-}
 
 /* v9 UI tweaks */
 .topBadge {
@@ -842,10 +806,7 @@ textarea {
   grid-template-columns:repeat(2,minmax(0,1fr));
 }
 
-@media (max-width: 640px) {
-  
 
-}
 
 /* =========================
    人気テンプレ：タブをモックみたいに短く（強制上書き）
@@ -1260,20 +1221,7 @@ textarea {
   display:none;
 }
 
-@media (max-width: 720px) {
-  .chapinavi-brand__name {
-    max-width: 70vw;
-  }
 
-  .chapinavi-brand__name--full {
-    display:none;
-  }
-
-  .chapinavi-brand__name--short {
-    display:inline;
-  }
-
-}
 
 
 /* --- Nav container --- */
@@ -1394,18 +1342,7 @@ textarea {
   line-height: 1;
 }
 
-@media (max-width: 720px) {
-  /* Slightly tighter on mobile */
-  .chapinavi-title {
-    gap: 8px;
-  }
 
-  .chapinavi-title__logoBox {
-    width: 34px;
-    height: 34px;
-  }
-
-}
 
 /* Primary / Secondary button colors */
 .copyMain, #copy {
@@ -1462,4 +1399,90 @@ textarea {
 #exampleTabs .exTab.active:hover,
 .exTabs .exTab.active:hover{
   transform: translateY(calc(var(--chap-hover-lift-y, -1px) - 1px)) !important;
+}
+
+/* =========================================================
+   5. Responsive (メディアクエリ：一番下にまとめる)
+   ※値/セレクタは変更せず、位置だけ最下部へ集約
+========================================================= */
+
+@media (max-width: 900px) {
+  .step1Fields {
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (min-width: 901px) {
+  .step1Fields {
+    display:flex;
+    gap:12px;
+  }
+
+  .step1Fields .field {
+    flex:1 1 0;
+    min-width:0;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .varRow {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .exGrid {
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .buttonsUnderResult {
+    flex-direction:column;
+  }
+
+}
+
+@media (max-width: 640px) {
+  
+
+}
+
+@media (max-width: 720px) {
+  .chapinavi-brand__name {
+    max-width: 70vw;
+  }
+
+  .chapinavi-brand__name--full {
+    display:none;
+  }
+
+  .chapinavi-brand__name--short {
+    display:inline;
+  }
+
+}
+
+@media (max-width: 720px) {
+  /* Slightly tighter on mobile */
+  .chapinavi-title {
+    gap: 8px;
+  }
+
+  .chapinavi-title__logoBox {
+    width: 34px;
+    height: 34px;
+  }
+
 }

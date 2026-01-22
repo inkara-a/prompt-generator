@@ -628,22 +628,35 @@ textarea {
 }
 
 /* === UI polish: tabs compact + headings color to brand teal === */
-:root {
+:root{
+  /* Brand / Main */
   --chap-purple: #6d28d9;
   --chap-purple-dark: #5b21b6;
+  --brand: #00a2a1;
+  --teal: #00a2a1;
+  --ink: #111111;
+
+  /* Grays */
   --chap-gray: #e5e7eb;
   --chap-gray-dark: #d1d5db;
-  /* Secondary button (clearAll) */
-  --chap-gray-bg: #f1f5f9
+  --chap-gray-bg: #f1f5f9;
   --chap-gray-bg-hover: #e2e8f0;
-  --brand:#00a2a1;
-  --brand-soft: #8f80ff;
-  --brand-weak: rgba(0,162,161,.12);
-  --brand-line: rgba(0,162,161,.25);
-  /* Step badge (淡い紫) */
+
+  /* Step Badge */
   --chap-step-bg: #d6d0ff;
   --chap-step-border: rgba(109,40,217,.20);
   --chap-step-text: #2f2568;
+
+  /* Active / Highlight */
+  --coral: #FF7F50;
+  --coral-bg: #FFF1EA;
+  --coral-text: #111111;
+  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
+
+  /* Other */
+  --brand-soft: #8f80ff;
+  --brand-weak: rgba(0,162,161,.12);
+  --brand-line: rgba(0,162,161,.25);
 }
 
 /* Badge (人気テンプレなど) を見出し.pngの雰囲気に */
@@ -799,12 +812,7 @@ textarea {
 /* =========================
    v5.3 コーラル薄塗り＋太枠＋軽い浮き（タブ/出力形式/コピー）
    ========================= */
-:root {
-  --coral:#FF7F50;
-  --coral-bg:#FFF1EA;
-  --coral-text:#111111;
-  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
-}
+
 
 /* 人気テンプレ：選択中 */
 #exampleTabs .exTab.active {
@@ -857,12 +865,7 @@ textarea {
    3) ボタンとタブの差別化（コピーは #00a2a1 ベタ）
    4) タブ/ボタンの角丸は 12px に統一
    ========================= */
-:root {
-  --teal:#00a2a1;
-  --coral-bg:#FFF1EA;
-  --ink:#111111;
-  --lift-shadow: 0 10px 24px rgba(17, 24, 39, .10);
-}
+
 
 /* --- (4) 角丸：タブ/ボタンは 12px --- */
 #exampleTabs .exTab,

@@ -152,10 +152,24 @@ textarea {
 }
 
 /* removed global button flex reset */
+
+/* =========================================================
+   4. Components - Buttons (CTA / secondary / clear / copy)
+   ※見た目/挙動を変えないため、適用順は動かさず
+   - 競合しやすいセレクタの明確化
+   - 明らかな重複だけ削除
+========================================================= */
+
+
+/* --- Primary (Generate) --- */
+
 #generate {
   background:#2563eb;
   color:#fff;
 }
+
+
+/* --- Secondary (generic) --- */
 
 .secondary {
   background: var(--chap-gray-bg);
@@ -415,6 +429,9 @@ textarea {
   gap:10px;
   margin-bottom:10px;
 }
+
+
+/* --- Copy (main button base) --- */
 
 .copyMain {
   width:100%;
@@ -1304,6 +1321,9 @@ textarea {
 }
 
 /* ====== 一括クリアボタン（fix15準拠：枠/背景のみ・最終ルール） ====== */
+
+/* --- Clear All (final rule) --- */
+
 #clearAll{
   background: var(--chap-gray, #e5e7eb) !important;
   border-color: var(--chap-gray-dark, #d1d5db) !important;

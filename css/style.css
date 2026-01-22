@@ -376,9 +376,9 @@ textarea {
   transition:transform .08s ease, box-shadow .08s ease;
 }
 
-.exCard:hover {
-  transform:translateY(-1px);
-  box-shadow:0 10px 28px rgba(0,0,0,.08);
+.exCard:hover{
+  transform: translateY(var(--chap-hover-lift-y, -1px));
+  box-shadow: var(--chap-hover-lift-shadow, 0 10px 28px rgba(0,0,0,.08));
 }
 
 .exCard h3 {
@@ -746,6 +746,10 @@ textarea {
   --brand-soft: #8f80ff;
   --brand-weak: rgba(0,162,161,.12);
   --brand-line: rgba(0,162,161,.25);
+
+  --chap-hover-lift-y: -1px;
+
+  --chap-hover-lift-shadow: 0 10px 28px rgba(0,0,0,.08);
 }
 
 
@@ -1377,6 +1381,13 @@ textarea {
 
 /* ====== Tabs hover (exCard準拠) ====== */
 .exTab:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 10px 28px rgba(0,0,0,.08);
+  transform: translateY(var(--chap-hover-lift-y, -1px));
+  box-shadow: var(--chap-hover-lift-shadow, 0 10px 28px rgba(0,0,0,.08));
+}
+
+/* ====== Tabs active hover (exCard準拠：浮き) ====== */
+#exampleTabs .exTab.active:hover,
+.exTabs .exTab.active:hover{
+  transform: translateY(var(--chap-hover-lift-y, -1px));
+  box-shadow: var(--chap-hover-lift-shadow, 0 10px 28px rgba(0,0,0,.08));
 }

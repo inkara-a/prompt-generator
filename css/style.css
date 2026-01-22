@@ -317,6 +317,17 @@ textarea {
 }
 
 /* v5 additions */
+
+/* =========================================================
+   4. Components - Popular Templates (tabs + exCard)
+   ※見た目/挙動を変えないため、適用順は動かさず
+   - 範囲の明確化（コメント）
+   - 完全一致の重複だけ削除
+========================================================= */
+
+
+/* --- Popular Templates: Section --- */
+
 .examples {
   margin-top:14px;
 }
@@ -342,12 +353,18 @@ textarea {
   font-size:13px;
 }
 
+
+/* --- exGrid (cards list) --- */
+
 .exGrid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
   margin-top:12px;
 }
+
+
+/* --- exCard (card) --- */
 
 .exCard {
   background:#fff;
@@ -490,12 +507,18 @@ textarea {
 }
 
 /* v7 - example tabs */
+
+/* --- Tabs (base) --- */
+
 .exTabs {
   display:flex;
   flex-wrap:wrap;
   gap:8px;
   margin-top:10px;
 }
+
+
+/* --- Tab (base) --- */
 
 .exTab {
   border:1px solid #e5e7eb;
@@ -506,6 +529,9 @@ textarea {
   font-size:12px;
   cursor:pointer;
 }
+
+
+/* --- Tab (active) --- */
 
 .exTab.active {
   background:#111827;
@@ -794,9 +820,7 @@ textarea {
 }
 
 @media (max-width: 640px) {
-  .exGrid {
-    grid-template-columns:1fr;
-  }
+  
 
 }
 
@@ -810,6 +834,9 @@ textarea {
   align-items: center !important;
   margin-top: 10px !important;
 }
+
+
+/* --- Tabs (inside #exampleTabs) --- */
 
 #exampleTabs .exTab {
   display: inline-flex !important;
@@ -856,6 +883,9 @@ textarea {
    v5.1 さらに強制：タブが縦並びになる/横に詰まらない問題を潰す
    （ボタンが width:100% や flex:1 を持っていても負けないように）
    ========================= */
+
+/* --- Tabs (force horizontal layout) --- */
+
 #exampleTabs, .exTabs {
   display:flex !important;
   flex-wrap:wrap !important;

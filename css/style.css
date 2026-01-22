@@ -332,7 +332,7 @@ textarea {
   margin-bottom:10px;
 }
 
-.stepNo {
+.stepNo{
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -344,9 +344,9 @@ textarea {
   width: 76px;
   height: 28px;
   border-radius: 999px;
-  color: var(--brand-ink);
-  background: var(--brand-soft);
-  border: 1px solid rgba(0,0,0,.06);
+  background: var(--chap-step-bg, #d6d0ff) !important;
+  border: 1px solid var(--chap-step-border, rgba(109,40,217,.20)) !important;
+  color: var(--chap-step-text, #2f2568) !important;
 }
 
 .stepText {
@@ -1255,11 +1255,4 @@ textarea {
 
 .secondary:hover, #clearAll:hover{
   background: var(--chap-gray-bg-hover) !important;
-}
-
-/* ====== STEPバッジ（fix19準拠・適用保証） ====== */
-.step .stepNo{
-  background: var(--chap-step-bg, #d6d0ff) !important;
-  border: 1px solid var(--chap-step-border, rgba(109,40,217,.20)) !important;
-  color: var(--chap-step-text, #2f2568) !important;
 }

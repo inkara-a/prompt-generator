@@ -641,7 +641,7 @@ textarea {
   --brand-weak: rgba(0,162,161,.12);
   --brand-line: rgba(0,162,161,.25);
   /* Step badge (淡い紫) */
-  --chap-step-bg: #d6d0ff
+  --chap-step-bg: #d6d0ff;
   --chap-step-border: rgba(109,40,217,.20);
   --chap-step-text: #2f2568;
 }

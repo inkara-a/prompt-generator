@@ -528,6 +528,8 @@ textarea {
   font-weight:900;
   font-size:12px;
   cursor:pointer;
+
+  transition: transform .08s ease, box-shadow .08s ease;
 }
 
 
@@ -1371,4 +1373,10 @@ textarea {
 
 #clearAll{
   font-weight: 900 !important;
+}
+
+/* ====== Tabs hover (exCard準拠) ====== */
+.exTab:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.08);
 }

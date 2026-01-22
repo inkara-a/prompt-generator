@@ -248,6 +248,9 @@ textarea {
 
 }
 
+
+/* --- Description under title --- */
+
 .desc {
   color:#6b7280;
   font-size:13px;
@@ -1174,6 +1177,17 @@ textarea {
 }
 
 /* ===== Chapinavi Thin Header ===== */
+
+/* =========================================================
+   4. Components - Header UI (chapinavi-*)
+   ※見た目/挙動を変えないため、適用順は動かさず
+   - 範囲の明確化（コメント）
+   - 完全一致の重複だけ削除
+========================================================= */
+
+
+/* --- Sticky header shell --- */
+
 .chapinavi-header {
   position: sticky;
   top: 0;
@@ -1183,6 +1197,9 @@ textarea {
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0,0,0,.06);
 }
+
+
+/* --- Header inner layout --- */
 
 .chapinavi-header__inner {
   max-width: 1120px;
@@ -1194,6 +1211,9 @@ textarea {
   gap: 16px;
 }
 
+
+/* --- Brand link --- */
+
 .chapinavi-brand {
   display: inline-flex;
   align-items: center;
@@ -1204,6 +1224,9 @@ textarea {
 }
 
 /* Logo box: size is fixed, image uses % to keep aspect (object-fit) */
+
+/* --- Brand logo box --- */
+
 .chapinavi-brand__logoBox {
   width: 56px;
   height: 56px;
@@ -1217,6 +1240,9 @@ textarea {
   height: 100%;
   object-fit: contain;
 }
+
+
+/* --- Brand name --- */
 
 .chapinavi-brand__name {
   font-weight: 800;
@@ -1249,12 +1275,18 @@ textarea {
 
 }
 
+
+/* --- Nav container --- */
+
 .chapinavi-nav {
   display: inline-flex;
   align-items: center;
 }
 
 /* Header button base */
+
+/* --- Nav link --- */
+
 .chapinavi-nav__link {
   font-size: 13px;
   text-decoration: none;
@@ -1276,6 +1308,9 @@ textarea {
   align-items: center;
   gap: 8px;
 }
+
+
+/* --- X icon --- */
 
 .chapinavi-xicon {
   display: inline-grid;
@@ -1311,6 +1346,9 @@ textarea {
 }
 
 /* Title mini logo */
+
+/* --- Title line (logo + title) --- */
+
 .chapinavi-title {
   display: flex;
   align-items: center;

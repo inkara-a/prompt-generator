@@ -904,13 +904,7 @@ textarea {
 }
 
 /* サブボタンは控えめ（グレー） */
-.secondary, #openChatGPT, #clearAll {
-  background: var(--chap-gray-bg) !important;
-  border: 1px solid rgba(17,24,39,.12) !important;
-  color: rgba(0,0,0,.78) !important;
-}
-
-/* hover演出 */
+.secondary, #openChatGPT, /* hover演出 */
 .copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover,
 #exampleTabs .exTab:hover,
 #formatButtons .formatBtn:hover {
@@ -1247,27 +1241,22 @@ textarea {
   border-color: var(--chap-purple-dark) !important;
 }
 
-.secondary, #clearAll {
+.secondary{
   background: var(--chap-gray-bg) !important;
   border-color: rgba(15,23,42,.10) !important;
   color: rgba(15,23,42,.86) !important;
 }
 
-.secondary:hover, #clearAll:hover{
+.secondary:hover{
   background: var(--chap-gray-bg-hover) !important;
 }
-/* ====== 一括クリアボタン（fix15準拠：枠/背景のみ） ====== */
-:root{
-  --chap-gray: #e5e7eb;
-  --chap-gray-dark: #d1d5db;
-}
 
+/* ====== 一括クリアボタン（fix15準拠：枠/背景のみ・最終ルール） ====== */
 #clearAll{
-  background: var(--chap-gray) !important;
-  border-color: var(--chap-gray-dark) !important;
+  background: var(--chap-gray, #e5e7eb) !important;
+  border-color: var(--chap-gray-dark, #d1d5db) !important;
   color: #111827 !important;
 }
-
 #clearAll:hover{
-  background: var(--chap-gray-dark) !important;
+  background: var(--chap-gray-dark, #d1d5db) !important;
 }

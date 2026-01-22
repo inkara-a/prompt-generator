@@ -141,6 +141,8 @@ textarea {
   resize:vertical;
 }
 
+/* --- Result textarea --- */
+
 #result {
   min-height:320px;
 }
@@ -252,6 +254,9 @@ textarea {
   margin:6px 0 12px;
   line-height:1.5;
 }
+
+
+/* --- Mono (code) --- */
 
 .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -565,6 +570,9 @@ textarea {
   border-color:#111827;
 }
 
+
+/* --- Small hint --- */
+
 .smallHint {
   font-size:12px;
   color:#6b7280;
@@ -579,6 +587,9 @@ textarea {
   border-radius:14px;
   background:#fafafa;
 }
+
+
+/* --- Paste guide text --- */
 
 .pasteGuideText {
   font-weight:900;
@@ -662,6 +673,9 @@ textarea {
 }
 
 /* v9 - buttons moved under result */
+
+/* --- Buttons under result --- */
+
 .buttonsUnderResult {
   display:flex;
   gap:10px;
@@ -1034,6 +1048,9 @@ textarea {
    (4) 生成プロンプトの強調
    (5) AIリンクをコピー直下に配置
    ========================= */
+
+/* --- Result label --- */
+
 .resultLabel {
   display:inline-flex;
   align-items:center;
@@ -1052,6 +1069,9 @@ textarea {
   background:#f2fbfb !important;
   border:1px solid rgba(0,162,161,.25) !important;
 }
+
+
+/* --- AI links bar --- */
 
 .aiLinksBar {
   display:flex;
@@ -1086,12 +1106,27 @@ textarea {
    - ガイド文を目立たせる
    - 一括クリアを結果幅いっぱい
    ========================= */
+
+/* =========================================================
+   4. Components - Result / Copy (result / copyGuide / aiLinks)
+   ※見た目/挙動を変えないため、適用順は動かさず
+   - 範囲の明確化（コメント）
+   - 完全一致の重複だけ削除
+========================================================= */
+
+
+
+/* --- Copy area --- */
+
 .copyArea {
   display:flex;
   flex-direction:column;
   gap:10px;
   margin-bottom:10px;
 }
+
+
+/* --- Copy guide (strong) --- */
 
 .copyGuideStrong {
   padding:10px 12px;

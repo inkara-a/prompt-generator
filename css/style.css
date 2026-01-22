@@ -8,11 +8,21 @@ body {
   color:#111827;
 }
 
+
+/* =========================================================
+   3. Layout (ヘッダー、フッター、全体のコンテナ)
+   ※見た目/適用順を変えないため、移動はせず「位置に印」を付けて整理
+========================================================= */
+
+/* --- Container --- */
+
 .container {
   max-width:1100px;
   margin:24px auto;
   padding:0 16px;
 }
+
+/* --- Header --- */
 
 .header {
   background:#fff;
@@ -31,12 +41,16 @@ body {
   font-size:13px;
 }
 
+/* --- Grid --- */
+
 .grid {
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap:16px;
   margin-top:16px;
 }
+
+/* --- Card --- */
 
 .card {
   background:#fff;
@@ -167,6 +181,8 @@ textarea {
   font-size:13px;
   margin-top:10px;
 }
+
+/* --- Footer --- */
 
 .footer {
   margin:18px 0 8px;
@@ -325,6 +341,13 @@ textarea {
   line-height:1.4;
 }
 
+
+/* =========================================================
+   4. Components - Step Cards (STEP1〜3)
+   ※見た目/適用順を変えないため、最小の重複削除と明確化のみ
+========================================================= */
+
+
 .step {
   display:flex;
   align-items:center;
@@ -337,7 +360,7 @@ textarea {
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  font-weight: 900;
+  font-weight: 900 !important;
   font-size: 12px;
   letter-spacing: .02em;
   padding: 0;
@@ -680,13 +703,6 @@ textarea {
 }
 
 /* STEP見出し（黒→ブランド色） */
-.stepNo {
-  background: var(--chap-step-bg, #d6d0ff);
-  color: var(--chap-step-text, #2f2568);
-  border: 1px solid var(--chap-step-border, rgba(109,40,217,.20)) !important;
-  font-weight: 900 !important;
-}
-
 /* 人気テンプレのタブをモックtabu.pngみたいにコンパクトに */
 .exTabs {
   gap: 10px !important;

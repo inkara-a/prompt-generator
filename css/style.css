@@ -308,6 +308,103 @@ textarea {
 ========================================================= */
 
 
+
+.exGrid{
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.exCard{
+  background: #fff;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 16px;
+  padding: 12px 12px;
+  box-shadow: 0 8px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .08s ease;
+}
+
+.exCard:hover{
+  transform: translateY(var(--chap-hover-lift-y, -1px));
+  box-shadow: var(--chap-hover-lift-shadow, 0 10px 28px rgba(0,0,0,.08));
+}
+
+.exTabs{
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 12px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+.exTab{
+  border: 1px solid #e5e7eb !important;
+  background: #fff !important;
+  border-radius: 999px !important;
+  padding: 6px 10px !important;
+  font-weight: 900 !important;
+  font-size: 13px !important;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .08s ease;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  min-height: 32px !important;
+  width: auto !important;
+  max-width: none !important;
+  flex: 0 0 auto !important;
+  border-width: 1px !important;
+}
+
+.exTab:hover{
+  transform: translateY(var(--chap-hover-lift-y, -1px));
+  box-shadow: var(--chap-hover-lift-shadow, 0 10px 28px rgba(0,0,0,.08));
+}
+
+.exTab.active{
+  background: #e6f7f7 !important;
+  color: var(--ink) !important;
+  border-color: var(--teal) !important;
+  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
+  transform: translateY(-1px) !important;
+}
+
+#exampleTabs .exTab{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 10px !important;
+  border-radius: 999px !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  min-height: 32px !important;
+  border: 1px solid #e5e7eb !important;
+  background: #fff !important;
+  width: auto !important;
+  max-width: none !important;
+  flex: 0 0 auto !important;
+  border-width: 1px !important;
+}
+
+#exampleTabs .exTab.active{
+  border-color: var(--teal) !important;
+  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
+  background: #e6f7f7 !important;
+  color: var(--ink) !important;
+  transform: translateY(-1px) !important;
+}
+
+#exampleTabs .exTab.active:hover,
+.exTabs .exTab.active:hover{
+  transform: translateY(calc(var(--chap-hover-lift-y, -1px) - 1px)) !important;
+}
+
 /* --- Popular Templates: Section --- */
 
 .examples {
@@ -338,30 +435,7 @@ textarea {
 
 /* --- exGrid (cards list) --- */
 
-.exGrid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:12px;
-}
-
-
 /* --- exCard (card) --- */
-
-.exCard {
-  background:#fff;
-  border:1px solid rgba(15,23,42,.10);
-  border-radius:16px;
-  padding:12px 12px;
-  box-shadow:0 8px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
-  cursor:pointer;
-  transition:transform .08s ease, box-shadow .08s ease;
-}
-
-.exCard:hover{
-  transform: translateY(var(--chap-hover-lift-y, -1px));
-  box-shadow: var(--chap-hover-lift-shadow, 0 10px 28px rgba(0,0,0,.08));
-}
 
 .exCard h3 {
   margin:0 0 6px;
@@ -487,36 +561,9 @@ textarea {
 
 /* --- Tabs (base) --- */
 
-.exTabs {
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:10px;
-}
-
-
 /* --- Tab (base) --- */
 
-.exTab {
-  border:1px solid #e5e7eb;
-  background:#fff;
-  border-radius:999px;
-  padding:8px 12px;
-  font-weight:900;
-  font-size:12px;
-  cursor:pointer;
-
-  transition: transform .08s ease, box-shadow .08s ease;
-}
-
-
 /* --- Tab (active) --- */
-
-.exTab.active {
-  background:#111827;
-  color:#fff;
-  border-color:#111827;
-}
 
 /* v7.7.1 - visual output format buttons */
 .formatButtons {
@@ -676,12 +723,6 @@ textarea {
 }
 
 /* --- Popular template tabs: icon + short label --- */
-.exTab {
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-}
-
 .exTab .tabIcon {
   display:inline-flex;
   align-items:center;
@@ -755,19 +796,6 @@ textarea {
 
 /* STEP見出し（黒→ブランド色） */
 /* 人気テンプレのタブをモックtabu.pngみたいにコンパクトに */
-.exTabs {
-  gap: 10px !important;
-  margin-top: 12px !important;
-}
-
-.exTab {
-  padding: 6px 10px !important;
-  font-size: 13px !important;
-  font-weight: 900 !important;
-  border-radius: 999px !important;
-  line-height: 1 !important;
-}
-
 .exTab .tabIcon svg {
   width: 16px !important;
   height: 16px !important;
@@ -778,35 +806,11 @@ textarea {
 }
 
 /* タブが長く見えないように余白を抑える */
-.exTab {
-  gap:8px !important;
-}
-
 /* Compact exTabs pills */
-.exTabs {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  align-items:center;
-}
-
-.exTab {
-  padding:6px 10px !important;
-  border-radius:999px !important;
-  font-size:13px !important;
-  line-height:1 !important;
-}
-
 .exTab .tabIcon svg {
   width:14px;
   height:14px;
 }
-
-.exGrid {
-  grid-template-columns:repeat(2,minmax(0,1fr));
-}
-
-
 
 /* =========================
    人気テンプレ：タブをモックみたいに短く（強制上書き）
@@ -822,21 +826,7 @@ textarea {
 
 /* --- Tabs (inside #exampleTabs) --- */
 
-#exampleTabs .exTab {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  padding: 6px 10px !important;
-  border-radius: 999px !important;
-  font-size: 13px !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-  min-height: 32px !important;
-  border: 1px solid #e5e7eb !important;
-  background: #fff !important;
-}
-
-#exampleTabs .exTab .tabIcon {
+#exampleTabs #exampleTabs .exTab .tabIcon {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -847,45 +837,18 @@ textarea {
   height: 14px !important;
 }
 
-#exampleTabs .exTab.active {
-  border-color: rgba(0,162,161,.55) !important;
-  box-shadow: 0 0 0 4px rgba(0,162,161,.12) !important;
-}
-
-/* =========================
+#exampleTabs /* =========================
    人気テンプレ：タブをモックみたいに短く（さらに強制）
    ========================= */
 #exampleTabs button,
-#exampleTabs .exTab {
-  padding: 6px 10px !important;
-  border-radius: 999px !important;
-  font-size: 13px !important;
-  line-height: 1 !important;
-}
-
-/* =========================
+#exampleTabs /* =========================
    v5.1 さらに強制：タブが縦並びになる/横に詰まらない問題を潰す
    （ボタンが width:100% や flex:1 を持っていても負けないように）
    ========================= */
 
 /* --- Tabs (force horizontal layout) --- */
 
-#exampleTabs, .exTabs {
-  display:flex !important;
-  flex-wrap:wrap !important;
-  align-items:center !important;
-  justify-content:flex-start !important;
-  gap:8px !important;
-}
-
-#exampleTabs .exTab {
-  width:auto !important;
-  max-width:none !important;
-  flex:0 0 auto !important;
-  /* ← ここが肝：均等伸長を無効化 */
-}
-
-#exampleTabs .exTab .tabLabel {
+#exampleTabs, #exampleTabs #exampleTabs .exTab .tabLabel {
   display:inline-block !important;
 }
 
@@ -895,15 +858,7 @@ textarea {
 
 
 /* 人気テンプレ：選択中 */
-#exampleTabs .exTab.active {
-  border-color: var(--coral) !important;
-  background: var(--coral-bg) !important;
-  color: var(--coral-text) !important;
-  box-shadow: 0 0 0 2px rgba(255,127,80,.25), var(--lift-shadow) !important;
-  transform: translateY(-1px) !important;
-}
-
-#exampleTabs .exTab.active .tabIcon svg {
+#exampleTabs #exampleTabs .exTab.active .tabIcon svg {
   color: var(--coral-text) !important;
 }
 
@@ -935,11 +890,7 @@ textarea {
 }
 
 /* タブ/ボタンの非選択状態は上品に */
-#exampleTabs .exTab {
-  border-width: 1px !important;
-}
-
-/* =========================
+#exampleTabs /* =========================
    v5.4 改善セット
    1) 選択中だけ #00a2a1 を混ぜる（枠線をティール寄せ）
    3) ボタンとタブの差別化（コピーは #00a2a1 ベタ）
@@ -956,15 +907,7 @@ textarea {
 }
 
 /* --- (1) 選択中タブ：コーラル薄塗り + 枠をティール寄せ --- */
-#exampleTabs .exTab.active {
-  border-color: var(--teal) !important;
-  background: var(--coral-bg) !important;
-  color: var(--ink) !important;
-  box-shadow: 0 0 0 2px rgba(0,162,161,.18), var(--lift-shadow) !important;
-  transform: translateY(-1px) !important;
-}
-
-#exampleTabs .exTab.active .tabIcon svg {
+#exampleTabs #exampleTabs .exTab.active .tabIcon svg {
   color: var(--ink) !important;
 }
 
@@ -997,11 +940,7 @@ textarea {
 /* =========================
    v5.4.1 選択中背景をミントに変更（タブ/出力形式）
    ========================= */
-#exampleTabs .exTab.active {
-  background: #e6f7f7 !important;
-}
-
-#formatButtons .formatBtn.isActive,
+#exampleTabs #formatButtons .formatBtn.isActive,
 #formatButtons .formatBtn.active {
   background: #e6f7f7 !important;
 }
@@ -1390,16 +1329,6 @@ textarea {
 }
 
 /* ====== Tabs hover (exCard準拠) ====== */
-.exTab:hover{
-  transform: translateY(var(--chap-hover-lift-y, -1px));
-  box-shadow: var(--chap-hover-lift-shadow, 0 10px 28px rgba(0,0,0,.08));
-}
-
-/* ====== Tabs active hover (単一変数セットで追加リフト) ====== */
-#exampleTabs .exTab.active:hover,
-.exTabs .exTab.active:hover{
-  transform: translateY(calc(var(--chap-hover-lift-y, -1px) - 1px)) !important;
-}
 
 /* =========================================================
    5. Responsive (メディアクエリ：一番下にまとめる)

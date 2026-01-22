@@ -43,6 +43,7 @@ body {
   border:1px solid rgba(15,23,42,.10);
   border-radius:16px;
   box-shadow:0 8px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+  padding:16px;
 }
 
 .card.wide {
@@ -72,13 +73,13 @@ h2 {
   font-size:18px;
 }
 
-h3; {
+h3{
   margin:16px 0 8px;
   font-size:14px;
   color:#374151;
 }
 
-label; {
+label{
   display:block;
   margin-top:12px;
   font-weight:600;
@@ -121,7 +122,7 @@ textarea {
   margin-top:12px;
 }
 
-.buttons /* removed global button flex reset */
+/* removed global button flex reset */
 #generate {
   background:#2563eb;
   color:#fff;
@@ -133,7 +134,7 @@ textarea {
   border: 1px solid rgba(17,24,39,.12);
 }
 
-.secondary:hover; {
+.secondary:hover{
   background: var(--chap-gray-bg-hover);
 }
 
@@ -378,7 +379,7 @@ textarea {
   border:1px solid rgba(0,0,0,.06);
 }
 
-.copyMain:hover; {
+.copyMain:hover{
   background: var(--chap-purple-dark);
 }
 
@@ -401,15 +402,15 @@ textarea {
 }
 
 @keyframes flash {
-  0%; {
+  0%{
     transform:scale(1);
   }
 
-  35%; {
+  35%{
     transform:scale(1.02);
   }
 
-  100%; {
+  100%{
     transform:scale(1);
   }
 
@@ -515,7 +516,7 @@ textarea {
   color:#111827;
 }
 
-.aiLink:hover; {
+.aiLink:hover{
   transform:translateY(-1px);
 }
 
@@ -841,7 +842,7 @@ textarea {
   box-shadow: var(--lift-shadow) !important;
 }
 
-.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover; {
+.copyMain:hover, .copyBig:hover, #copyBig:hover, #copy:hover{
   transform: translateY(-1px);
 }
 
@@ -973,7 +974,7 @@ textarea {
   text-decoration:none;
 }
 
-.aiMini:hover; {
+.aiMini:hover{
   transform: translateY(-1px);
 }
 
@@ -1014,7 +1015,7 @@ textarea {
   cursor:pointer;
 }
 
-.clearWide:hover; {
+.clearWide:hover{
   transform: translateY(-1px);
 }
 
@@ -1130,7 +1131,7 @@ textarea {
   color: rgba(0,0,0,.78);
 }
 
-.chapinavi-nav__link:hover; {
+.chapinavi-nav__link:hover{
   border-color: rgba(0,0,0,.14);
   color: rgba(0,0,0,.9);
 }
@@ -1167,11 +1168,11 @@ textarea {
   opacity: .7;
 }
 
-.chapinavi-nav__link--x:hover .chapinavi-xicon; {
+.chapinavi-nav__link--x:hover .chapinavi-xicon{
   background: rgba(0,0,0,.95);
 }
 
-.chapinavi-nav__link--x:hover .chapinavi-ext; {
+.chapinavi-nav__link--x:hover .chapinavi-ext{
   opacity: 1;
 }
 
@@ -1241,7 +1242,7 @@ textarea {
   color: #fff !important;
 }
 
-.copyMain:hover, #copy:hover; {
+.copyMain:hover, #copy:hover{
   background: var(--chap-purple-dark) !important;
   border-color: var(--chap-purple-dark) !important;
 }
@@ -1252,6 +1253,6 @@ textarea {
   color: rgba(15,23,42,.86) !important;
 }
 
-.secondary:hover, #clearAll:hover; {
+.secondary:hover, #clearAll:hover{
   background: var(--chap-gray-bg-hover) !important;
 }

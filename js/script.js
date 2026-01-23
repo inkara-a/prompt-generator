@@ -128,7 +128,7 @@ function renderExampleTabs() {
       renderExampleTabs();
       renderExampleButtons();
       // テンプレ選択で出力形式などが変わるので再初期化
-try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
+try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
     });
     tabsEl.appendChild(b);
   });
@@ -280,7 +280,7 @@ return;
   renderExampleButtons();
   autoPreview();
   // v5.8: templates loaded -> sync step checks (initial Step1 should reflect default selection)
-  try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
+  try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
 }
 
 
@@ -432,7 +432,7 @@ function autoPreview() {
 
 
   // v5.8 step check sync
-  try{ if (window.__updateStepChecks) window.__updateStepChecks(); }catch(e){}
+  try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
 }
 
 // Debounced preview (v5.8 refactor)
@@ -551,7 +551,7 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   // 先頭の入力にフォーカス
   try{ role.focus({ preventScroll: true }); }catch(e){ try{ role.focus(); }catch(_e){} }
   // After clear, bring "人気テンプレ" back into view
-  try{ if (window.__updateStepChecks) window.__updateStepChecks(); else if (typeof updateStepChecks === 'function') updateStepChecks(); }catch(e){}
+  try{ if (window.__syncStepChecks_v58) window.__syncStepChecks_v58(); }catch(e){}
 
 try{ const ex = document.querySelector(".examples"); if(ex) smoothScrollTo(ex, -16); }catch(e){}
 
@@ -593,7 +593,7 @@ function setSelection(cat, pur) {
   const purposes = data[cat].purposes;
   if (purposes && purposes[pur]) purpose.value = pur;
   autoPreview();
-  try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
+  try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
 }
 
 function setVarsFromExample(vars) {
@@ -645,7 +645,7 @@ function renderExampleButtons() {
       if (smart) smart.checked = true;
       setAdvancedFromSmart();
       autoPreview();
-      try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
+      try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
 
     // Scroll to STEP1 (template selector) after example selection
     try{
@@ -769,8 +769,13 @@ loadTemplates();
 
   // v5.7.24-testfix: 外部から再判定できるように公開
   try{ window.__updateStepChecks = updateStepChecks; }catch(e){}
+
+  // v5.8 safe refactor: single entry point to sync step checks
+  function syncStepChecks_v58(){
+    try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+  }
+  window.__syncStepChecks_v58 = syncStepChecks_v58;
   // expose for other auto-fill actions
-  window.__updateStepChecks = updateStepChecks;
 
   function bind(){
     ["category","purpose","role","goal","context","constraints","format","outputContent","request"].forEach(id=>{
@@ -783,9 +788,9 @@ loadTemplates();
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => { bind(); updateStepChecks(); });
+    document.addEventListener("DOMContentLoaded", () => { bind(); syncStepChecks_v58(); });
   } else {
-    bind(); updateStepChecks();
+    bind(); syncStepChecks_v58();
   }
 })();
 

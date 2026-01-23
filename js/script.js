@@ -513,52 +513,64 @@ el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
 });
 
 // 一括クリア（人気テンプレ確認後にすぐ自分用を書ける）
-el("clearAll") && el("clearAll").addEventListener("click", () => {
+
+  // v5.8 safe refactor: clearAll の初期化処理を1関数に集約（移動＋重複削除のみ）
+  function resetToInitialState_v58(){
     resetInteracted_v5723();
-    const r = el('result'); if (r) r.value = '';
-  // テキスト入力を全部空に
-  role.value = "";
-  goal.value = "";
-  context.value = "";
-  constraints.value = "";
-  format.value = "";
-  // 一括クリア後は「出力の書き方（見た目）」をデフォルト（箇条書き）へ戻す
-  try{ window.__resetFormatTouched && window.__resetFormatTouched(); }catch(e){}
-  try{ window.__setBulletsSelected && window.__setBulletsSelected({ forceText: true, setText: true, dispatch: false }); }catch(e){}
-  if (outputContent) outputContent.value = "";
-  request.value = "";
 
-  // 型は「そのまま（自由に書く）」へ
-  if (preset) preset.value = "none";
+    // 出力欄クリア
+    if (result) result.value = "";
+    const r = el('result'); if (r) r.value = "";
 
+    // テキスト入力を全部空に
+    role.value = "";
+    goal.value = "";
+    context.value = "";
+    constraints.value = "";
+    format.value = "";
 
-  // 人気テンプレ（タブ/カード）を初期状態へ
-  try{
-    activeExampleTab = "dev";
-    if (category) category.value = "dev";
-    // 初期状態の用途（見た目のデフォルト）へ戻す
-    try{ if (typeof initPurposes === "function") initPurposes(); }catch(e){}
-    if (purpose) purpose.value = "画面UI作成";
+    // 一括クリア後は「出力の書き方（見た目）」をデフォルト（箇条書き）へ戻す
+    try{ window.__resetFormatTouched && window.__resetFormatTouched(); }catch(e){}
+    try{ window.__setBulletsSelected && window.__setBulletsSelected({ forceText: true, setText: true, dispatch: false }); }catch(e){}
+
+    if (outputContent) outputContent.value = "";
+    request.value = "";
+
+    // 型は「そのまま（自由に書く）」へ
     if (preset) preset.value = "none";
-    renderExampleTabs();
-    renderExampleButtons();
-  }catch(e){}
-// 出力欄もクリア
-  if (result) result.value = "";
-  // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
-  renderVars();
 
-  // プレビュー更新
-  autoPreview();
+    // 人気テンプレ（タブ/カード）を初期状態へ
+    try{
+      activeExampleTab = "dev";
+      if (category) category.value = "dev";
+      // 初期状態の用途（見た目のデフォルト）へ戻す
+      try{ if (typeof initPurposes === "function") initPurposes(); }catch(e){}
+      if (purpose) purpose.value = "画面UI作成";
+      if (preset) preset.value = "none";
+      renderExampleTabs();
+      renderExampleButtons();
+    }catch(e){}
 
-  // 先頭の入力にフォーカス
-  try{ role.focus({ preventScroll: true }); }catch(e){ try{ role.focus(); }catch(_e){} }
-  // After clear, bring "人気テンプレ" back into view
-  try{ if (window.__updateStepChecks) window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); else if (typeof updateStepChecks === 'function') updateStepChecks(); }catch(e){}
+    // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
+    renderVars();
 
-try{ const ex = document.querySelector(".examples"); if(ex) smoothScrollTo(ex, -16); }catch(e){}
+    // プレビュー更新
+    autoPreview();
 
-});
+    // 先頭の入力にフォーカス
+    try{ role.focus({ preventScroll: true }); }catch(e){ try{ role.focus(); }catch(_e){} }
+
+    // After clear, sync step checks
+    try{
+      if (window.__syncStepChecks_v58) window.__syncStepChecks_v58();
+      else if (typeof updateStepChecks === 'function') updateStepChecks();
+    }catch(e){}
+  }
+el("clearAll") && el("clearAll").addEventListener("click", () => {
+    resetToInitialState_v58();
+    try{ const ex = document.querySelector(".examples"); if(ex) smoothScrollTo(ex, -16); }catch(e){}
+
+  });
 
 addVarBtn && addVarBtn.addEventListener("click", () => {
   const name = normalizeVarName(varName.value);

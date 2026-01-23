@@ -348,7 +348,7 @@ function applyPreset(clearRequest=false) {
     format.value = "";
   // 一括クリア後は「出力の書き方」をデフォルト（箇条書き）へ戻す
   try{ window.__resetFormatTouched && window.__resetFormatTouched(); }catch(e){}
-  try{ window.__setBulletsSelected && window.__setBulletsSelected({ forceText: true, setText: true, dispatch: true }); }catch(e){}
+  try{ window.__setBulletsSelected && window.__setBulletsSelected({ forceText: true, setText: true, dispatch: false }); }catch(e){}
   if (outputContent) outputContent.value = "";
     if (clearRequest) request.value = "";
     autoPreview();
@@ -851,7 +851,7 @@ loadTemplates();
     
     // 初回ロード直後にも「未選択」感を消す（任意）
     // ただし初回は "自動生成" を発火させないため、テキスト挿入＆dispatchはしない
-    setTimeout(() => setBulletsSelected({forceText:false, setText:false, dispatch:false}), 400);
+    setTimeout(() => setBulletsSelected({forceText:false, setText:true, dispatch:false}), 400);
   }
 
   if (document.readyState === "loading") {

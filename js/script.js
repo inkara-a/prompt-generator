@@ -681,7 +681,7 @@ function renderExampleButtons() {
       setAdvancedFromSmart();
       autoPreview();
       // 自動入力された欄を一瞬だけハイライト
-      try{ flashFill_v63([role, goal, context, constraints, outputContent, request, format].filter(Boolean)); }catch(e){}
+      try{ flashFill_v63([category, purpose, role, goal, context, constraints, outputContent, request, format].filter(Boolean)); }catch(e){}
       try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
 
     // Scroll to STEP1 (template selector) after example selection

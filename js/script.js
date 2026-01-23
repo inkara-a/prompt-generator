@@ -346,6 +346,9 @@ function applyPreset(clearRequest=false) {
     context.value = "";
     constraints.value = "";
     format.value = "";
+  // 一括クリア後は「出力の書き方」をデフォルト（箇条書き）へ戻す
+  try{ window.__resetFormatTouched && window.__resetFormatTouched(); }catch(e){}
+  try{ window.__setBulletsSelected && window.__setBulletsSelected({ forceText: true, setText: true, dispatch: true }); }catch(e){}
   if (outputContent) outputContent.value = "";
     if (clearRequest) request.value = "";
     autoPreview();
@@ -803,6 +806,12 @@ loadTemplates();
   function markTouched(){
     formatTouched = true;
   }
+
+  function resetFormatTouched(){
+    formatTouched = false;
+  }
+
+  try{ window.__resetFormatTouched = resetFormatTouched; }catch(e){}
 
   // Select "bullets" format visually.
   // - setText: write guidance into #format or not

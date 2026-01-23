@@ -772,7 +772,7 @@ loadTemplates();
 
   // v5.8: STEPチェック同期の単一入口
   function syncStepChecks_v58(){
-    try{ if (window.__updateStepChecks) window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+    try{ if (window.__updateStepChecks) window.__updateStepChecks(); }catch(e){}
   }
   window.__syncStepChecks_v58 = syncStepChecks_v58;
   // expose for other auto-fill actions

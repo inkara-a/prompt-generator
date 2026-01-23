@@ -432,7 +432,7 @@ function autoPreview() {
 
 
   // v5.8 step check sync
-  try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+  try{ if (window.__updateStepChecks) window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
 }
 
 // Debounced preview (v5.8 refactor)
@@ -551,7 +551,7 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   // 先頭の入力にフォーカス
   try{ role.focus({ preventScroll: true }); }catch(e){ try{ role.focus(); }catch(_e){} }
   // After clear, bring "人気テンプレ" back into view
-  try{ if (window.__syncStepChecks_v58) window.__syncStepChecks_v58(); }catch(e){}
+  try{ if (window.__updateStepChecks) window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); else if (typeof updateStepChecks === 'function') updateStepChecks(); }catch(e){}
 
 try{ const ex = document.querySelector(".examples"); if(ex) smoothScrollTo(ex, -16); }catch(e){}
 
@@ -622,56 +622,43 @@ function renderExampleButtons() {
       /* v5.7.24-stable: テンプレ選択を操作として扱い、選択状態/チェック/プレビューを即時反映 */
       try{ markInteracted_v5723 && markInteracted_v5723(); }catch(e){}
       try{ document.querySelectorAll(".exCard.selected").forEach(n=>n.classList.remove("selected")); card.classList.add("selected"); }catch(e){}
+      setSelection(ex.category, ex.purpose);
+      preset.value = ex.preset || "none";
+      applyPreset(true);
 
-      // 参照の取り直し（null安全）
-      const presetEl = document.getElementById("preset");
-      const roleEl = document.getElementById("role");
-      const goalEl = document.getElementById("goal");
-      const contextEl = document.getElementById("context");
-      const constraintsEl = document.getElementById("constraints");
-      const outputContentEl = document.getElementById("outputContent");
-      const smartEl = document.getElementById("smart");
-
-      try{
-        setSelection(ex.category, ex.purpose);
-        if (presetEl) presetEl.value = ex.preset || "none";
-        applyPreset(true);
-
-        if (ex.fill) {
-          if (roleEl) roleEl.value = ex.fill.aiPosition || "";
-          if (goalEl) goalEl.value = ex.fill.goal || "";
-          if (contextEl) contextEl.value = ex.fill.context || "";
-          if (constraintsEl) constraintsEl.value = ex.fill.rules || "";
-          if (outputContentEl) outputContentEl.value = (ex.fill.output || "");
-
-          // 人気テンプレを最初に選んだときは「出力の書き方」をデフォルトで箇条書きにする（不自然さ防止）
-          try {
-            if (window.__setBulletsSelected) {
-              window.__setBulletsSelected({ forceText: false, setText: true, dispatch: true });
-            }
-          } catch(e) {}
-        }
-
-        // 穴埋め（上級者向け）は自動追加しない
-        if (smartEl) smartEl.checked = true;
-        setAdvancedFromSmart();
-        autoPreview();
-      }catch(e){
-        // 例外が起きても UI が固まらないようにする（ログは残さない）
-      }finally{
-        try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+      if (ex.fill) {
+        role.value = ex.fill.aiPosition || "";
+        goal.value = ex.fill.goal || "";
+        context.value = ex.fill.context || "";
+        constraints.value = ex.fill.rules || "";
+        if (outputContent) outputContent.value = (ex.fill.output || "");
+      
+    // 人気テンプレを最初に選んだときは「出力の書き方」をデフォルトで箇条書きにする（不自然さ防止）
+    try {
+      if (window.__setBulletsSelected) {
+        window.__setBulletsSelected({ forceText: false, setText: true, dispatch: true });
       }
+    } catch(e) {}
+}
+      // 穴埋め（上級者向け）は自動追加しない
 
-      // Scroll to STEP1 (template selector) after example selection
-      try{
-        const step1El = document.querySelector(".step1Wide") || document.querySelector("#step1");
-        const target = step1El || presetEl;
-        if(target){
-          // run twice (immediate + delayed) to survive layout changes after DOM updates
-          requestAnimationFrame(() => smoothScrollTo(target, -24));
-          setTimeout(() => smoothScrollTo(target, -24), 180);
-        }
-      }catch(e){}
+      if (smart) smart.checked = true;
+      setAdvancedFromSmart();
+      autoPreview();
+      try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+
+    // Scroll to STEP1 (template selector) after example selection
+    try{
+      const presetEl = document.getElementById("preset");
+      const step1El = document.querySelector(".step1Wide") || document.querySelector("#step1");
+      const target = step1El || presetEl;
+      if(target){
+        // run twice (immediate + delayed) to survive layout changes after DOM updates
+        requestAnimationFrame(() => smoothScrollTo(target, -24));
+        setTimeout(() => smoothScrollTo(target, -24), 180);
+      }
+    }catch(e){}
+
     });
     grid.appendChild(card);
   });
@@ -747,7 +734,7 @@ loadTemplates();
     const step1ok = (cat && cat.value && cat.value !== "none") && (purpose && purpose.value && purpose.value !== "none");
 
     // 初期/一括クリア直後（未操作）では Step2/Step3 を未完了扱いにする
-    const interacted = (typeof userInteracted_v5723 !== 'undefined') ? !!userInteracted_v5723 : true;
+    const interacted = (typeof userInteracted_v5723 !== "undefined") ? !!userInteracted_v5723 : true;
 
     // Step2: お願い内容がどれか1つでも埋まっていれば（format/outputContent も含む）
     const role = document.getElementById("role");
@@ -783,9 +770,9 @@ loadTemplates();
   // v5.7.24-testfix: 外部から再判定できるように公開
   try{ window.__updateStepChecks = updateStepChecks; }catch(e){}
 
-  // v5.8 safe refactor: single entry point to sync step checks
+  // v5.8: STEPチェック同期の単一入口
   function syncStepChecks_v58(){
-    try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+    try{ if (window.__updateStepChecks) window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
   }
   window.__syncStepChecks_v58 = syncStepChecks_v58;
   // expose for other auto-fill actions

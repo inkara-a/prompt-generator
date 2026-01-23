@@ -530,13 +530,14 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   try{
     activeExampleTab = "dev";
     if (category) category.value = "dev";
-    if (purpose) purpose.value = "none";
+    // 初期状態の用途（見た目のデフォルト）へ戻す
+    try{ if (typeof initPurposes === "function") initPurposes(); }catch(e){}
+    if (purpose) purpose.value = "画面UI作成";
     if (preset) preset.value = "none";
     renderExampleTabs();
     renderExampleButtons();
   }catch(e){}
-
-  // 出力欄もクリア
+// 出力欄もクリア
   if (result) result.value = "";
   // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
   renderVars();
@@ -724,6 +725,12 @@ loadTemplates();
   function isFilled(v){ return (v || "").toString().trim().length > 0; }
 
   function updateStepChecks(){
+    const interacted = (typeof userInteracted_v5723 !== 'undefined') ? !!userInteracted_v5723 : true;
+    if(!interacted){
+      document.querySelectorAll(".stepCheck").forEach(b => b.classList.remove("on"));
+      return;
+    }
+
     // Step1: カテゴリ & 用途が選ばれていれば
     const cat = document.getElementById("category");
     const purpose = document.getElementById("purpose");

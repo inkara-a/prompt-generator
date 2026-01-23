@@ -672,7 +672,7 @@ function renderExampleButtons() {
           setTimeout(() => smoothScrollTo(target, -24), 180);
         }
       }catch(e){}
-    }));
+    });
     grid.appendChild(card);
   });
 }

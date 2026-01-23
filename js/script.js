@@ -725,40 +725,41 @@ loadTemplates();
   function isFilled(v){ return (v || "").toString().trim().length > 0; }
 
   function updateStepChecks(){
-    // Step1 は「画面上すでに選択されているか」で判定（初期状態/一括クリア後もONにできる）
+    // Step1: カテゴリ & 用途が選ばれていれば（初期状態でも達成扱い）
     const cat = document.getElementById("category");
     const purpose = document.getElementById("purpose");
     const step1ok = (cat && cat.value && cat.value !== "none") && (purpose && purpose.value && purpose.value !== "none");
 
-    // Step2/Step3 は「ユーザーが何か入力したか」を見て点灯開始（初期状態で勝手に進捗が進まないように）
+    // userInteracted=false のときは、Step2/Step3 は未完了扱い（ただし Step1 はそのまま反映）
     const interacted = (typeof userInteracted_v5723 !== "undefined") ? !!userInteracted_v5723 : true;
 
-    // Step2: お願い内容（入力欄）がどれか1つでも埋まっていれば
+    // Step2: お願い内容がどれか1つでも埋まっていれば
     const role = document.getElementById("role");
     const goal = document.getElementById("goal");
     const request = document.getElementById("request");
     const contextEl = document.getElementById("context");
     const constraintsEl = document.getElementById("constraints");
-    const step2ok = isFilled(role && role.value)
+    const formatEl = document.getElementById("format");
+    const outputContent = document.getElementById("outputContent");
+
+    const step2raw = isFilled(role && role.value)
       || isFilled(goal && goal.value)
       || isFilled(contextEl && contextEl.value)
       || isFilled(constraintsEl && constraintsEl.value)
       || isFilled(request && request.value)
-      || isFilled((document.getElementById("format") || {}).value)
-      || isFilled((document.getElementById("outputContent") || {}).value);
+      || isFilled(formatEl && formatEl.value)
+      || isFilled(outputContent && outputContent.value);
+
+    const step2ok = interacted ? step2raw : false;
 
     // Step3: 結果（コピー対象）が1文字でも出ていれば
     const result = document.getElementById("result");
-    const step3ok = isFilled(result && result.value);
+    const step3raw = isFilled(result && result.value);
+    const step3ok = interacted ? step3raw : false;
 
-    const map = {
-      1: step1ok,
-      2: interacted ? step2ok : false,
-      3: interacted ? step3ok : false,
-    };
-
+    const map = {1:step1ok,2:step2ok,3:step3ok};
     document.querySelectorAll(".stepCheck").forEach(b => {
-      const n = Number(b.getAttribute("data-step") || "0");
+      const n = Number(b.getAttribute("data-step")||"0");
       b.classList.toggle("on", !!map[n]);
     });
   }

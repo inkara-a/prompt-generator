@@ -729,7 +729,7 @@ loadTemplates();
     if(!interacted){
       document.querySelectorAll(".stepCheck").forEach(b => b.classList.remove("on"));
       return;
-    }
+  }
 
     // Step1: カテゴリ & 用途が選ばれていれば
     const cat = document.getElementById("category");

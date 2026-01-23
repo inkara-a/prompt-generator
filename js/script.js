@@ -515,6 +515,20 @@ el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
 // 一括クリア（人気テンプレ確認後にすぐ自分用を書ける）
 
   // v5.8 safe refactor: clearAll の初期化処理を1関数に集約（移動＋重複削除のみ）
+  function resetPopularTemplate_v58(){
+    // 人気テンプレ（タブ/カード）を初期状態へ
+    try{
+      activeExampleTab = "dev";
+      if (category) category.value = "dev";
+      // 初期状態の用途（見た目のデフォルト）へ戻す
+      try{ if (typeof initPurposes === "function") initPurposes(); }catch(e){}
+      if (purpose) purpose.value = "画面UI作成";
+      if (preset) preset.value = "none";
+      renderExampleTabs();
+      renderExampleButtons();
+    }catch(e){}
+  }
+
   function resetToInitialState_v58(){
     resetInteracted_v5723();
 
@@ -539,17 +553,7 @@ el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
     // 型は「そのまま（自由に書く）」へ
     if (preset) preset.value = "none";
 
-    // 人気テンプレ（タブ/カード）を初期状態へ
-    try{
-      activeExampleTab = "dev";
-      if (category) category.value = "dev";
-      // 初期状態の用途（見た目のデフォルト）へ戻す
-      try{ if (typeof initPurposes === "function") initPurposes(); }catch(e){}
-      if (purpose) purpose.value = "画面UI作成";
-      if (preset) preset.value = "none";
-      renderExampleTabs();
-      renderExampleButtons();
-    }catch(e){}
+    resetPopularTemplate_v58();
 
     // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
     renderVars();

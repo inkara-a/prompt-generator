@@ -279,7 +279,10 @@ return;
   renderExampleTabs();
   renderExampleButtons();
   autoPreview();
+  // v5.8: templates loaded -> sync step checks (initial Step1 should reflect default selection)
+  try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
 }
+
 
 function initCategories() {
   if (!category) return;

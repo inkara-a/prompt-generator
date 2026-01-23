@@ -1415,3 +1415,25 @@ textarea {
   }
 
 }
+
+
+/* v6.3: popular template autofill flash */
+:root {
+  /* STEPバッジ系の薄紫に寄せた一時ハイライト */
+  --chap-flash-bg: var(--chap-step-bg, #d6d0ff);
+  --chap-flash-border: var(--chap-step-border, rgba(109, 40, 217, .20));
+}
+
+/* 人気テンプレ適用で自動入力された欄を“パッ”と強調（軽量・短時間） */
+.flashFill {
+  animation: chapFlashFill 900ms ease-out 1;
+}
+
+@keyframes chapFlashFill {
+  0%   { background-color: rgba(214, 208, 255, .55); border-color: var(--chap-flash-border); }
+  45%  { background-color: rgba(214, 208, 255, .32); border-color: var(--chap-flash-border); }
+  100% { background-color: transparent; border-color: inherit; }
+}
+  45%  { background-color: color-mix(in srgb, var(--chap-flash-bg) 30%, transparent); border-color: color-mix(in srgb, var(--chap-flash-border) 70%, transparent); }
+  100% { background-color: transparent; border-color: inherit; }
+}

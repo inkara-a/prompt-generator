@@ -1,3 +1,24 @@
+
+  // v6.3: 人気テンプレ適用時の自動入力“パッ”演出（軽量・短時間）
+  function flashFill_v63(nodes){
+    try{
+      if(!nodes || !nodes.length) return;
+      nodes.forEach(n=>{
+        if(!n || !n.classList) return;
+        n.classList.remove("flashFill");
+      });
+      // 次フレームで付与（reflow強制せず、連打でも再点灯しやすい）
+      requestAnimationFrame(()=>{
+        nodes.forEach(n=>{
+          if(!n || !n.classList) return;
+          n.classList.add("flashFill");
+          // 自動で外す（イベント多重登録を避けるためタイマー方式）
+          setTimeout(()=>{ try{ n.classList.remove("flashFill"); }catch(e){} }, 950);
+        });
+      });
+    }catch(e){}
+  }
+
 const BUILD_ID = "v20260116am-format-placeholder-fixed";
 let data = null;
 const el = (id) => document.getElementById(id);
@@ -213,6 +234,9 @@ function renderVars() {
         saveVars(next);
         renderVars();
         autoPreview();
+
+        // 自動入力された欄を一瞬だけハイライト
+        try{ flashFill_v63([roleEl, goalEl, contextEl, constraintsEl, outputContentEl, requestEl, formatEl].filter(Boolean)); }catch(e){}
       try{window.__applyStepChecks && window.__applyStepChecks();}catch(e){}
 
         return;

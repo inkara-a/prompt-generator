@@ -729,7 +729,9 @@ loadTemplates();
       || isFilled(goal && goal.value)
       || isFilled(contextEl && contextEl.value)
       || isFilled(constraintsEl && constraintsEl.value)
-      || isFilled(request && request.value);
+      || isFilled(request && request.value)
+      || isFilled((document.getElementById("format") || {}).value)
+      || isFilled((document.getElementById("outputContent") || {}).value);
 
     // Step3: 結果（コピー対象）が1文字でも出ていれば
     const result = document.getElementById("result");

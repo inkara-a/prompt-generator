@@ -725,10 +725,42 @@ loadTemplates();
   function isFilled(v){ return (v || "").toString().trim().length > 0; }
 
   function updateStepChecks(){
-    const interacted = (typeof userInteracted_v5723 !== 'undefined') ? !!userInteracted_v5723 : true;
-    if(!interacted){
-      document.querySelectorAll(".stepCheck").forEach(b => b.classList.remove("on"));
-      return;
+    // Step1 は「画面上すでに選択されているか」で判定（初期状態/一括クリア後もONにできる）
+    const cat = document.getElementById("category");
+    const purpose = document.getElementById("purpose");
+    const step1ok = (cat && cat.value && cat.value !== "none") && (purpose && purpose.value && purpose.value !== "none");
+
+    // Step2/Step3 は「ユーザーが何か入力したか」を見て点灯開始（初期状態で勝手に進捗が進まないように）
+    const interacted = (typeof userInteracted_v5723 !== "undefined") ? !!userInteracted_v5723 : true;
+
+    // Step2: お願い内容（入力欄）がどれか1つでも埋まっていれば
+    const role = document.getElementById("role");
+    const goal = document.getElementById("goal");
+    const request = document.getElementById("request");
+    const contextEl = document.getElementById("context");
+    const constraintsEl = document.getElementById("constraints");
+    const step2ok = isFilled(role && role.value)
+      || isFilled(goal && goal.value)
+      || isFilled(contextEl && contextEl.value)
+      || isFilled(constraintsEl && constraintsEl.value)
+      || isFilled(request && request.value)
+      || isFilled((document.getElementById("format") || {}).value)
+      || isFilled((document.getElementById("outputContent") || {}).value);
+
+    // Step3: 結果（コピー対象）が1文字でも出ていれば
+    const result = document.getElementById("result");
+    const step3ok = isFilled(result && result.value);
+
+    const map = {
+      1: step1ok,
+      2: interacted ? step2ok : false,
+      3: interacted ? step3ok : false,
+    };
+
+    document.querySelectorAll(".stepCheck").forEach(b => {
+      const n = Number(b.getAttribute("data-step") || "0");
+      b.classList.toggle("on", !!map[n]);
+    });
   }
 
     // Step1: カテゴリ & 用途が選ばれていれば

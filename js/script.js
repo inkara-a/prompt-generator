@@ -525,6 +525,17 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   // 型は「そのまま（自由に書く）」へ
   if (preset) preset.value = "none";
 
+
+  // 人気テンプレ（タブ/カード）を初期状態へ
+  try{
+    activeExampleTab = "dev";
+    if (category) category.value = "dev";
+    if (purpose) purpose.value = "none";
+    if (preset) preset.value = "none";
+    renderExampleTabs();
+    renderExampleButtons();
+  }catch(e){}
+
   // 出力欄もクリア
   if (result) result.value = "";
   // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）

@@ -1429,5 +1429,5 @@ textarea {
 @keyframes chapFlashFill{
   0%   { background-color: rgba(214, 208, 255, .55); border-color: var(--chap-flash-border); }
   45%  { background-color: rgba(214, 208, 255, .32); border-color: var(--chap-flash-border); }
-  100% { background-color: transparent; border-color: inherit; }
+  100% { background-color: transparent; border-color: #e5e7eb; }
 }

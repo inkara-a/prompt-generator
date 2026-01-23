@@ -426,6 +426,10 @@ function autoPreview() {
 
   if (!result) return;
   result.value = buildPrompt();
+
+
+  // v5.8 step check sync
+  try{ if (window.__updateStepChecks) window.__updateStepChecks(); }catch(e){}
 }
 
 // Debounced preview (v5.8 refactor)
@@ -532,7 +536,9 @@ el("clearAll") && el("clearAll").addEventListener("click", () => {
   // 先頭の入力にフォーカス
   try{ role.focus({ preventScroll: true }); }catch(e){ try{ role.focus(); }catch(_e){} }
   // After clear, bring "人気テンプレ" back into view
-  try{ const ex = document.querySelector(".examples"); if(ex) smoothScrollTo(ex, -16); }catch(e){}
+  try{ if (window.__updateStepChecks) window.__updateStepChecks(); else if (typeof updateStepChecks === 'function') updateStepChecks(); }catch(e){}
+
+try{ const ex = document.querySelector(".examples"); if(ex) smoothScrollTo(ex, -16); }catch(e){}
 
 });
 
@@ -712,32 +718,24 @@ loadTemplates();
     const purpose = document.getElementById("purpose");
     const step1ok = (cat && cat.value && cat.value !== "none") && (purpose && purpose.value && purpose.value !== "none");
 
-    // Step2: AIの立場 or やりたいこと が入っていれば
+    // Step2: お願い内容（入力欄）がどれか1つでも埋まっていれば
+    // ※Step3（結果/コピー）と責務が混ざらないよう、format/outputContent は含めない
     const role = document.getElementById("role");
     const goal = document.getElementById("goal");
     const request = document.getElementById("request");
-        const contextEl = document.getElementById("context");
+    const contextEl = document.getElementById("context");
     const constraintsEl = document.getElementById("constraints");
-    const outputEl = document.getElementById("outputContent");
-    const formatEl = document.getElementById("format");
     const step2ok = isFilled(role && role.value)
       || isFilled(goal && goal.value)
       || isFilled(contextEl && contextEl.value)
       || isFilled(constraintsEl && constraintsEl.value)
-      || isFilled(outputEl && outputEl.value)
-      || isFilled(formatEl && formatEl.value)
       || isFilled(request && request.value);
 
-    // Step3: 出力の書き方 or 出してほしい内容 のどちらかが入っていれば
-    const format = document.getElementById("format");
-    const outputContent = document.getElementById("outputContent");
-    const step3ok = isFilled(format && format.value) || isFilled(outputContent && outputContent.value);
-
-    // Step4: 結果が1文字でも出ていれば
+    // Step3: 結果（コピー対象）が1文字でも出ていれば
     const result = document.getElementById("result");
-    const step4ok = isFilled(result && result.value);
+    const step3ok = isFilled(result && result.value);
 
-    const map = {1:step1ok,2:step2ok,3:step3ok,4:step4ok};
+    const map = {1:step1ok,2:step2ok,3:step3ok};
     document.querySelectorAll(".stepCheck").forEach(b => {
       const n = Number(b.getAttribute("data-step")||"0");
       b.classList.toggle("on", !!map[n]);

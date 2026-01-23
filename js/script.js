@@ -3,16 +3,11 @@
   function flashFill_v63(nodes){
     try{
       if(!nodes || !nodes.length) return;
-      nodes.forEach(n=>{
-        if(!n || !n.classList) return;
-        n.classList.remove("flashFill");
-      });
-      // 次フレームで付与（reflow強制せず、連打でも再点灯しやすい）
+      nodes.forEach(n=>{ try{ n && n.classList && n.classList.remove("flashFill"); }catch(e){} });
       requestAnimationFrame(()=>{
         nodes.forEach(n=>{
           if(!n || !n.classList) return;
           n.classList.add("flashFill");
-          // 自動で外す（イベント多重登録を避けるためタイマー方式）
           setTimeout(()=>{ try{ n.classList.remove("flashFill"); }catch(e){} }, 950);
         });
       });
@@ -234,9 +229,6 @@ function renderVars() {
         saveVars(next);
         renderVars();
         autoPreview();
-
-        // 自動入力された欄を一瞬だけハイライト
-        try{ flashFill_v63([roleEl, goalEl, contextEl, constraintsEl, outputContentEl, requestEl, formatEl].filter(Boolean)); }catch(e){}
       try{window.__applyStepChecks && window.__applyStepChecks();}catch(e){}
 
         return;
@@ -688,6 +680,8 @@ function renderExampleButtons() {
       if (smart) smart.checked = true;
       setAdvancedFromSmart();
       autoPreview();
+      // 自動入力された欄を一瞬だけハイライト
+      try{ flashFill_v63([role, goal, context, constraints, outputContent, request, format].filter(Boolean)); }catch(e){}
       try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
 
     // Scroll to STEP1 (template selector) after example selection

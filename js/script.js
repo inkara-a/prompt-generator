@@ -346,6 +346,9 @@ function applyPreset(clearRequest=false) {
     context.value = "";
     constraints.value = "";
     format.value = "";
+  // 一括クリア後は「出力の書き方（見た目）」をデフォルト（箇条書き）へ戻す
+  try{ window.__resetFormatTouched && window.__resetFormatTouched(); }catch(e){}
+  try{ window.__setBulletsSelected && window.__setBulletsSelected({ forceText: true, setText: true, dispatch: false }); }catch(e){}
   // 一括クリア後は「出力の書き方」をデフォルト（箇条書き）へ戻す
   try{ window.__resetFormatTouched && window.__resetFormatTouched(); }catch(e){}
   try{ window.__setBulletsSelected && window.__setBulletsSelected({ forceText: true, setText: true, dispatch: false }); }catch(e){}
@@ -435,126 +438,7 @@ function autoPreview() {
 
 
   // v5.8 step check sync
-  try{ if (window.__updateStepChecks) window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
-}
-
-// Debounced preview (v5.8 refactor)
-const autoPreviewDebounced = debounce(() => { autoPreview(); }, 300);
-
-function flash(btn) {
-  btn.classList.remove("flash");
-  void btn.offsetWidth;
-  btn.classList.add("flash");
-}
-
-async function doCopy() {
-  // Copy behavior:
-  // - If result already has text, copy it as-is.
-  // - If result is empty but the user has entered something, buildPrompt() then copy.
-  // - If everything is truly empty, do NOT generate/copy; just show a hint.
-
-  const r = el('result');
-
-  const existing = (r?.value || '').trim();
-
-  const roleTxt = (el('role')?.value || '').trim();
-  const goalTxt = (el('goal')?.value || '').trim();
-  const reqTxt  = (el('request')?.value || '').trim();
-  const ctxTxt  = (el('context')?.value || '').trim();
-  const outTxt  = (el('outputContent')?.value || '').trim();
-  const formatTxt = (el('format')?.value || '').trim();
-
-  const hasAny = !!(roleTxt || goalTxt || reqTxt || ctxTxt || outTxt || formatTxt);
-
-  // 完全未入力（コピーしても意味がない）
-  // -> コピーはしない。呼び出し側が reason を見て「まずは内容を入力してね」を表示する。
-  if (!existing && !hasAny) {
-    return { ok: false, reason: 'no_input' };
-  }
-
-  const text = existing || buildPrompt();
-  if (r) r.value = text;
-
-  // iOS/Safariなどで連打されると失敗率が上がるので排他
-  if (window.__isCopying_v58) {
-    return { ok: false, reason: 'busy' };
-  }
-  window.__isCopying_v58 = true;
-
-  try {
-    try {
-      await navigator.clipboard.writeText(text);
-      return { ok: true };
-    } catch (e) {
-      // Fallback for environments where Clipboard API is unavailable
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly', '');
-      ta.style.position = 'fixed';
-      ta.style.top = '-1000px';
-      ta.style.left = '-1000px';
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        const ok = document.execCommand('copy');
-        if (ok) {
-          return { ok: true };
-        }
-      } finally {
-        document.body.removeChild(ta);
-      }
-      return { ok: false, reason: 'copy_failed' };
-    }
-  } finally {
-    window.__isCopying_v58 = false;
-  }
-}
-
-el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
-  await doCopy();
-  window.open("https://chat.openai.com/", "_blank");
-});
-
-// 一括クリア（人気テンプレ確認後にすぐ自分用を書ける）
-el("clearAll") && el("clearAll").addEventListener("click", () => {
-    resetInteracted_v5723();
-    const r = el('result'); if (r) r.value = '';
-  // テキスト入力を全部空に
-  role.value = "";
-  goal.value = "";
-  context.value = "";
-  constraints.value = "";
-  format.value = "";
-  if (outputContent) outputContent.value = "";
-  request.value = "";
-
-  // 型は「そのまま（自由に書く）」へ
-  if (preset) preset.value = "none";
-
-
-  // 人気テンプレ（タブ/カード）を初期状態へ
-  try{
-    activeExampleTab = "dev";
-    if (category) category.value = "dev";
-    // 初期状態の用途（見た目のデフォルト）へ戻す
-    try{ if (typeof initPurposes === "function") initPurposes(); }catch(e){}
-    if (purpose) purpose.value = "画面UI作成";
-    if (preset) preset.value = "none";
-    renderExampleTabs();
-    renderExampleButtons();
-  }catch(e){}
-// 出力欄もクリア
-  if (result) result.value = "";
-  // 穴埋め一覧は残す（必要なら「一覧クリア」を使用）
-  renderVars();
-
-  // プレビュー更新
-  autoPreview();
-
-  // 先頭の入力にフォーカス
-  try{ role.focus({ preventScroll: true }); }catch(e){ try{ role.focus(); }catch(_e){} }
-  // After clear, bring "人気テンプレ" back into view
-  try{ if (window.__updateStepChecks) window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); else if (typeof updateStepChecks === 'function') updateStepChecks(); }catch(e){}
+  try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
 
 try{ const ex = document.querySelector(".examples"); if(ex) smoothScrollTo(ex, -16); }catch(e){}
 

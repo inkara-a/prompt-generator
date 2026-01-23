@@ -725,15 +725,15 @@ loadTemplates();
   function isFilled(v){ return (v || "").toString().trim().length > 0; }
 
   function updateStepChecks(){
-    // Step1: カテゴリ & 用途が選ばれていれば（初期状態でも達成扱い）
+    // Step1: カテゴリ & 用途が選択済みなら（初期状態でも達成扱い）
     const cat = document.getElementById("category");
     const purpose = document.getElementById("purpose");
     const step1ok = (cat && cat.value && cat.value !== "none") && (purpose && purpose.value && purpose.value !== "none");
 
-    // userInteracted=false のときは、Step2/Step3 は未完了扱い（ただし Step1 はそのまま反映）
-    const interacted = (typeof userInteracted_v5723 !== "undefined") ? !!userInteracted_v5723 : true;
+    // 初期/一括クリア直後（未操作）では Step2/Step3 を未完了扱いにする
+    const interacted = (typeof userInteracted_v5723 !== 'undefined') ? !!userInteracted_v5723 : true;
 
-    // Step2: お願い内容がどれか1つでも埋まっていれば
+    // Step2: お願い内容がどれか1つでも埋まっていれば（format/outputContent も含む）
     const role = document.getElementById("role");
     const goal = document.getElementById("goal");
     const request = document.getElementById("request");
@@ -756,37 +756,6 @@ loadTemplates();
     const result = document.getElementById("result");
     const step3raw = isFilled(result && result.value);
     const step3ok = interacted ? step3raw : false;
-
-    const map = {1:step1ok,2:step2ok,3:step3ok};
-    document.querySelectorAll(".stepCheck").forEach(b => {
-      const n = Number(b.getAttribute("data-step")||"0");
-      b.classList.toggle("on", !!map[n]);
-    });
-  }
-
-    // Step1: カテゴリ & 用途が選ばれていれば
-    const cat = document.getElementById("category");
-    const purpose = document.getElementById("purpose");
-    const step1ok = (cat && cat.value && cat.value !== "none") && (purpose && purpose.value && purpose.value !== "none");
-
-    // Step2: お願い内容（入力欄）がどれか1つでも埋まっていれば
-    // ※Step3（結果/コピー）と責務が混ざらないよう、format/outputContent は含めない
-    const role = document.getElementById("role");
-    const goal = document.getElementById("goal");
-    const request = document.getElementById("request");
-    const contextEl = document.getElementById("context");
-    const constraintsEl = document.getElementById("constraints");
-    const step2ok = isFilled(role && role.value)
-      || isFilled(goal && goal.value)
-      || isFilled(contextEl && contextEl.value)
-      || isFilled(constraintsEl && constraintsEl.value)
-      || isFilled(request && request.value)
-      || isFilled((document.getElementById("format") || {}).value)
-      || isFilled((document.getElementById("outputContent") || {}).value);
-
-    // Step3: 結果（コピー対象）が1文字でも出ていれば
-    const result = document.getElementById("result");
-    const step3ok = isFilled(result && result.value);
 
     const map = {1:step1ok,2:step2ok,3:step3ok};
     document.querySelectorAll(".stepCheck").forEach(b => {

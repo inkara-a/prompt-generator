@@ -976,3 +976,25 @@ document.addEventListener('click', (e)=>{
   if(t.closest && t.closest("input, textarea")) return;
   lastFocusedField = null;
 });
+
+
+/* v7.8: page top button (image) */
+(function(){
+  const btn = document.getElementById('pageTopBtn') || document.querySelector('.pageTopBtn');
+  if(!btn) return;
+  let ticking = false;
+  const onScroll = () => {
+    if(ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(() => {
+      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      btn.classList.toggle('isShow', y > 300);
+      ticking = false;
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();

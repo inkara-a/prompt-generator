@@ -1640,3 +1640,10 @@ body{
 .pageTopBtn{
   bottom: 95px; /* 18px + footer(77px) */
 }
+
+
+/* v7.15: remove default body margin (fix footer gap) */
+html, body{
+  margin: 0;
+  padding: 0;
+}

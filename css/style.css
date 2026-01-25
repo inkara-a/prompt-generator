@@ -1496,3 +1496,15 @@ textarea {
 .chapinavi-footer{
   background: #2C183D;
 }
+
+
+/* v7.5: footer typography match company (footer only) */
+.chapinavi-footer,
+.chapinavi-footer a,
+.chapinavi-footer .chapinavi-footerLinks,
+.chapinavi-footer .chapinavi-footerCopy{
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+}

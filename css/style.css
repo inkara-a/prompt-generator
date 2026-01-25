@@ -1620,3 +1620,23 @@ body{
 .chapinavi-footerInner{
   height: 77px;
 }
+
+
+/* v7.14: footer stick bottom stronger + totop above footer (layout/footer only) */
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.container{
+  flex: 1 0 auto;
+}
+.chapinavi-footer{
+  flex-shrink: 0;
+  margin-top: auto; /* ensure footer sits at bottom when content is short */
+}
+
+/* keep PAGE TOP visible even when footer is in view */
+.pageTopBtn{
+  bottom: 95px; /* 18px + footer(77px) */
+}

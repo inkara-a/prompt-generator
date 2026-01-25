@@ -1474,3 +1474,25 @@ textarea {
     justify-content: center;
   }
 }
+
+
+/* v7.3: footer band (match header tone) */
+.chapinavi-footer{
+  background: linear-gradient(90deg, rgba(33, 10, 54, 1), rgba(54, 16, 78, 1));
+  border-top: none;
+}
+.chapinavi-footerLinks a{
+  color: rgba(255, 255, 255, .92);
+}
+.chapinavi-footerLinks .sep{
+  color: rgba(255, 255, 255, .35);
+}
+.chapinavi-footerCopy{
+  color: rgba(255, 255, 255, .75);
+}
+
+
+/* v7.4: footer band exact company color */
+.chapinavi-footer{
+  background: #2C183D;
+}

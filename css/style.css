@@ -1508,3 +1508,15 @@ textarea {
   font-weight: 400;
   line-height: 12px;
 }
+
+
+/* v7.6: footer text color match company (footer only) */
+.chapinavi-footerLinks a{
+  color: #fff;
+}
+.chapinavi-footerCopy{
+  color: #fff;
+}
+.chapinavi-footerLinks .sep{
+  color: rgba(255, 255, 255, .55);
+}

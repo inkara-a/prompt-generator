@@ -1015,34 +1015,37 @@ document.addEventListener('click', (e)=>{
 
 
 
-/* v7.19: FAQ modal (user-triggered; no auto-open) */
+
+
+
+/* v7.20: Help accordion + FAQ modal (user-triggered; AdSense-safe) */
 (function(){
   const modal = document.getElementById('faqModal');
-  const openBtn = document.getElementById('helpFaqBtn');
-  if(!modal || !openBtn) return;
+  const acc = document.getElementById('helpAcc');
+  const faqOpen = document.getElementById('helpFaqOpen');
+  if(!modal || !acc || !faqOpen) return;
 
   const closeBtn = modal.querySelector('.chapinavi-modal__close');
-  const setOpenState = (isOpen) => {
+
+  const setModalOpen = (isOpen) => {
     if(isOpen){
       modal.hidden = false;
-      openBtn.setAttribute('aria-expanded', 'true');
-      // focus close button for accessibility and quick exit
       if(closeBtn) closeBtn.focus();
       return;
     }
     modal.hidden = true;
-    openBtn.setAttribute('aria-expanded', 'false');
-    openBtn.focus();
+    faqOpen.focus();
   };
 
   document.addEventListener('click', (e) => {
     const t = e.target;
     if(!t) return;
 
-    const open = t.closest('#helpFaqBtn');
-    if(open){
+    const openFaq = t.closest('#helpFaqOpen');
+    if(openFaq){
       e.preventDefault();
-      setOpenState(true);
+      acc.open = false;
+      setModalOpen(true);
       return;
     }
 
@@ -1050,16 +1053,29 @@ document.addEventListener('click', (e)=>{
       const close = t.closest('[data-modal-close="true"]');
       if(close){
         e.preventDefault();
-        setOpenState(false);
+        setModalOpen(false);
+        return;
+      }
+    }
+
+    if(acc.open){
+      const insideAcc = t.closest('#helpAcc');
+      if(!insideAcc){
+        acc.open = false;
       }
     }
   });
 
   document.addEventListener('keydown', (e) => {
-    if(modal.hidden) return;
     if(e.key === 'Escape'){
-      e.preventDefault();
-      setOpenState(false);
+      if(!modal.hidden){
+        e.preventDefault();
+        setModalOpen(false);
+        return;
+      }
+      if(acc.open){
+        acc.open = false;
+      }
     }
   });
 })();

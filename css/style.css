@@ -1610,3 +1610,13 @@ body{
   padding-bottom: 0;
   align-items: center;
 }
+
+
+/* v7.13: footer height 77 + stick bottom (footer only) */
+.chapinavi-footer{
+  height: 77px;
+  margin-top: auto;
+}
+.chapinavi-footerInner{
+  height: 77px;
+}

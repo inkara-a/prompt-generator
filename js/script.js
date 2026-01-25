@@ -1012,3 +1012,54 @@ document.addEventListener('click', (e)=>{
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 })();
+
+
+
+/* v7.19: FAQ modal (user-triggered; no auto-open) */
+(function(){
+  const modal = document.getElementById('faqModal');
+  const openBtn = document.getElementById('helpFaqBtn');
+  if(!modal || !openBtn) return;
+
+  const closeBtn = modal.querySelector('.chapinavi-modal__close');
+  const setOpenState = (isOpen) => {
+    if(isOpen){
+      modal.hidden = false;
+      openBtn.setAttribute('aria-expanded', 'true');
+      // focus close button for accessibility and quick exit
+      if(closeBtn) closeBtn.focus();
+      return;
+    }
+    modal.hidden = true;
+    openBtn.setAttribute('aria-expanded', 'false');
+    openBtn.focus();
+  };
+
+  document.addEventListener('click', (e) => {
+    const t = e.target;
+    if(!t) return;
+
+    const open = t.closest('#helpFaqBtn');
+    if(open){
+      e.preventDefault();
+      setOpenState(true);
+      return;
+    }
+
+    if(!modal.hidden){
+      const close = t.closest('[data-modal-close="true"]');
+      if(close){
+        e.preventDefault();
+        setOpenState(false);
+      }
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(modal.hidden) return;
+    if(e.key === 'Escape'){
+      e.preventDefault();
+      setOpenState(false);
+    }
+  });
+})();

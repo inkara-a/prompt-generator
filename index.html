@@ -57,43 +57,29 @@
       </a>
 
       <nav class="chapinavi-nav" aria-label="ヘッダーメニュー">
-        <a
-          class="chapinavi-nav__link chapinavi-nav__link--x"
-          href="https://x.com/intent/tweet?text=%E3%83%81%E3%83%A3%E3%83%94%E3%83%8A%E3%83%93AI%20%EF%BD%9C%20%E7%94%A8%E9%80%94%E5%88%A5%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%83%8A%E3%83%93%0Ahttps%3A%2F%2Finkara-a.github.io%2Fprompt-generator%2F"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Xでシェア（別タブで開く）"
-        >
-          <span class="chapinavi-xicon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" class="chapinavi-xsvg" aria-hidden="true">
-              <path d="M18.9 2H22l-6.8 7.8L23 22h-6.9l-5.4-6.9L4.7 22H2l7.3-8.5L1 2h7.1l4.9 6.2L18.9 2zM17.7 19.9h1.7L7.2 4H5.3l12.4 15.9z" />
-            </svg>
-          </span>
-          <span class="chapinavi-xtext">でシェア</span>
-          <span class="chapinavi-ext" aria-hidden="true">↗︎</span>
-        </a>
-
-<div class="chapinavi-helpWrap">
-  <span class="chapinavi-helpicon" aria-hidden="true">?</span>
-  <details class="chapinavi-helpAcc" id="helpAcc">
-    <summary class="chapinavi-helpAcc__sum">ヘルプ</summary>
-    <div class="chapinavi-helpAcc__panel" role="menu" aria-label="ヘルプメニュー">
-      <button type="button" class="chapinavi-helpAcc__item" id="helpFaqOpen" role="menuitem">
-        よくある質問 / FAQ
-      </button>
-      <a
-        class="chapinavi-helpAcc__item"
-        href="https://x.com/intent/tweet?text=%E3%83%81%E3%83%A3%E3%83%94%E3%83%8A%E3%83%93AI%20%EF%BD%9C%20%E7%94%A8%E9%80%94%E5%88%A5%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%83%8A%E3%83%93%0Ahttps%3A%2F%2Finkara-a.github.io%2Fprompt-generator%2F"
-        target="_blank"
-        rel="noopener noreferrer"
-        role="menuitem"
-      >役に立ったら Xでシェア ↗︎</a>
-      <span class="chapinavi-helpAcc__item chapinavi-helpAcc__item--text" role="menuitem" aria-disabled="true">
-        お問い合わせ
-      </span>
-    </div>
-  </details>
+</details>
 </div>
+      
+<details class="chapinavi-menu" id="menuAcc">
+  <summary class="chapinavi-menu__btn" aria-label="メニュー">
+    <span class="chapinavi-menu__icon" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </span>
+  </summary>
+
+  <div class="chapinavi-menu__panel" role="menu" aria-label="メニュー">
+    <button type="button" class="chapinavi-menu__item" id="menuFaqOpen" role="menuitem">
+      よくある質問 / FAQ
+    </button>
+    <a
+      class="chapinavi-menu__item"
+      href="https://x.com/intent/tweet?text=%E3%83%81%E3%83%A3%E3%83%94%E3%83%8A%E3%83%93AI%20%EF%BD%9C%20%E7%94%A8%E9%80%94%E5%88%A5%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%83%8A%E3%83%93%0Ahttps%3A%2F%2Finkara-a.github.io%2Fprompt-generator%2F"
+      target="_blank"
+      rel="noopener noreferrer"
+      role="menuitem"
+    >役に立ったら Xでシェア ↗︎</a>
+  </div>
+</details>
       </nav>
     </div>
   </header>
@@ -315,37 +301,19 @@
     <div class="chapinavi-modal__body">
       <details class="chapinavi-faqItem" open>
         <summary class="chapinavi-faqQ">どこに貼る？</summary>
-        <div class="chapinavi-faqA">
-          コピーした文章は、ChatGPTやGeminiなどのAIチャットにそのまま貼り付けて使えます。
-        </div>
+        <div class="chapinavi-faqA">ChatGPTやGeminiなどにそのまま貼れます。</div>
       </details>
 
       <details class="chapinavi-faqItem">
         <summary class="chapinavi-faqQ">個人情報入れていい？</summary>
-        <div class="chapinavi-faqA">
-          このツールの入力内容は基本的にブラウザ内で処理され、運営者が意図的に収集する設計ではありません。<br>
-          ただし、AIに貼り付ける前に、個人情報や機密情報が含まれていないかをご自身で確認してください。
-        </div>
+        <div class="chapinavi-faqA">入力内容はブラウザ内で処理されます。</div>
       </details>
 
       <details class="chapinavi-faqItem">
         <summary class="chapinavi-faqQ">うまく出ない時は？</summary>
-        <div class="chapinavi-faqA">
-          条件を少し減らす／目的をもう少し具体的に書くと改善することが多いです。<br>
-          それでも難しい場合は、人気テンプレを選んでから微調整するのがおすすめです。
-        </div>
+        <div class="chapinavi-faqA">条件を減らすと改善することが多いです。</div>
       </details>
-
-      <div class="chapinavi-modal__actions">
-        <a
-          class="chapinavi-modal__share"
-          href="https://x.com/intent/tweet?text=%E3%83%81%E3%83%A3%E3%83%94%E3%83%8A%E3%83%93AI%20%EF%BD%9C%20%E7%94%A8%E9%80%94%E5%88%A5%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%83%8A%E3%83%93%0Ahttps%3A%2F%2Finkara-a.github.io%2Fprompt-generator%2F"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Xでシェア（別タブで開く）"
-        >Xでシェア ↗︎</a>
-      </div>
-    </div>
+</div>
   </div>
 </div>
 

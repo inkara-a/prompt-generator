@@ -1804,3 +1804,78 @@ body{
   cursor: default;
   color: rgba(0,0,0,.55);
 }
+
+
+/* v7.21: header menu (hamburger) */
+.chapinavi-menu{
+  position: relative;
+}
+.chapinavi-menu > summary{
+  list-style: none;
+}
+.chapinavi-menu > summary::-webkit-details-marker{
+  display: none;
+}
+.chapinavi-menu__btn{
+  border: 1px solid rgba(255,255,255,.28);
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  border-radius: 999px;
+  width: 40px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+.chapinavi-menu__btn:hover{
+  background: rgba(255,255,255,.12);
+}
+.chapinavi-menu[open] .chapinavi-menu__btn{
+  background: rgba(255,255,255,.14);
+}
+.chapinavi-menu__icon{
+  width: 18px;
+  height: 12px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.chapinavi-menu__icon span{
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255,255,255,.92);
+}
+.chapinavi-menu__panel{
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 240px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.14);
+  padding: 8px;
+  z-index: 120;
+}
+.chapinavi-menu__item{
+  width: 100%;
+  display: block;
+  border: 0;
+  background: transparent;
+  padding: 10px 10px;
+  border-radius: 10px;
+  text-align: left;
+  color: rgba(0,0,0,.82);
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  cursor: pointer;
+  text-decoration: none;
+}
+.chapinavi-menu__item:hover{
+  background: rgba(214,208,255,.35);
+}

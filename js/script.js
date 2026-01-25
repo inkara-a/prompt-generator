@@ -1018,12 +1018,15 @@ document.addEventListener('click', (e)=>{
 
 
 
-/* v7.20: Help accordion + FAQ modal (user-triggered; AdSense-safe) */
+
+
+
+/* v7.21: Header menu + FAQ modal (user-triggered; AdSense-safe) */
 (function(){
   const modal = document.getElementById('faqModal');
-  const acc = document.getElementById('helpAcc');
-  const faqOpen = document.getElementById('helpFaqOpen');
-  if(!modal || !acc || !faqOpen) return;
+  const menu = document.getElementById('menuAcc');
+  const faqOpen = document.getElementById('menuFaqOpen');
+  if(!modal || !menu || !faqOpen) return;
 
   const closeBtn = modal.querySelector('.chapinavi-modal__close');
 
@@ -1041,10 +1044,10 @@ document.addEventListener('click', (e)=>{
     const t = e.target;
     if(!t) return;
 
-    const openFaq = t.closest('#helpFaqOpen');
+    const openFaq = t.closest('#menuFaqOpen');
     if(openFaq){
       e.preventDefault();
-      acc.open = false;
+      menu.open = false;
       setModalOpen(true);
       return;
     }
@@ -1058,10 +1061,10 @@ document.addEventListener('click', (e)=>{
       }
     }
 
-    if(acc.open){
-      const insideAcc = t.closest('#helpAcc');
-      if(!insideAcc){
-        acc.open = false;
+    if(menu.open){
+      const insideMenu = t.closest('#menuAcc');
+      if(!insideMenu){
+        menu.open = false;
       }
     }
   });
@@ -1073,8 +1076,8 @@ document.addEventListener('click', (e)=>{
         setModalOpen(false);
         return;
       }
-      if(acc.open){
-        acc.open = false;
+      if(menu.open){
+        menu.open = false;
       }
     }
   });

@@ -980,7 +980,7 @@ document.addEventListener('click', (e)=>{
 
 /* v7.8: page top button (image) */
 (function(){
-  const btn = document.getElementById('pageTopBtn') || document.querySelector('.pageTopBtn');
+  const btn = document.getElementById('pageTopBtn') || document.querySelector('.pageTopBtn') || (function(){const img=document.querySelector('.pageTopImg');return img?img.closest('button, a, div'):null;})();
   if(!btn) return;
   let ticking = false;
   const onScroll = () => {

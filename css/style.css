@@ -1497,153 +1497,120 @@ textarea {
   background: #2C183D;
 }
 
+/* =========================================================
+   v7.18 SAFE REFACTOR (A)
+   Footer & PAGE TOP final rules (dedupe + reorder only)
+   Scope:
+     - .chapinavi-footer*
+     - .pageTopBtn / .pageTopImg
+     - html, body, .container (stick-bottom)
+   NOTE: values are preserved from latest applied rules.
+   ========================================================= */
 
-/* v7.5: footer typography match company (footer only) */
-.chapinavi-footer,
-.chapinavi-footer a,
-.chapinavi-footer .chapinavi-footerLinks,
-.chapinavi-footer .chapinavi-footerCopy{
+/* stick footer to bottom */
+html, body{
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.container{
+  flex: 1 0 auto;
+}
+
+/* footer */
+.chapinavi-footer{
+  margin-top: auto;
+  height: 77px;
+  padding: 0;
+  border-top: none;
+  background: #2C183D;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.chapinavi-footerInner{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 16px;
+  width: 100%;
+  height: 77px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.chapinavi-footerLinks{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+}
+.chapinavi-footerLinks a{
+  color: #fff;
+  text-decoration: none;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+}
+.chapinavi-footerLinks a:hover{
+  text-decoration: underline;
+}
+.chapinavi-footerLinks .sep{
+  color: rgba(255, 255, 255, .55);
+}
+.chapinavi-footerCopy{
+  color: #fff;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+}
+.chapinavi-footerContact{
+  color: #fff;
   font-family: "Noto Sans JP", sans-serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 12px;
 }
 
-
-/* v7.6: footer text color match company (footer only) */
-.chapinavi-footerLinks a{
-  color: #fff;
-}
-.chapinavi-footerCopy{
-  color: #fff;
-}
-.chapinavi-footerLinks .sep{
-  color: rgba(255, 255, 255, .55);
-}
-
-
-/* v7.8: page top button */
+/* page top button (always visible; positioned above footer) */
 .pageTopBtn{
   position: fixed;
   right: 18px;
-  bottom: 18px;
+  bottom: 95px; /* 18px + footer(77px) */
   z-index: 50;
   border: 0;
   background: transparent;
   padding: 0;
   cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(6px);
-  transition: opacity .18s ease, transform .18s ease;
-}
-.pageTopBtn.isShow{
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+  transition: opacity .18s ease, transform .18s ease;
 }
 .pageTopImg{
   display: block;
-  width: 96px;
-  height: auto;
-}
-@media (max-width: 520px){
-  .pageTopImg{
-    width: 84px;
-  }
-}
-
-/* footer contact label (no link) */
-.chapinavi-footerContact{
-  color: #fff;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 12px;
-}
-
-
-/* v7.11: page top always visible (avoid JS dependency) */
-.pageTopBtn{
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-
-
-/* v7.12: totop size + footer height + stick bottom */
-.pageTopImg{
   width: 121px;
   height: 27px;
 }
+
+/* responsive */
 @media (max-width: 520px){
+  .chapinavi-footerInner{
+    justify-content: center;
+  }
   .pageTopImg{
     width: 121px;
     height: 27px;
   }
-}
-
-/* stick footer to bottom (safe) */
-html, body{
-  min-height: 100%;
-}
-body{
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.container{
-  flex: 1 0 auto;
-}
-
-/* footer height = 65px */
-.chapinavi-footer{
-  margin-top: 0;
-  height: 65px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-.chapinavi-footerInner{
-  width: 100%;
-  height: 65px;
-  padding-top: 0;
-  padding-bottom: 0;
-  align-items: center;
-}
-
-
-/* v7.13: footer height 77 + stick bottom (footer only) */
-.chapinavi-footer{
-  height: 77px;
-  margin-top: auto;
-}
-.chapinavi-footerInner{
-  height: 77px;
-}
-
-
-/* v7.14: footer stick bottom stronger + totop above footer (layout/footer only) */
-body{
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.container{
-  flex: 1 0 auto;
-}
-.chapinavi-footer{
-  flex-shrink: 0;
-  margin-top: auto; /* ensure footer sits at bottom when content is short */
-}
-
-/* keep PAGE TOP visible even when footer is in view */
-.pageTopBtn{
-  bottom: 95px; /* 18px + footer(77px) */
-}
-
-
-/* v7.15: remove default body margin (fix footer gap) */
-html, body{
-  margin: 0;
-  padding: 0;
 }

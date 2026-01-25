@@ -1560,3 +1560,11 @@ textarea {
   font-weight: 400;
   line-height: 12px;
 }
+
+
+/* v7.11: page top always visible (avoid JS dependency) */
+.pageTopBtn{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}

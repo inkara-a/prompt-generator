@@ -998,3 +998,17 @@ document.addEventListener('click', (e)=>{
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 })();
+
+
+/* v7.11: page top fallback anchor (always clickable even if JS fails) */
+(function(){
+  const btn = document.getElementById('pageTopBtn');
+  if(!btn) return;
+  btn.addEventListener('click', (e) => {
+    // If it's an anchor, prevent default jump and do smooth scroll.
+    if(btn.tagName && btn.tagName.toLowerCase() === 'a'){
+      e.preventDefault();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();

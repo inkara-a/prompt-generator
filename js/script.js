@@ -1021,8 +1021,10 @@ document.addEventListener('click', (e)=>{
 
 
 
-/* v7.21: Header menu + FAQ modal
- * v7.24: ensure FAQ opens (user-triggered; AdSense-safe) */
+
+
+
+/* v7.26: Header menu + FAQ modal (user-triggered; AdSense-safe) */
 (function(){
   const modal = document.getElementById('faqModal');
   const menu = document.getElementById('menuAcc');
@@ -1041,7 +1043,6 @@ document.addEventListener('click', (e)=>{
     faqOpen.focus();
   };
 
-  /* v7.24: ensure FAQ opens even if event delegation is blocked */
   faqOpen.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -1052,14 +1053,6 @@ document.addEventListener('click', (e)=>{
   document.addEventListener('click', (e) => {
     const t = e.target;
     if(!t) return;
-
-    const openFaq = t.closest('#menuFaqOpen');
-    if(openFaq){
-      e.preventDefault();
-      menu.open = false;
-      setModalOpen(true);
-      return;
-    }
 
     if(!modal.hidden){
       const close = t.closest('[data-modal-close="true"]');

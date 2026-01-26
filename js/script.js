@@ -1084,3 +1084,56 @@ document.addEventListener('click', (e)=>{
     }
   });
 })();
+
+
+
+
+
+/* v7.30: FAQ open reliability (delegate + hidden attr) */
+(function(){
+  const modal = document.getElementById('faqModal');
+  const menu = document.getElementById('menuAcc');
+  if(!modal) return;
+
+  const openModal = () => {
+    modal.hidden = false;
+    // close menu if open
+    if(menu && menu.open) menu.open = false;
+    const closeBtn = modal.querySelector('.chapinavi-modal__close');
+    if(closeBtn) closeBtn.focus();
+  };
+
+  const closeModal = () => {
+    modal.hidden = true;
+    const faqBtn = document.getElementById('menuFaqOpen');
+    if(faqBtn) faqBtn.focus();
+  };
+
+  // Delegate click so it works even if menu items are re-rendered
+  document.addEventListener('click', (e) => {
+    const t = e.target;
+    if(!t) return;
+
+    if(t.closest('#menuFaqOpen')){
+      e.preventDefault();
+      e.stopPropagation();
+      openModal();
+      return;
+    }
+
+    if(!modal.hidden){
+      const close = t.closest('[data-modal-close="true"]');
+      if(close){
+        e.preventDefault();
+        closeModal();
+      }
+    }
+  }, true); // capture to win against details toggling
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && !modal.hidden){
+      e.preventDefault();
+      closeModal();
+    }
+  });
+})();

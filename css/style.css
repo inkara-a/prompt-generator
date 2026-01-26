@@ -1970,3 +1970,20 @@ body{
   right: max(24px, calc((100vw - 1100px) / 2 + 24px));
   bottom: 96px;
 }
+
+
+/* v7.42: header menu button style (purple like stepNo) + PAGE TOP move outward to avoid overlap */
+.chapinavi-menu__btn{
+  background: var(--chap-step-bg, #d6d0ff);
+  border: 1px solid var(--chap-step-border, rgba(109, 40, 217, .20));
+  color: var(--chap-step-text, #2f2568);
+}
+.chapinavi-menu__btn:hover{
+  filter: brightness(0.98);
+}
+
+/* PAGE TOP: move OUTSIDE container on wide screens (push right) */
+.pageTopBtn{
+  right: max(18px, calc((100vw - 1100px) / 2 + 16px + 18px));
+  bottom: 96px;
+}

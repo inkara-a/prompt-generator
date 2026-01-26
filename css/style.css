@@ -1913,3 +1913,36 @@ body{
 /* v7.34 FAQ spacing */
 .chapinavi-faqQ{margin-bottom:8px;}
 .chapinavi-faqA{line-height:1.7;}
+
+/* v7.39 container-right alignment (no layout change) */
+:root{
+  --chap-container-max: 1200px;
+  --chap-container-pad: 16px;
+}
+
+/* align header menu button to container right */
+.chapinavi-header .headerMenu{
+  right: calc(50% - (var(--chap-container-max)/2) + var(--chap-container-pad));
+}
+
+/* align page top button to container right */
+.pageTopBtn{
+  right: calc(50% - (var(--chap-container-max)/2) + var(--chap-container-pad));
+}
+
+
+/* v7.39: align header menu + PAGE TOP to .container right edge (fullscreen stability)
+   Scope: header right padding + .pageTopBtn right only
+   NOTE: values preserved; only positioning basis unified to container.
+*/
+@media (min-width: 1100px){
+  /* header right edge: shift right-side items inward to match .container (max-width:1100px) */
+  .chapinavi-header__inner{
+    padding-right: 26px; /* 16px + (1120-1100)/2 */
+  }
+}
+
+/* PAGE TOP: align to .container right edge on wide screens (fallback keeps current 18px) */
+.pageTopBtn{
+  right: max(18px, calc((100vw - 1100px) / 2 + 16px));
+}

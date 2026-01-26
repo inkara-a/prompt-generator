@@ -1893,3 +1893,16 @@ body{
 .chapinavi-header .chapinavi-menu__icon span{
   background: rgba(0,0,0,.78);
 }
+
+
+/* v7.28b: footer company link should look like plain text (no emphasis) */
+.chapinavi-footer .footerCompanyLink{
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+.chapinavi-footer .footerCompanyLink:hover,
+.chapinavi-footer .footerCompanyLink:focus,
+.chapinavi-footer .footerCompanyLink:active{
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}

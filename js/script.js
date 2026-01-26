@@ -1099,31 +1099,21 @@ document.addEventListener('click', (e)=>{
     if(modal) return modal;
 
     const wrap = document.createElement('div');
-    wrap.innerHTML = `<!-- FAQ Modal (user-triggered; AdSense-safe) -->
-<div class="chapinavi-modal" id="faqModal" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle" hidden>
-  <div class="chapinavi-modal__overlay" data-modal-close="true"></div>
+    wrap.innerHTML = `<div class="chapinavi-modal" id="faqModal" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle" hidden>  <div class="chapinavi-modal__overlay" data-modal-close="true"></div>  <div class="chapinavi-modal__panel" role="document">    <button type="button" class="chapinavi-modal__close" aria-label="閉じる" data-modal-close="true">×</button>    <h2 class="chapinavi-modal__title" id="faqModalTitle">よくある質問 / FAQ</h2>
+<div class="chapinavi-modal__body">
+  <div class="chapinavi-faqBlock">
+    <div class="chapinavi-faqQ">Q1. 生成されたプロンプトは、どこで使えますか？</div>
+    <div class="chapinavi-faqA">A. ChatGPT、Claude、Gemini、Copilotなど主要な生成AIすべてで使えます。<br>コピーして、そのまま各AIのチャット欄に貼り付けて実行してください。</div>
+  </div>
 
-  <div class="chapinavi-modal__panel" role="document">
-    <button type="button" class="chapinavi-modal__close" aria-label="閉じる" data-modal-close="true">×</button>
+  <div class="chapinavi-faqBlock">
+    <div class="chapinavi-faqQ">Q2. 入力した内容や個人情報は安全ですか？</div>
+    <div class="chapinavi-faqA">A. 本ツールはサーバーに送信せず、すべてブラウザ内で処理されます。<br>入力内容が開発者や第三者に収集されることはありません。</div>
+  </div>
 
-    <h2 class="chapinavi-modal__title" id="faqModalTitle">よくある質問</h2>
-
-    <div class="chapinavi-modal__body">
-      <details class="chapinavi-faqItem" open>
-        <summary class="chapinavi-faqQ">どこに貼る？</summary>
-        <div class="chapinavi-faqA">ChatGPTやGeminiなどにそのまま貼れます。</div>
-      </details>
-
-      <details class="chapinavi-faqItem">
-        <summary class="chapinavi-faqQ">個人情報は大丈夫？</summary>
-        <div class="chapinavi-faqA">入力内容はブラウザ内で処理されます。</div>
-      </details>
-
-      <details class="chapinavi-faqItem">
-        <summary class="chapinavi-faqQ">うまく出ない時は？</summary>
-        <div class="chapinavi-faqA">条件を減らすと改善することが多いです。</div>
-      </details>
-    </div>
+  <div class="chapinavi-faqBlock">
+    <div class="chapinavi-faqQ">Q3. うまく出力されない場合はどうすればいいですか？</div>
+    <div class="chapinavi-faqA">A. 条件を詰め込みすぎると精度が下がることがあります。<br>まずは必須条件だけに絞り、AI側で微調整すると改善しやすくなります。</div>
   </div>
 </div>`;
     modal = wrap.firstElementChild;

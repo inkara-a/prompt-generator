@@ -1906,3 +1906,6 @@ body{
   color: rgb(255, 255, 255);
   text-decoration: none;
 }
+
+/* v7.33: FAQ modal blocks (no accordion; minimal spacing) */
+.chapinavi-faqBlock{margin:12px 0;}

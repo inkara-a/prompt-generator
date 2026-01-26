@@ -1089,51 +1089,122 @@ document.addEventListener('click', (e)=>{
 
 
 
-/* v7.30: FAQ open reliability (delegate + hidden attr) */
+
+
+
+/* v7.31: FAQ modal open (ultra-robust, user-triggered) */
 (function(){
-  const modal = document.getElementById('faqModal');
-  const menu = document.getElementById('menuAcc');
-  if(!modal) return;
+  const ensureModal = () => {
+    let modal = document.getElementById('faqModal');
+    if(modal) return modal;
+
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<!-- FAQ Modal (user-triggered; AdSense-safe) -->
+<div class="chapinavi-modal" id="faqModal" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle" hidden>
+  <div class="chapinavi-modal__overlay" data-modal-close="true"></div>
+
+  <div class="chapinavi-modal__panel" role="document">
+    <button type="button" class="chapinavi-modal__close" aria-label="閉じる" data-modal-close="true">×</button>
+
+    <h2 class="chapinavi-modal__title" id="faqModalTitle">よくある質問</h2>
+
+    <div class="chapinavi-modal__body">
+      <details class="chapinavi-faqItem" open>
+        <summary class="chapinavi-faqQ">どこに貼る？</summary>
+        <div class="chapinavi-faqA">ChatGPTやGeminiなどにそのまま貼れます。</div>
+      </details>
+
+      <details class="chapinavi-faqItem">
+        <summary class="chapinavi-faqQ">個人情報は大丈夫？</summary>
+        <div class="chapinavi-faqA">入力内容はブラウザ内で処理されます。</div>
+      </details>
+
+      <details class="chapinavi-faqItem">
+        <summary class="chapinavi-faqQ">うまく出ない時は？</summary>
+        <div class="chapinavi-faqA">条件を減らすと改善することが多いです。</div>
+      </details>
+    </div>
+  </div>
+</div>`;
+    modal = wrap.firstElementChild;
+    if(modal) document.body.appendChild(modal);
+    return modal;
+  };
 
   const openModal = () => {
+    const modal = ensureModal();
+    if(!modal) return;
+
     modal.hidden = false;
-    // close menu if open
+
+    const menu = document.getElementById('menuAcc');
     if(menu && menu.open) menu.open = false;
+
     const closeBtn = modal.querySelector('.chapinavi-modal__close');
     if(closeBtn) closeBtn.focus();
   };
 
   const closeModal = () => {
+    const modal = document.getElementById('faqModal');
+    if(!modal) return;
+
     modal.hidden = true;
+
     const faqBtn = document.getElementById('menuFaqOpen');
     if(faqBtn) faqBtn.focus();
   };
 
-  // Delegate click so it works even if menu items are re-rendered
+  const bindFaqBtn = () => {
+    const faqBtn = document.getElementById('menuFaqOpen');
+    if(!faqBtn) return false;
+    if(faqBtn.dataset.boundFaq === '1') return true;
+
+    faqBtn.dataset.boundFaq = '1';
+    faqBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openModal();
+    });
+    return true;
+  };
+
+  const init = () => {
+    bindFaqBtn();
+    ensureModal();
+  };
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init, { once:true });
+  } else {
+    init();
+  }
+
+  // Close handling (delegated)
   document.addEventListener('click', (e) => {
     const t = e.target;
     if(!t) return;
 
-    if(t.closest('#menuFaqOpen')){
-      e.preventDefault();
-      e.stopPropagation();
-      openModal();
-      return;
-    }
+    const modal = document.getElementById('faqModal');
+    if(!modal || modal.hidden) return;
 
-    if(!modal.hidden){
-      const close = t.closest('[data-modal-close="true"]');
-      if(close){
-        e.preventDefault();
-        closeModal();
-      }
-    }
-  }, true); // capture to win against details toggling
-
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape' && !modal.hidden){
+    const close = t.closest('[data-modal-close="true"]');
+    if(close){
       e.preventDefault();
       closeModal();
     }
   });
+
+  document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('faqModal');
+    if(e.key === 'Escape' && modal && !modal.hidden){
+      e.preventDefault();
+      closeModal();
+    }
+  });
+
+  // Safety: re-bind if header/menu is re-rendered
+  const obs = new MutationObserver(() => {
+    bindFaqBtn();
+  });
+  obs.observe(document.documentElement, { childList:true, subtree:true });
 })();

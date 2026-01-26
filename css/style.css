@@ -1908,4 +1908,8 @@ body{
 }
 
 /* v7.33: FAQ modal blocks (no accordion; minimal spacing) */
-.chapinavi-faqBlock{margin:12px 0;}
+.chapinavi-faqBlock{margin:20px 0;}
+
+/* v7.34 FAQ spacing */
+.chapinavi-faqQ{margin-bottom:8px;}
+.chapinavi-faqA{line-height:1.7;}

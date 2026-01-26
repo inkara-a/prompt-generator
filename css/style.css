@@ -1946,3 +1946,20 @@ body{
 .pageTopBtn{
   right: max(18px, calc((100vw - 1100px) / 2 + 16px));
 }
+
+
+/* v7.40: unify LEFT alignment too (header logo) + align PAGE TOP left edge with menu left edge
+   Keep design/values; adjust only alignment basis.
+*/
+@media (min-width: 1100px){
+  .chapinavi-header__inner{
+    padding-left: 26px; /* 16px + (1120-1100)/2 */
+  }
+}
+
+/* PAGE TOP: align left edge to menu button left edge on wide screens
+   menu btn width: 40px, PAGE TOP image width: 121px => delta 81px
+*/
+.pageTopBtn{
+  right: max(18px, calc((100vw - 1100px) / 2 + 16px - 81px));
+}

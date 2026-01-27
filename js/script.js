@@ -36,6 +36,24 @@ function smoothScrollTo(elm, offsetPx = -12) {
 }
 
 
+/* v7.54 safe-refactor (Phase0-1): global click hub (bubble) to avoid multiple document click listeners */
+(function(){
+  if(window.__chapGlobalClickHub) return;
+  window.__chapGlobalClickHub = true;
+  const handlers = [];
+  window.__chapAddGlobalClick = function(fn){
+    if(typeof fn !== 'function') return;
+    handlers.push(fn);
+  };
+  document.addEventListener('click', function(e){
+    for(const fn of handlers){
+      try{ fn(e); }catch(err){}
+    }
+  }, false);
+})();
+
+
+
 
 // v5.7.23: 初期は生成エリアを空欄にする（ユーザーが何か操作したら自動生成開始）
 let userInteracted_v5723 = false;
@@ -969,15 +987,13 @@ function setCopyFeedback(btn, text, ok = true){
   }, true);
 })();
 
-// clearLastFocusOnDocClick_v5724
-document.addEventListener('click', (e)=>{
-  const t = e.target;
+// clearLastFocusOnDocClick_v5724 (via global click hub)
+window.__chapAddGlobalClick && window.__chapAddGlobalClick((e)=>{
+  const t = e && e.target ? e.target : null;
   if(!t) return;
   if(t.closest && t.closest("input, textarea")) return;
   lastFocusedField = null;
 });
-
-
 /* v7.8: page top button (image) */
 (function(){
   const btn = document.getElementById('pageTopBtn') || document.querySelector('.pageTopBtn');
@@ -1004,6 +1020,8 @@ document.addEventListener('click', (e)=>{
 (function(){
   const btn = document.getElementById('pageTopBtn');
   if(!btn) return;
+  if(btn.dataset && btn.dataset.boundTopClick === '1') return;
+  try{ if(btn.dataset) btn.dataset.boundTopClick = '1'; }catch(e){}
   btn.addEventListener('click', (e) => {
     // If it's an anchor, prevent default jump and do smooth scroll.
     if(btn.tagName && btn.tagName.toLowerCase() === 'a'){
@@ -1050,27 +1068,26 @@ document.addEventListener('click', (e)=>{
     setModalOpen(true);
   });
 
-  document.addEventListener('click', (e) => {
-    const t = e.target;
-    if(!t) return;
-
-    if(!modal.hidden){
-      const close = t.closest('[data-modal-close="true"]');
-      if(close){
-        e.preventDefault();
-        setModalOpen(false);
-        return;
+  window.__chapAddGlobalClick && window.__chapAddGlobalClick((e) => {
+      const t = e.target;
+      if(!t) return;
+  
+      if(!modal.hidden){
+        const close = t.closest('[data-modal-close="true"]');
+        if(close){
+          e.preventDefault();
+          setModalOpen(false);
+          return;
+        }
       }
-    }
-
-    if(menu.open){
-      const insideMenu = t.closest('#menuAcc');
-      if(!insideMenu){
-        menu.open = false;
+  
+      if(menu.open){
+        const insideMenu = t.closest('#menuAcc');
+        if(!insideMenu){
+          menu.open = false;
+        }
       }
-    }
   });
-
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape'){
       if(!modal.hidden){
@@ -1169,9 +1186,9 @@ document.addEventListener('click', (e)=>{
     init();
   }
 
-  // Close handling (delegated)
-  document.addEventListener('click', (e) => {
-    const t = e.target;
+  // Close handling (delegated) (via global click hub)
+  window.__chapAddGlobalClick && window.__chapAddGlobalClick((e) => {
+    const t = e && e.target ? e.target : null;
     if(!t) return;
 
     const modal = document.getElementById('faqModal');
@@ -1179,11 +1196,10 @@ document.addEventListener('click', (e)=>{
 
     const close = t.closest('[data-modal-close="true"]');
     if(close){
-      e.preventDefault();
+      try{ e.preventDefault(); }catch(err){}
       closeModal();
     }
   });
-
   document.addEventListener('keydown', (e) => {
     const modal = document.getElementById('faqModal');
     if(e.key === 'Escape' && modal && !modal.hidden){
@@ -1229,8 +1245,7 @@ document.addEventListener('click', (e)=>{
   };
 
   window.addEventListener('resize', schedule, { passive: true });
-  document.addEventListener('click', schedule, { passive: true });
-
+  window.__chapAddGlobalClick && window.__chapAddGlobalClick(()=>{ try{ schedule(); }catch(e){} });
   if (document.readyState === 'complete') {
     schedule();
     setTimeout(schedule, 0);
@@ -1238,4 +1253,3 @@ document.addEventListener('click', (e)=>{
     window.addEventListener('load', () => { schedule(); setTimeout(schedule, 0); }, { once: true });
   }
 })();
-

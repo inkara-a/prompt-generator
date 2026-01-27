@@ -1980,11 +1980,12 @@ body{
 }
 
 
-/* v7.44: PAGE TOP avoid right-column overlap (widescreen)
-   Keep behavior/design; adjust position basis only (push to viewport edge).
+/* v7.45 FINAL: PAGE TOP left edge aligned to container right edge
+   Rationale: avoid right-column overlap while keeping visual alignment.
 */
 @media (min-width: 1100px){
   .pageTopBtn{
-    right: 18px;
+    /* PAGE TOP image width: 121px */
+    right: calc((100vw - 1100px) / 2 - 121px);
   }
 }

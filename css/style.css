@@ -1989,3 +1989,21 @@ body{
     right: calc((100vw - 1100px) / 2 - 121px);
   }
 }
+
+
+/* v7.46 FINAL OVERRIDE: PAGE TOP left edge aligned to container right edge
+   - No assumption about element width (works even if text fallback expands width)
+   - Responsive: wide screens use container-based left; smaller screens keep viewport-right.
+*/
+@media (min-width: 1100px){
+  .pageTopBtn{
+    left: calc((100vw - 1100px) / 2 + 1100px);
+    right: auto;
+  }
+}
+@media (max-width: 1099.98px){
+  .pageTopBtn{
+    left: auto;
+    right: 18px;
+  }
+}

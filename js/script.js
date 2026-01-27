@@ -1198,3 +1198,70 @@ document.addEventListener('click', (e)=>{
   });
   obs.observe(document.documentElement, { childList:true, subtree:true });
 })();
+
+// v7.48: PAGE TOP align to container right edge (left edge = container right), with viewport clamp.
+// - Wide: left edge aligns to container right edge.
+// - Narrow: if it would go off-screen, fall back to right:18px.
+// Performance: rAF-throttle + single listeners + defensive guards.
+(function(){
+  const KEY = '__chap_pageTopAlign_v7_48__';
+  if (window[KEY]) return;
+  window[KEY] = true;
+
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+  let rafId = 0;
+  const schedule = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = 0;
+      apply();
+    });
+  };
+
+  function apply(){
+    const btn = document.querySelector('.pageTopBtn');
+    if (!btn) return;
+
+    // Prefer the main container used for layout alignment
+    const container = document.querySelector('.container');
+    if (!container) return;
+
+    const cRect = container.getBoundingClientRect();
+    const bRect = btn.getBoundingClientRect();
+
+    // Desired: btn's left edge == container right edge (viewport coords)
+    const desiredLeft = cRect.right;
+
+    // If desired position would push the button off-screen (hidden), fall back to right anchored.
+    // Keep a small safety margin similar to existing right spacing.
+    const margin = 18;
+    const wouldOverflow = (desiredLeft + bRect.width) > (window.innerWidth - margin);
+
+    if (wouldOverflow){
+      btn.style.left = 'auto';
+      btn.style.right = margin + 'px';
+    } else {
+      // Clamp left to be at least margin and at most (viewport - width - margin)
+      const left = clamp(desiredLeft, margin, window.innerWidth - bRect.width - margin);
+      btn.style.left = left + 'px';
+      btn.style.right = 'auto';
+    }
+  }
+
+  // Run after DOM is ready and after images load (totop.png width can affect bRect)
+  const onReady = () => { schedule(); };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', onReady, { once: true });
+  } else {
+    onReady();
+  }
+  window.addEventListener('load', schedule, { once: true });
+
+  // Resize/scroll can affect container rect in some layouts; keep it light with rAF.
+  window.addEventListener('resize', schedule, { passive: true });
+  window.addEventListener('scroll', schedule, { passive: true });
+
+  // Re-apply when menu opens/closes etc. (generic click, no heavy work; rAF coalesces).
+  document.addEventListener('click', (e) => { schedule(); }, { passive: true });
+})();

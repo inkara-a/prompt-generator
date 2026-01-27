@@ -2007,3 +2007,6 @@ body{
     right: 18px;
   }
 }
+
+
+/* v7.48: PAGE TOP position is clamped/aligned by JS (no visual design change) */

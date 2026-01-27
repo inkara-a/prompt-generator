@@ -1343,7 +1343,7 @@ textarea {
 }
 
 @media (max-width: 900px) {
-  .grid {
+  main.grid {
     grid-template-columns: 1fr;
   }
 

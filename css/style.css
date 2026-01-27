@@ -1586,7 +1586,7 @@ body{
 /* page top button (always visible; positioned above footer) */
 .pageTopBtn{
   position: fixed;
-  right: max(18px, calc((100vw - 1100px) / 2 + 16px + 18px));
+  right: max(18px, calc((100vw - 1100px) / 2 - 8px));
   bottom: 96px; /* 18px + footer(77px) +1 */
   z-index: 50;
   border: 0;
@@ -1818,9 +1818,6 @@ body{
 }
 
 
-.chapinavi-menu[open] .chapinavi-menu__btn{
-  background: rgba(255,255,255,.14);
-}
 .chapinavi-menu__icon{
   width: 18px;
   height: 12px;
@@ -1868,14 +1865,6 @@ body{
 
 
 /* v7.23: header menu contrast fix (header is light, so use dark icon/button) */
-.chapinavi-header .chapinavi-menu__btn{
-  border: 1px solid rgba(0,0,0,.12);
-  background: rgba(0,0,0,.04);
-  color: rgba(0,0,0,.82);
-}
-.chapinavi-header .chapinavi-menu__btn:hover{
-  background: rgba(214,208,255,.35);
-}
 .chapinavi-header .chapinavi-menu__icon span{
   background: rgba(0,0,0,.78);
 }
@@ -1957,12 +1946,14 @@ body{
 
 
 
+
+
 /* ================================
    FINAL RULES: Header Menu Button
-   (consolidated to avoid conflicts)
-   v7.43 - values unchanged, merge only
+   (wins over prior header styles)
+   v7.44 - purple base + consistent open/hover
 ================================ */
-.chapinavi-menu__btn{
+.chapinavi-header .chapinavi-menu__btn{
   border: 1px solid var(--chap-step-border, rgba(109, 40, 217, .20));
   background: var(--chap-step-bg, #d6d0ff);
   color: var(--chap-step-text, #2f2568);
@@ -1975,6 +1966,6 @@ body{
   cursor: pointer;
   user-select: none;
 }
-.chapinavi-menu__btn:hover{
+.chapinavi-header .chapinavi-menu__btn:hover{
   filter: brightness(0.98);
 }

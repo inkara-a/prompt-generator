@@ -3,11 +3,18 @@
   try{
     if(!window.__chapSyncUI){
       window.__chapSyncUI = function(){
-        try{ window.__chapSyncUI && window.__chapSyncUI(); }catch(e){}
+        try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
         try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
       };
     }
   }catch(e){}
+
+/* =========================================================
+   Sections (Phase3): readability-only module boundaries
+   NOTE: values/behavior unchanged; comments + spacing only
+   ========================================================= */
+
+/* ---------- UI Effects (flash/highlight) ---------- */
 
   // v6.3: 人気テンプレ適用時の自動入力“パッ”演出（軽量・短時間）
   function flashFill_v63(nodes){
@@ -24,9 +31,13 @@
     }catch(e){}
   }
 
+/* ---------- Core constants / state ---------- */
+
 const BUILD_ID = "v20260116am-format-placeholder-fixed";
 let data = null;
 const el = (id) => document.getElementById(id);
+
+/* ---------- Utilities ---------- */
 
 // Safe debounce helper (v5.8 refactor): avoids heavy work on every keystroke
 function debounce(fn, wait = 300) {
@@ -46,6 +57,8 @@ function smoothScrollTo(elm, offsetPx = -12) {
 }
 
 
+/* ---------- Global Event Hub (single document click) ---------- */
+
 /* v7.54 safe-refactor (Phase0-1): global click hub (bubble) to avoid multiple document click listeners */
 (function(){
   if(window.__chapGlobalClickHub) return;
@@ -64,6 +77,8 @@ function smoothScrollTo(elm, offsetPx = -12) {
 
 
 
+
+/* ---------- Interaction state ---------- */
 
 // v5.7.23: 初期は生成エリアを空欄にする（ユーザーが何か操作したら自動生成開始）
 let userInteracted_v5723 = false;

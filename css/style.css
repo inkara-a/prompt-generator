@@ -1586,8 +1586,8 @@ body{
 /* page top button (always visible; positioned above footer) */
 .pageTopBtn{
   position: fixed;
-  right: 18px;
-  bottom: 95px; /* 18px + footer(77px) */
+  right: max(18px, calc((100vw - 1100px) / 2 + 16px + 18px));
+  bottom: 96px; /* 18px + footer(77px) +1 */
   z-index: 50;
   border: 0;
   background: transparent;
@@ -1816,22 +1816,8 @@ body{
 .chapinavi-menu > summary::-webkit-details-marker{
   display: none;
 }
-.chapinavi-menu__btn{
-  border: 1px solid rgba(255,255,255,.28);
-  background: rgba(255,255,255,.08);
-  color: #fff;
-  border-radius: 999px;
-  width: 40px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  user-select: none;
-}
-.chapinavi-menu__btn:hover{
-  background: rgba(255,255,255,.12);
-}
+
+
 .chapinavi-menu[open] .chapinavi-menu__btn{
   background: rgba(255,255,255,.14);
 }
@@ -1926,9 +1912,7 @@ body{
 }
 
 /* align page top button to container right */
-.pageTopBtn{
-  right: calc(50% - (var(--chap-container-max)/2) + var(--chap-container-pad));
-}
+
 
 
 /* v7.39: align header menu + PAGE TOP to .container right edge (fullscreen stability)
@@ -1943,9 +1927,7 @@ body{
 }
 
 /* PAGE TOP: align to .container right edge on wide screens (fallback keeps current 18px) */
-.pageTopBtn{
-  right: max(18px, calc((100vw - 1100px) / 2 + 16px));
-}
+
 
 
 /* v7.40: unify LEFT alignment too (header logo) + align PAGE TOP left edge with menu left edge
@@ -1960,30 +1942,39 @@ body{
 /* PAGE TOP: align left edge to menu button left edge on wide screens
    menu btn width: 40px, PAGE TOP image width: 121px => delta 81px
 */
-.pageTopBtn{
-  right: max(18px, calc((100vw - 1100px) / 2 + 16px - 81px));
-}
+
 
 
 /* v7.41: PAGE TOP non-overlap (container-based) */
-.pageTopBtn{
-  right: max(24px, calc((100vw - 1100px) / 2 + 24px));
-  bottom: 96px;
-}
+
 
 
 /* v7.42: header menu button style (purple like stepNo) + PAGE TOP move outward to avoid overlap */
+
+
+
+/* PAGE TOP: move OUTSIDE container on wide screens (push right) */
+
+
+
+/* ================================
+   FINAL RULES: Header Menu Button
+   (consolidated to avoid conflicts)
+   v7.43 - values unchanged, merge only
+================================ */
 .chapinavi-menu__btn{
-  background: var(--chap-step-bg, #d6d0ff);
   border: 1px solid var(--chap-step-border, rgba(109, 40, 217, .20));
+  background: var(--chap-step-bg, #d6d0ff);
   color: var(--chap-step-text, #2f2568);
+  border-radius: 999px;
+  width: 40px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
 }
 .chapinavi-menu__btn:hover{
   filter: brightness(0.98);
-}
-
-/* PAGE TOP: move OUTSIDE container on wide screens (push right) */
-.pageTopBtn{
-  right: max(18px, calc((100vw - 1100px) / 2 + 16px + 18px));
-  bottom: 96px;
 }

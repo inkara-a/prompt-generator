@@ -1,4 +1,14 @@
 
+  /* v7.55 Phase2: state sync single entry (no behavior change) */
+  try{
+    if(!window.__chapSyncUI){
+      window.__chapSyncUI = function(){
+        try{ window.__chapSyncUI && window.__chapSyncUI(); }catch(e){}
+        try{ window.__updateStepChecks && window.__updateStepChecks(); }catch(e){}
+      };
+    }
+  }catch(e){}
+
   // v6.3: 人気テンプレ適用時の自動入力“パッ”演出（軽量・短時間）
   function flashFill_v63(nodes){
     try{
@@ -162,7 +172,7 @@ function renderExampleTabs() {
       renderExampleTabs();
       renderExampleButtons();
       // テンプレ選択で出力形式などが変わるので再初期化
-try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+try{ window.__chapSyncUI && window.__chapSyncUI(); }catch(e){}
     });
     tabsEl.appendChild(b);
   });
@@ -314,7 +324,7 @@ return;
   renderExampleButtons();
   autoPreview();
   // v5.8: templates loaded -> sync step checks (initial Step1 should reflect default selection)
-  try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+  try{ window.__chapSyncUI && window.__chapSyncUI(); }catch(e){}
 }
 
 
@@ -466,7 +476,7 @@ function autoPreview() {
 
 
   // v5.8 step check sync
-  try{ if (window.__updateStepChecks) window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+  try{ if (window.__updateStepChecks) window.__chapSyncUI && window.__chapSyncUI(); }catch(e){}
 }
 
 // Debounced preview (v5.8 refactor)
@@ -599,10 +609,7 @@ el("openChatGPT") && el("openChatGPT").addEventListener("click", async () => {
     try{ role.focus({ preventScroll: true }); }catch(e){ try{ role.focus(); }catch(_e){} }
 
     // After clear, sync step checks
-    try{
-      if (window.__syncStepChecks_v58) window.__syncStepChecks_v58();
-      else if (typeof updateStepChecks === 'function') updateStepChecks();
-    }catch(e){}
+    try{ window.__chapSyncUI && window.__chapSyncUI(); }catch(e){}
   }
 el("clearAll") && el("clearAll").addEventListener("click", () => {
     resetToInitialState_v58();
@@ -646,7 +653,7 @@ function setSelection(cat, pur) {
   const purposes = data[cat].purposes;
   if (purposes && purposes[pur]) purpose.value = pur;
   autoPreview();
-  try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+  try{ window.__chapSyncUI && window.__chapSyncUI(); }catch(e){}
 }
 
 function setVarsFromExample(vars) {
@@ -700,7 +707,7 @@ function renderExampleButtons() {
       autoPreview();
       // 自動入力された欄を一瞬だけハイライト
       try{ flashFill_v63([category, purpose, role, goal, context, constraints, outputContent, request, format].filter(Boolean)); }catch(e){}
-      try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){}
+      try{ window.__chapSyncUI && window.__chapSyncUI(); }catch(e){}
 
     // Scroll to STEP1 (template selector) after example selection
     try{
@@ -830,6 +837,9 @@ loadTemplates();
     try{ if (window.__updateStepChecks) window.__updateStepChecks(); }catch(e){}
   }
   window.__syncStepChecks_v58 = syncStepChecks_v58;
+  // v7.55 Phase2: unify callers to single sync entry
+  try{ window.__chapSyncUI = function(){ try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){} }; }catch(e){}
+
   // expose for other auto-fill actions
 
   function bind(){

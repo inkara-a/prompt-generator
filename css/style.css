@@ -2010,3 +2010,27 @@ body{
 
 
 /* v7.48: PAGE TOP position is clamped/aligned by JS (no visual design change) */
+
+
+/* v7.52 FINAL: header menu button stays purple (match stepNo) */
+.chapinavi-menu__btn{
+  background: var(--chap-step-bg, #d6d0ff);
+  border: 1px solid var(--chap-step-border, rgba(109, 40, 217, .20));
+  color: var(--chap-step-text, #2f2568);
+}
+.chapinavi-menu__btn:hover{
+  filter: brightness(0.98);
+}
+
+
+/* v7.53 FINAL WINS: force header menu button purple (higher specificity) */
+header .chapinavi-menu__btn,
+.chapinavi-header .chapinavi-menu__btn{
+  background-color: var(--chap-step-bg, #d6d0ff) !important;
+  border: 1px solid var(--chap-step-border, rgba(109, 40, 217, .20)) !important;
+  color: var(--chap-step-text, #2f2568) !important;
+}
+header .chapinavi-menu__btn:hover,
+.chapinavi-header .chapinavi-menu__btn:hover{
+  filter: brightness(0.98);
+}

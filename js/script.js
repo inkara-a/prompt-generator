@@ -853,7 +853,7 @@ loadTemplates();
   }
   window.__syncStepChecks_v58 = syncStepChecks_v58;
   // v7.55 Phase2: unify callers to single sync entry
-  try{ window.__chapSyncUI = function(){ try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){} }; }catch(e){}
+  try{ if(!window.__chapSyncUI){ window.__chapSyncUI = function(){ try{ window.__syncStepChecks_v58 && window.__syncStepChecks_v58(); }catch(e){} }; } }catch(e){}
 
   // expose for other auto-fill actions
 
@@ -1017,6 +1017,7 @@ window.__chapAddGlobalClick && window.__chapAddGlobalClick((e)=>{
   const t = e && e.target ? e.target : null;
   if(!t) return;
   if(t.closest && t.closest("input, textarea")) return;
+  if(t.closest && t.closest("#copy, #copyBig, .exCard, .exTab, #formatButtons, #addVar, #insertVar, #clearVars")) return;
   lastFocusedField = null;
 });
 /* v7.8: page top button (image) */
@@ -1035,9 +1036,6 @@ window.__chapAddGlobalClick && window.__chapAddGlobalClick((e)=>{
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
 })();
 
 
@@ -1073,6 +1071,8 @@ window.__chapAddGlobalClick && window.__chapAddGlobalClick((e)=>{
   const menu = document.getElementById('menuAcc');
   const faqOpen = document.getElementById('menuFaqOpen');
   if(!modal || !menu || !faqOpen) return;
+
+  try{ window.__faqHandled_v726 = true; }catch(e){}
 
   const closeBtn = modal.querySelector('.chapinavi-modal__close');
 
@@ -1136,6 +1136,9 @@ window.__chapAddGlobalClick && window.__chapAddGlobalClick((e)=>{
 
 /* v7.31: FAQ modal open (ultra-robust, user-triggered) */
 (function(){
+  // v7.26 が既に FAQ を担当している場合は何もしない（重複バインド防止）
+  try{ if(window.__faqHandled_v726) return; }catch(e){}
+
   const ensureModal = () => {
     let modal = document.getElementById('faqModal');
     if(modal) return modal;

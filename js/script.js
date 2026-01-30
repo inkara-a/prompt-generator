@@ -123,7 +123,12 @@ async function fetchJsonWithFallback(paths) {
   let lastErr = null;
   for (const p of paths) {
     try {
-      const url = new URL(p, window.location.href).toString();
+      const hasBuildId = (typeof BUILD_ID === "string" && BUILD_ID);
+      const separator = p.includes("?") ? "&" : "?";
+      const urlWithBust = hasBuildId
+        ? `${p}${separator}v=${encodeURIComponent(BUILD_ID)}`
+        : p;
+      const url = new URL(urlWithBust, window.location.href).toString();
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) {
         lastErr = new Error(`HTTP ${res.status} for ${url}`);
@@ -266,7 +271,8 @@ function renderVars() {
     const h = (v.hint||"").trim();
     chip.innerHTML = `<span class="mono">${t}</span> <small>${h}</small> <span class="x" title="削除">×</span>`;
     chip.addEventListener("click", (e) => {
-      const isX = e.target && e.target.classList && e.target.classList.contains("x");
+      const targetEl = (e.target && e.target.nodeType === 1) ? e.target : (e.target ? e.target.parentElement : null);
+      const isX = !!(targetEl && targetEl.closest && targetEl.closest(".x"));
       if (isX) {
         const next = loadVars().filter((_, i) => i !== idx);
         saveVars(next);
@@ -420,10 +426,9 @@ function applyPreset(clearRequest=false) {
   autoPreview();
 }
 
-category.addEventListener("change", initPurposes);
-purpose.addEventListener("change", initPurposes);
-preset.addEventListener("change", () => applyPreset(false));
-
+if (category) category.addEventListener("change", initPurposes);
+if (purpose) purpose.addEventListener("change", initPurposes);
+if (preset) preset.addEventListener("change", () => applyPreset(false));
 if (smart) smart.addEventListener("change", () => { setAdvancedFromSmart(); autoPreview(); });
 [mdOpt, stepOpt, askOpt].forEach(ch => ch && ch.addEventListener("change", () => { syncSmartFromAdvanced(); autoPreview(); }));
 
@@ -1095,19 +1100,25 @@ window.__chapAddGlobalClick && window.__chapAddGlobalClick((e)=>{
 
   window.__chapAddGlobalClick && window.__chapAddGlobalClick((e) => {
       const t = e.target;
-      if(!t) return;
-  
+      const elTarget = (t && t.nodeType === 1) ? t : (t && t.parentElement);
+      if(!elTarget){
+        if(menu.open) menu.open = false;
+        return;
+      }
+
       if(!modal.hidden){
-        const close = t.closest('[data-modal-close="true"]');
+        const close = elTarget.closest('[data-modal-close="true"]');
         if(close){
           e.preventDefault();
           setModalOpen(false);
           return;
         }
       }
-  
+
       if(menu.open){
-        const insideMenu = t.closest('#menuAcc');
+        const summary = menu.querySelector('summary');
+        if(summary && summary.contains(elTarget)) return;
+        const insideMenu = elTarget.closest('#menuAcc');
         if(!insideMenu){
           menu.open = false;
         }
@@ -1240,7 +1251,8 @@ window.__chapAddGlobalClick && window.__chapAddGlobalClick((e)=>{
   const obs = new MutationObserver(() => {
     bindFaqBtn();
   });
-  obs.observe(document.documentElement, { childList:true, subtree:true });
+  const target = document.querySelector('.chapinavi-header') || document.body;
+  obs.observe(target, { childList:true, subtree:true });
 })();
 
 // v7.51: PAGE TOP continuous positioning (no jump)
